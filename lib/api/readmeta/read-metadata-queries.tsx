@@ -1,0 +1,48 @@
+import { CosmicQuery } from "../query";
+
+//Get Part Data
+export function makeGetPartQuery ( name: string ): CosmicQuery
+{
+    return {
+        query: {
+            type: "parts",
+            slug: name
+        },
+        props: "title,metadata.part_image,metadata.part_logline,metadata.chapters.slug,metadata.chapters.title,metadata.chapters.metadata.sections.slug,metadata.chapters.metadata.sections.title"
+    };
+}
+
+export function makeGetPartsQuery (): CosmicQuery
+{
+    return {
+        limit: 5,
+        query: {
+            type: 'parts',
+        },
+        props: 'title,slug',
+    };
+}
+
+//Get Chapter Data
+export function makeGetChapterQuery ( chapterSlug: string ): CosmicQuery
+{
+    return {
+        query: {
+            type: "chapters",
+            slug: chapterSlug
+        },
+        props: "title,slug,metadata.chapter_image,metadata.previous_chapter_recap,metadata.sections.slug,metadata.sections.title"
+    };
+}
+
+//Get Section Data
+export function makeGetSectionQuery ( sectionSlug: string ): CosmicQuery
+{
+    return {
+        query: {
+            type: "sections",
+            slug: sectionSlug
+        },
+        props: "title,metadata"
+    };
+}
