@@ -8,7 +8,7 @@ export function makeGetPartQuery ( name: string ): CosmicQuery
             type: "parts",
             slug: name
         },
-        props: "title,metadata.part_image,metadata.part_logline,metadata.chapters.slug,metadata.chapters.title,metadata.chapters.metadata.sections.slug,metadata.chapters.metadata.sections.title"
+        props: "title,metadata.table_of_contents_image,metadata.part_logline,metadata.chapters.slug,metadata.chapters.title,metadata.chapters.metadata.sections.slug,metadata.chapters.metadata.sections.title"
     };
 }
 
@@ -19,7 +19,7 @@ export function makeGetPartsQuery (): CosmicQuery
         query: {
             type: 'parts',
         },
-        props: 'title,slug',
+        props: 'title,slug,metadata.part_image',
     };
 }
 
