@@ -1,18 +1,3 @@
-export interface CosmicResponse<Type>
-{
-    data: Data<Type>;
-}
-
-export interface Data<Type>
-{
-    getObjects: GetObjects<Type>;
-}
-
-export interface GetObjects<Type>
-{
-    objects: Type[];
-}
-
 export interface Part
 {
     title: string;
@@ -21,7 +6,7 @@ export interface Part
 }
 export interface PartMetadata
 {
-    part_image: Image;
+    table_of_contents_image: Image;
     part_logline: string;
     chapters: Chapter[];
 }

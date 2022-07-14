@@ -1,8 +1,7 @@
 import { CosmicQuery } from "../query";
 
 //Get Part Data
-export function makeGetPartQuery ( name: string ): CosmicQuery
-{
+export function makeGetPartQuery(name: string): CosmicQuery {
     return {
         query: {
             type: "parts",
@@ -12,8 +11,7 @@ export function makeGetPartQuery ( name: string ): CosmicQuery
     };
 }
 
-export function makeGetPartsQuery (): CosmicQuery
-{
+export function makeGetPartsQuery(): CosmicQuery {
     return {
         limit: 5,
         query: {
@@ -24,8 +22,16 @@ export function makeGetPartsQuery (): CosmicQuery
 }
 
 //Get Chapter Data
-export function makeGetChapterQuery ( chapterSlug: string ): CosmicQuery
-{
+export function makeGetAvailableChapters(): CosmicQuery {
+    return {
+        query: {
+            type: "parts"
+        },
+        props: "slug,metadata.chapters.slug"
+    }
+}
+
+export function makeGetChapterQuery(chapterSlug: string): CosmicQuery {
     return {
         query: {
             type: "chapters",
@@ -36,8 +42,16 @@ export function makeGetChapterQuery ( chapterSlug: string ): CosmicQuery
 }
 
 //Get Section Data
-export function makeGetSectionQuery ( sectionSlug: string ): CosmicQuery
-{
+export function makeGetAvailableSections(): CosmicQuery {
+    return {
+        query: {
+            type: "parts"
+        },
+        props: "slug,metadata.chapters.slug,metadata.chapters.metadata.sections.slug"
+    }
+}
+
+export function makeGetSectionQuery(sectionSlug: string): CosmicQuery {
     return {
         query: {
             type: "sections",

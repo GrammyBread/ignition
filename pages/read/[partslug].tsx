@@ -1,34 +1,53 @@
+import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
-import { getAllPostsWithSlug, getPostAndMorePosts } from '../../lib/api'
-import Head from 'next/head'
-import { CMS_NAME } from '../../lib/constants'
-import markdownToHtml from '../../lib/markdownToHtml'
+import { getPart, getParts } from '../../lib/api/client';
+import { Part } from '../../interfaces/read-metadata.interfaces';
+import Image from 'next/image';
 
-export default function Post({ post, morePosts, preview }) {
-  const router = useRouter()
-  if (!router.isFallback && !post?.slug) {
+interface Props {
+  content?: Part;
+}
+
+const Part = (props: Props): JSX.Element => {
+  if (props == undefined) {
     return <ErrorPage statusCode={404} />
   }
   return (
-   <p>You're reached part {post.slug}</p>
+    <div>
+      <p>You're reached part {props.content?.slug}</p>
+      {props.content?.metadata?.table_of_contents_image.url !== undefined &&
+        <Image src={props.content?.metadata?.table_of_contents_image.url} width={100} height={100} />
+      }
+      <p><strong>Log Line:</strong> {props.content?.metadata?.part_logline}</p>
+    </div>
   )
-}
+};
 
-export async function getStaticProps({ params, preview = null }) {
-  const data = await getPostAndMorePosts(params.slug, preview)
+export default Part;
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  let data = undefined;
+  let slug = context?.params?.partslug;
+  if (slug != undefined) {
+    data = await getPart(slug.toString());
+  }
 
   return {
     props: {
-      data: data
-    },
+      content: data,
+    } as Props,
+    revalidate: 120
   }
-}
+};
 
-export async function getStaticPaths() {
-  const allPosts = (await getAllPostsWithSlug()) || []
+export const getStaticPaths: GetStaticPaths = async () => {
+  const result = await getParts() || [];
+  let availPaths = result.map((part) => ({
+    params: { partslug: part.slug },
+  }));
   return {
-    paths: allPosts.map((post) => `/posts/${post.slug}`),
-    fallback: true,
+    paths: availPaths,
+    fallback: false,
   }
-}
+};

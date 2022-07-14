@@ -1,5 +1,5 @@
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next';
-import { Part } from '../../interfaces/shared';
+import { GetStaticProps } from 'next';
+import { Part } from '../../interfaces/read-metadata.interfaces';
 import { getParts } from '../../lib/api/client';
 
 interface Props
