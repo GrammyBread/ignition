@@ -1,35 +1,32 @@
 import { GetStaticProps } from 'next';
 import { Part } from '../../interfaces/read-metadata.interfaces';
 import { getParts } from '../../lib/api/client';
+import ErrorPage from 'next/error';
 
-interface Props
-{
-  content: Part[];
+interface Props {
+  parts: Part[];
 }
 
-const Parts = ( props: Props ): JSX.Element =>
-{
-  if ( !props.content )
-  {
-    return <div>Could not render parts?!</div>;
+const Parts = (props: Props): JSX.Element => {
+  if (props == undefined) {
+    return <ErrorPage statusCode={404} />
   }
 
   return (
     <div>
-      Got Stuff!
+      
     </div>
   );
 };
 
 export default Parts;
 
-export const getStaticProps: GetStaticProps = async ( context ) =>
-{
+export const getStaticProps: GetStaticProps = async (context) => {
   const result = await getParts();
 
   return {
     props: {
-      content: result
+      parts: result
     } as Props,
     revalidate: 120
   };

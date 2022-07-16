@@ -9,6 +9,11 @@ export interface PartMetadata
     table_of_contents_image: Image;
     part_logline: string;
     chapters: Chapter[];
+	table_of_contents_data: TableOfContents;
+}
+
+export interface TableOfContents {
+	chapters: Chapter[];
 }
 
 export interface Chapter
@@ -23,6 +28,7 @@ export interface ChapterMetadata
     sections: Section[];
     chapter_image?: Image;
     previous_chapter_recap?: string;
+	chapter_section_data?: Chapter_section_data;
 }
 
 export interface Section
@@ -30,11 +36,6 @@ export interface Section
     slug: string;
     title: string;
     metadata?: SectionMetadata;
-}
-
-export interface SectionMetadata
-{
-
 }
 
 export interface Image
@@ -81,3 +82,7 @@ export interface ScriptImage
     imgix_url: string;
 }
 
+export interface Chapter_section_data {
+	title: string;
+	sections: string[];
+}
