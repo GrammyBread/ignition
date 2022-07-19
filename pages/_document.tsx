@@ -1,22 +1,32 @@
-
 import { Html, Head, Main, NextScript } from 'next/document'
-import { ReactElement } from 'react'
+import Document, { DocumentContext, DocumentInitialProps } from 'next/document'
+import Styles from '../styles/global.module.scss';
 
-class IgnitionDocument extends Document {
-    render(): ReactElement {
-        return (
-            <Html>
-            <Head>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap">
-            </Head>
-            <body>
-              <Main />
-              <NextScript />
-            </body>
-          </Html>
-        );
-    }
+class MyDocument extends Document {
+  static async getInitialProps(
+    ctx: DocumentContext
+  ): Promise<DocumentInitialProps> {
+    const initialProps = await Document.getInitialProps(ctx)
+
+    return initialProps
+  }
+
+  render() {
+    return (
+      <Html>
+        <Head>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Oswald&display=optional"
+            rel="stylesheet"
+          />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    )
+  }
 }
 
-export default IgnitionDocument
+export default MyDocument

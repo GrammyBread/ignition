@@ -1,0 +1,29 @@
+@use "@material/animation";
+
+@keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+      opacity: .5;
+    }
+    100% {
+      transform: rotate(360deg);
+      opacity: 1;
+    }
+  }
+
+.logoButton {
+    height: 3rem;
+    z-index: 1000;
+}
+
+.logoButton:hover {
+    animation: rotate 1000ms animation.$sharp-curve-timing-function;
+}
+
+.navbar {
+    padding: .5rem 0;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    background: transparent;
+}
