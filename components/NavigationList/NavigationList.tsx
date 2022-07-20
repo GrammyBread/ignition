@@ -12,17 +12,16 @@ import MailIcon from '@mui/icons-material/Mail';
 import Drawer from '@mui/material/Drawer';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { NavPartProps } from './NavigationPart';
+import NavigationPartItem, { NavPartProps } from './NavigationPart';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
 
 export interface NavigationLink {
     slug: string;
     title: string;
 }
 
-export interface NavChapter {
-    link: NavigationLink;
-    sections: NavigationLink[];
-}
 
 
 export interface NavigationList {
@@ -31,7 +30,8 @@ export interface NavigationList {
 
 export interface NavigationListProps {
     drawerWidth: number;
-    open: boolean
+    open: boolean;
+    closeDrawer: () => {};
     navlistItems: NavigationList;
 }
 
@@ -45,9 +45,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     color: theme.palette.text.primary
 }));
 
-const NavbarSection = style('')
-
 export default function NavigationList(props: NavigationListProps) {
+    const [readOpen, setReadOpen] = React.useState(false);
+
+    const handleClick = () => {
+        setReadOpen(!readOpen);
+    };
+
     return (
         <Drawer
             sx={{
@@ -64,20 +68,21 @@ export default function NavigationList(props: NavigationListProps) {
         >
             <DrawerHeader>
                 <Typography variant="h4" sx={{ textAlign: 'left' }}>Only One Way To Burn It Down</Typography>
-                <ChevronLeftIcon></ChevronLeftIcon>
+                <ChevronLeftIcon onClick={props.closeDrawer}></ChevronLeftIcon>
             </DrawerHeader>
             <Divider />
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+                <ListItemButton onClick={handleClick}>
+                    <ListItemText primary="Read" />
+                    {readOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={readOpen} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        {props.navlistItems?.parts && props.navlistItems.parts.map((part) => (
+                            <NavigationPartItem key={part.link.slug} {...part}></NavigationPartItem>
+                        ))}                        
+                    </List>
+                </Collapse>
             </List>
             <Divider />
             <List>

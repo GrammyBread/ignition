@@ -71,6 +71,7 @@ export default function Navigation(props: NavigationData) {
     const navListProps = {
         drawerWidth: drawerWidth,
         open: open,
+        closeDrawer: handleDrawerClose,
         navlistItems: navlistData
     } as NavigationListProps;
 
@@ -112,7 +113,6 @@ export default function Navigation(props: NavigationData) {
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={open}
-                onClick={handleDrawerClose}
             >
                 <NavigationList {...navListProps}>
                 </NavigationList>
