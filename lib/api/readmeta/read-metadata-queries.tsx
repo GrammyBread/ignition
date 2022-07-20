@@ -1,6 +1,16 @@
 import { CosmicQuery } from "../query";
 
 //Get Part Data
+export function makeGetNavigationQuery(): CosmicQuery {
+    return {
+        query: {
+            type: "navigation",
+            slug: "navigation"
+          },
+          props: "title,content,metadata.published_parts.slug,metadata.published_parts.title,metadata.published_parts.status,metadata.published_parts.metadata.part_logline,metadata.published_parts.metadata.part_image,metadata.published_parts.metadata.chapters.title,metadata.published_parts.metadata.chapters.slug,metadata.published_parts.metadata.chapters.status,metadata.published_parts.metadata.chapters.metadata.sections.slug,metadata.published_parts.metadata.chapters.metadata.sections.title,metadata.published_parts.metadata.chapters.metadata.sections.status"
+    }
+}
+
 export function makeGetPartQuery(name: string): CosmicQuery {
     return {
         query: {

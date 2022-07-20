@@ -1,7 +1,18 @@
+export interface NavigationData {
+	title: string;
+	content: string;
+	metadata: NavMetadata;
+}
+
+export interface NavMetadata {
+	published_parts: Part[];
+}
+
 export interface Part
 {
     title: string;
     slug: string;
+    status?: string;
     metadata?: PartMetadata;
 }
 export interface PartMetadata

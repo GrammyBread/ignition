@@ -2,8 +2,8 @@ import Cosmic from 'cosmicjs'
 import Error from 'next/error'
 import { CosmicQuery } from './query'
 import { CosmicResponse } from '../../interfaces/shared.interfaces'
-import { Chapter, Part, Section } from '../../interfaces/read-metadata.interfaces'
-import { makeGetPartQuery, makeGetPartsQuery, makeGetChapterQuery, makeGetSectionQuery, makeGetAvailableChapters, makeGetAvailableSections } from './readmeta/read-metadata-queries';
+import { Chapter, NavigationData, Part, Section } from '../../interfaces/read-metadata.interfaces'
+import { makeGetPartQuery, makeGetPartsQuery, makeGetChapterQuery, makeGetSectionQuery, makeGetAvailableChapters, makeGetAvailableSections, makeGetNavigationQuery } from './readmeta/read-metadata-queries';
 import { HomePage } from '../../interfaces/home.interfaces'
 import { makeGetHomeQuery } from './static/home-queries'
 
@@ -22,6 +22,11 @@ export const bucket = Cosmic().bucket({
 async function getObjects<T>(query: CosmicQuery): Promise<T> {
       const data = await bucket.getObjects(query);
       return data.objects;
+}
+
+export async function getNavigation(): Promise<NavigationData> {
+  let response = await getObjects<NavigationData[]>(makeGetNavigationQuery())
+  return response[0];
 }
 
 export async function getParts(): Promise<Part[]> {

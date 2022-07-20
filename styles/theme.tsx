@@ -24,6 +24,10 @@ export const ignitionTheme = createTheme({
         info: {
             main: '#b239cd',
         },
+        text: {
+            primary: "#000000",
+            secondary: "#ffffff"
+        }
     },
     typography: {
         fontFamily: 'Oswald',

@@ -1,17 +1,16 @@
 import { GetStaticProps } from 'next';
-import { Part } from '../../interfaces/read-metadata.interfaces';
-import { getParts } from '../../lib/api/client';
+import { NavigationData, Part } from '../../interfaces/read-metadata.interfaces';
+import { getNavigation, getParts } from '../../lib/api/client';
 import ErrorPage from 'next/error';
 import { Box, ThemeProvider } from '@mui/material';
 import { ignitionTheme } from '../../styles/theme';
-import { FooterProps } from '../../components/Footer/Footer';
-import Footer from '../../components/Footer/Footer';
-import Navigation from '../../components/Nav/Nav';
+import Navigation from '../../components/Navigation/Navigation';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 
 interface Props {
   parts: Part[];
+  navData: NavigationData;
 }
 
 const PageRoot = styled('div')(({ theme }) => ({
@@ -20,16 +19,6 @@ const PageRoot = styled('div')(({ theme }) => ({
 }));
 
 const Parts = (props: Props): JSX.Element => {  
-  const [open, setOpen] = React.useState(false);
-
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
-  };
-
-  let footerProps = {
-    setState: toggleDrawer,
-    state: open
-  } as FooterProps;
 
   if (props == undefined) {
     return <ErrorPage statusCode={404} />
@@ -38,12 +27,10 @@ const Parts = (props: Props): JSX.Element => {
   return (
     <ThemeProvider theme={ignitionTheme}>
       <Box className='main'>
-        <Navigation {...footerProps}></Navigation>
+        <Navigation {...props.navData}></Navigation>
         <PageRoot className='root'>
           {props?.parts.map((part: Part) => { return <p key={part.slug}>{part.title}</p> })}
         </PageRoot>
-
-        <Footer {...footerProps}></Footer>
       </Box>
     </ThemeProvider>
   );
@@ -53,10 +40,12 @@ export default Parts;
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const result = await getParts();
+  const navResult = await getNavigation();
 
   return {
     props: {
-      parts: result
+      parts: result,
+      navData: navResult
     } as Props,
     revalidate: 120
   };
