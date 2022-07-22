@@ -1,11 +1,15 @@
+import { TableOfContents, TableOfContentsChapter } from "./view-data.interfaces";
+
 export interface NavigationData {
 	title: string;
 	content: string;
 	metadata: NavMetadata;
+    navWidth: number;
 }
 
 export interface NavMetadata {
 	published_parts: Part[];
+    logo: Image;
 }
 
 export interface Part
@@ -18,19 +22,17 @@ export interface Part
 export interface PartMetadata
 {
     table_of_contents_image: Image;
+    part_image: Image;
     part_logline: string;
     chapters: Chapter[];
 	table_of_contents_data: TableOfContents;
-}
-
-export interface TableOfContents {
-	chapters: Chapter[];
 }
 
 export interface Chapter
 {
     slug: string;
     title: string;
+    status: string;
     metadata?: ChapterMetadata;
 }
 
@@ -39,13 +41,14 @@ export interface ChapterMetadata
     sections: Section[];
     chapter_image?: Image;
     previous_chapter_recap?: string;
-	chapter_section_data?: Chapter_section_data;
+	chapter_section_data?: TableOfContentsChapter;
 }
 
 export interface Section
 {
     slug: string;
     title: string;
+    status: string;
     metadata?: SectionMetadata;
 }
 
@@ -58,6 +61,7 @@ export interface Image
 export interface SectionMetadata
 {
     scripts: Script[];
+    patreon_realease_date: string;
 }
 
 export interface Script
@@ -91,9 +95,4 @@ export interface ScriptImage
 {
     url: string;
     imgix_url: string;
-}
-
-export interface Chapter_section_data {
-	title: string;
-	sections: string[];
 }

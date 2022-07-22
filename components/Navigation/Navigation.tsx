@@ -10,7 +10,8 @@ import {
     Backdrop,
     Button,
     Box,
-    CssBaseline
+    CssBaseline,
+    Fab
 } from '@mui/material';
 import { Twitter, Instagram } from '@mui/icons-material';
 import Link from 'next/link';
@@ -19,40 +20,9 @@ import { NavigationListProps } from '../NavigationList/NavigationList';
 import { NavigationData } from '../../interfaces/read-metadata.interfaces';
 import MapNavigation from '../../mappers/navigation.mapper';
 
-const drawerWidth = 240;
-
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
 }
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-    transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        })
-    }),
-}));
-
-
-const Circle = styled('div', {
-    shouldForwardProp: (prop) => prop !== 'isPrimary',
-})<{ isPrimary?: boolean }>(({ theme, isPrimary }) => ({
-    backgroundColor: isPrimary ? theme.palette.primary.main : theme.palette.background.paper,
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    height: 'fit-content',
-    padding: '5px'
-}));
 
 export default function Navigation(props: NavigationData) {
     const containerRef = React.useRef(null);
@@ -68,8 +38,46 @@ export default function Navigation(props: NavigationData) {
 
     const navlistData = MapNavigation(props);
 
+    const AppBar = styled(MuiAppBar, {
+        shouldForwardProp: (prop) => prop !== 'open',
+    })<AppBarProps>(({ theme, open }) => ({
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        ...(open && {
+            width: `calc(100% - ${props.navWidth}px)`,
+            marginLeft: `${props.navWidth}px`,
+            transition: theme.transitions.create(['margin', 'width'], {
+                easing: theme.transitions.easing.easeOut,
+                duration: theme.transitions.duration.enteringScreen,
+            })
+        }),
+    }));
+
+    const ImageContainer = styled('div')(({ theme }) => ({
+        position: 'absolute',
+        top: '0px',
+        right: '-20px',
+        height: '100%',
+        width: 'auto',
+        opacity: '.8',
+        aspectRatio: '29/40'
+    }));
+
+    const Circle = styled('div', {
+        shouldForwardProp: (prop) => prop !== 'isPrimary',
+    })<{ isPrimary?: boolean }>(({ theme, isPrimary }) => ({
+        backgroundColor: isPrimary ? theme.palette.primary.main : theme.palette.background.paper,
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        height: 'fit-content',
+        padding: '5px'
+    }));
+
     const navListProps = {
-        drawerWidth: drawerWidth,
+        drawerWidth: props.navWidth,
         open: open,
         closeDrawer: handleDrawerClose,
         navlistItems: navlistData
@@ -86,11 +94,9 @@ export default function Navigation(props: NavigationData) {
                     <Slide in={!open} direction="left" container={containerRef.current} unmountOnExit>
                         <Box className={Styles.navbar}>
                             <Link href="https://twitter.com/TheGrammyBread">
-                                <ButtonBase>
-                                    <Circle {...{ isPrimary: true }}>
-                                        <Twitter fontSize="large"></Twitter>
-                                    </Circle>
-                                </ButtonBase>
+                                <Fab color="primary" aria-label="add" size="medium">
+                                    <Twitter></Twitter>
+                                </Fab>
                             </Link>
                             <Box className={Styles.logoContainer}>
                                 <Circle className={Styles.logoCircle} {...{ isPrimary: false }}>
@@ -100,11 +106,9 @@ export default function Navigation(props: NavigationData) {
                                 </Circle>
                             </Box>
                             <Link href="https://www.instagram.com/thegrammybread/">
-                                <ButtonBase>
-                                    <Circle {...{ isPrimary: true }}>
-                                        <Instagram fontSize="large"></Instagram>
-                                    </Circle>
-                                </ButtonBase>
+                                <Fab color="primary" aria-label="add" size="medium">
+                                        <Instagram></Instagram>
+                                </Fab>
                             </Link>
                         </Box>
                     </Slide>
@@ -116,7 +120,9 @@ export default function Navigation(props: NavigationData) {
             >
                 <NavigationList {...navListProps}>
                 </NavigationList>
-                <Button>Test</Button>
+                <ImageContainer>
+                    <Image className='imageContainer' src={props.metadata.logo.url} layout='fill' />
+                </ImageContainer>
             </Backdrop>
         </Box >
     );

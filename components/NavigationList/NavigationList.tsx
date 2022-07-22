@@ -7,8 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import { HomeOutlined, MenuBook } from '@mui/icons-material';
 import Drawer from '@mui/material/Drawer';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
@@ -22,8 +21,6 @@ export interface NavigationLink {
     title: string;
 }
 
-
-
 export interface NavigationList {
     parts: NavPartProps[];
 }
@@ -34,6 +31,10 @@ export interface NavigationListProps {
     closeDrawer: () => {};
     navlistItems: NavigationList;
 }
+
+const DrawerSection = styled(List)(({theme}) => ({
+    color: theme.palette.text.secondary
+}));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -71,7 +72,9 @@ export default function NavigationList(props: NavigationListProps) {
                 <ChevronLeftIcon onClick={props.closeDrawer}></ChevronLeftIcon>
             </DrawerHeader>
             <Divider />
-            <List>
+            <DrawerSection sx={{
+                color: 'text.secondary'
+            }}>
                 <ListItemButton onClick={handleClick}>
                     <ListItemText primary="Read" />
                     {readOpen ? <ExpandLess /> : <ExpandMore />}
@@ -83,20 +86,26 @@ export default function NavigationList(props: NavigationListProps) {
                         ))}                        
                     </List>
                 </Collapse>
-            </List>
+            </DrawerSection>
             <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
+            <DrawerSection>                
+                    <ListItem key={'Home'} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                <HomeOutlined></HomeOutlined>
                             </ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText primary='Home' />
                         </ListItemButton>
                     </ListItem>
-                ))}
-            </List>
+                    <ListItem key={'Lore'} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <MenuBook></MenuBook>
+                            </ListItemIcon>
+                            <ListItemText primary='Lore' />
+                        </ListItemButton>
+                    </ListItem>
+            </DrawerSection>
         </Drawer>
     )
 }

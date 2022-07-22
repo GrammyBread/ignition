@@ -7,7 +7,7 @@ export function makeGetNavigationQuery(): CosmicQuery {
             type: "navigation",
             slug: "navigation"
           },
-          props: "title,content,metadata.published_parts.slug,metadata.published_parts.title,metadata.published_parts.status,metadata.published_parts.metadata.part_logline,metadata.published_parts.metadata.part_image,metadata.published_parts.metadata.chapters.title,metadata.published_parts.metadata.chapters.slug,metadata.published_parts.metadata.chapters.status,metadata.published_parts.metadata.chapters.metadata.sections.slug,metadata.published_parts.metadata.chapters.metadata.sections.title,metadata.published_parts.metadata.chapters.metadata.sections.status"
+          props: "title,content,metadata.logo,metadata.published_parts.slug,metadata.published_parts.title,metadata.published_parts.status,metadata.published_parts.metadata.part_logline,metadata.published_parts.metadata.part_image,metadata.published_parts.metadata.chapters.title,metadata.published_parts.metadata.chapters.slug,metadata.published_parts.metadata.chapters.status,metadata.published_parts.metadata.chapters.metadata.sections.slug,metadata.published_parts.metadata.chapters.metadata.sections.title,metadata.published_parts.metadata.chapters.metadata.sections.status"
     }
 }
 
@@ -17,7 +17,7 @@ export function makeGetPartQuery(name: string): CosmicQuery {
             type: "parts",
             slug: name
         },
-        props: "title,metadata.table_of_contents_image,metadata.part_logline,metadata.table_of_contents_data,metadata.chapters.slug,metadata.chapters.title,metadata.chapters.metadata.sections.slug,metadata.chapters.metadata.sections.title"
+        props: "title,metadata.table_of_contents_image,metadata.part_logline,metadata.table_of_contents_data,metadata.chapters.slug,metadata.chapters.title,metadata.chapters.status,metadata.chapters.metadata.sections.slug,metadata.chapters.metadata.sections.title,metadata.chapters.metadata.sections.status,metadata.chapters.metadata.sections.metadata.patreon_realease_date"
     };
 }
 
@@ -32,7 +32,7 @@ export function makeGetPartsQuery(): CosmicQuery {
 }
 
 //Get Chapter Data
-export function makeGetAvailableChapters(): CosmicQuery {
+export function makeGetAvailableChaptersQuery(): CosmicQuery {
     return {
         query: {
             type: "parts"
@@ -47,12 +47,12 @@ export function makeGetChapterQuery(chapterSlug: string): CosmicQuery {
             type: "chapters",
             slug: chapterSlug
         },
-        props: "title,slug,metadata.chapter_section_data,metadata.chapter_image,metadata.previous_chapter_recap,metadata.sections.slug,metadata.sections.title"
+        props: "title,slug,metadata.chapter_section_data,metadata.chapter_image,metadata.previous_chapter_recap,metadata.sections.slug,metadata.sections.title,metadata.sections.status"
     };
 }
 
 //Get Section Data
-export function makeGetAvailableSections(): CosmicQuery {
+export function makeGetAvailableSectionsQuery(): CosmicQuery {
     return {
         query: {
             type: "parts"
@@ -67,6 +67,6 @@ export function makeGetSectionQuery(sectionSlug: string): CosmicQuery {
             type: "sections",
             slug: sectionSlug
         },
-        props: "title,metadata"
+        props: "title,status,metadata"
     };
 }

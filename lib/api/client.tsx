@@ -3,7 +3,7 @@ import Error from 'next/error'
 import { CosmicQuery } from './query'
 import { CosmicResponse } from '../../interfaces/shared.interfaces'
 import { Chapter, NavigationData, Part, Section } from '../../interfaces/read-metadata.interfaces'
-import { makeGetPartQuery, makeGetPartsQuery, makeGetChapterQuery, makeGetSectionQuery, makeGetAvailableChapters, makeGetAvailableSections, makeGetNavigationQuery } from './readmeta/read-metadata-queries';
+import { makeGetPartQuery, makeGetPartsQuery, makeGetChapterQuery, makeGetSectionQuery, makeGetAvailableChaptersQuery, makeGetAvailableSectionsQuery, makeGetNavigationQuery } from './readmeta/read-metadata-queries';
 import { HomePage } from '../../interfaces/home.interfaces'
 import { makeGetHomeQuery } from './static/home-queries'
 
@@ -44,7 +44,7 @@ export async function getChapter(slug:string): Promise<Chapter> {
 }
 
 export async function getAvailableChapters(): Promise<Part[]> {
-  let response = await getObjects<Part[]>(makeGetAvailableChapters());
+  let response = await getObjects<Part[]>(makeGetAvailableChaptersQuery());
   return response;
 }
 
@@ -54,7 +54,7 @@ export async function getSection(slug:string): Promise<Section> {
 }
 
 export async function getAvailableSections(): Promise<Part[]> {
-  let response = await getObjects<Part[]>(makeGetAvailableSections());
+  let response = await getObjects<Part[]>(makeGetAvailableSectionsQuery());
   return response;
 }
 
