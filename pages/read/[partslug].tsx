@@ -11,22 +11,31 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Image from 'next/image';
 import Styles from '../../styles/parts.module.scss';
 import { Main } from '../../components/Main/Main';
-import PartCard from '../../components/PartCard/PartCard';
+import { TOCProps } from '../../components/TableOfContents/TableOfContents';
+import TableOfContents from '../../components/TableOfContents/TableOfContents';
 
 const drawerWidth = 240;
 
 interface Props {
   part?: Part;
-  navData: NavigationData;
+  navData?: NavigationData
 }
 const PageRoot = styled('div')(({ theme }) => ({
   maxHeight: '100%',
 }));
 
 const Part = (props: Props): JSX.Element => {
-  if (props.part?.metadata == undefined ) {
+  if (props.part?.metadata == undefined || props.navData == undefined) {
     return <ErrorPage statusCode={404} />
   }
+
+  props.navData.navWidth = drawerWidth;
+
+  let tocProps = {
+    data: props.part.metadata.table_of_contents_data,
+    partDetails: props.part
+  } as TOCProps
+
   return (
     <React.Fragment>
       <ThemeProvider theme={ignitionTheme}>
@@ -34,7 +43,7 @@ const Part = (props: Props): JSX.Element => {
           <CssBaseline/>
           <Navigation {...props.navData}></Navigation>
           <Main>
-            {props?.navData.metadata.published_parts.map((part: Part) => (<PartCard key={part.slug} {...part}></PartCard>))}
+            <TableOfContents {...tocProps}></TableOfContents>
           </Main>
           <Image className={Styles.backgroundImage} src={props.part.metadata.table_of_contents_image.url} layout="fill" objectFit='cover' objectPosition='center'/>
         </PageRoot>
@@ -46,7 +55,8 @@ const Part = (props: Props): JSX.Element => {
 export default Part;
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  let data = undefined;
+  let data = undefined;  
+  let navData = await getNavigation();
   let slug = context?.params?.partslug;
   if (slug != undefined) {
     data = await getPart(slug.toString());
@@ -54,6 +64,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       part: data,
+      navData: navData
     } as Props,
     revalidate: 120
   }

@@ -1,4 +1,4 @@
-import { TableOfContents, TableOfContentsChapter } from "./view-data.interfaces";
+import { TableOfContentsPart, TableOfContentsChapter } from "./view-data.interfaces";
 
 export interface NavigationData {
 	title: string;
@@ -25,7 +25,7 @@ export interface PartMetadata
     part_image: Image;
     part_logline: string;
     chapters: Chapter[];
-	table_of_contents_data: TableOfContents;
+	table_of_contents_data: TableOfContentsPart;
 }
 
 export interface Chapter

@@ -1,7 +1,7 @@
 import { NavigationData } from '../interfaces/read-metadata.interfaces';
-import { NavigationList, NavChapter, NavigationLink } from '../components/NavigationList/NavigationList';
+import { NavigationList, NavigationLink } from '../components/NavigationList/NavigationList';
 import { NavPartProps } from '../components/NavigationList/NavigationPart';
-
+import { NavChapterProps } from '../components/NavigationList/NavigationChapter';
 
 export default function MapNavigation(navigationData: NavigationData): NavigationList {
     let parts = navigationData.metadata.published_parts.map((part) => {
@@ -23,7 +23,7 @@ export default function MapNavigation(navigationData: NavigationData): Navigatio
                         title: chapter.title
                     } as NavigationLink,
                     sections: sections
-                } as NavChapterprops;
+                } as NavChapterProps;
             })
             return {
                 link: {
@@ -31,7 +31,7 @@ export default function MapNavigation(navigationData: NavigationData): Navigatio
                     title: part.title
                 },
                 chapters: chapters
-            } as NavPart;
+            } as NavPartProps;
         }
     });
     return {

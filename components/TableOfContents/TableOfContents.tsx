@@ -1,19 +1,33 @@
 import * as React from 'react';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import { TableOfContents } from '../../interfaces/view-data.interfaces';
+import { TableOfContentsPart } from '../../interfaces/view-data.interfaces';
 import { Part } from '../../interfaces/read-metadata.interfaces';
-import { Paper } from '@mui/material';
+import { List, ListItem, Paper } from '@mui/material';
+import { mapTOCChaptersAvailability } from '../../mappers/availability.mapper';
+import TOCChapter from '../TOCChapter/TOCChapter';
 
 export interface TOCProps {
-    data: TableOfContents;
+    data: TableOfContentsPart;
     partDetails: Part;
 }
 
 export default function TableOfContents(props: TOCProps) {
+    let availability = mapTOCChaptersAvailability(props);
+
   return (
     <>
-        <Paper elevation={0}></Paper>
+        <Paper elevation={0}>
+            <List>
+                <ListItem>
+                    <ListItemText primary={props.partDetails.title}/>
+                </ListItem>
+                <List sx={{ pl: 4 }}>
+                    { availability && availability.map((chapter) => (
+                        <TOCChapter {...chapter}></TOCChapter>
+                    ))}
+                </List>
+            </List>
+        </Paper>
     </>
   )
 };

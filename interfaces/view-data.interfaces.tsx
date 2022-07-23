@@ -3,24 +3,26 @@ export enum ItemStatus {
     New,
     OnPatreon,
     Unpublished
-  }
-
-export interface TableOfContentsChapter {
-	title: string;
-	sections: string[];
 }
 
-export interface TableOfContents {
-	chapters: TableOfContentsChapter[];
+export interface TableOfContentsChapter {
+    Title: string;
+    Sections: string[];
+}
+
+export interface TableOfContentsPart {
+    Chapters: TableOfContentsChapter[];
 }
 
 export interface SectionAvailability {
     title: string;
     status: ItemStatus;
+    slug?: string;
 }
 
 export interface ChapterAvailability {
     title: string;
     status: ItemStatus;
+    slug?: string;
     sections: SectionAvailability[];
 }
