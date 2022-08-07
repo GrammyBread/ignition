@@ -1,37 +1,45 @@
 import {SectionAvailability } from '../interfaces/view-data.interfaces';
 
-
-export enum PublishStatus {
-    Published,
+export enum ItemStatus {
+    Published = 1,
     Unpublished,
     New,
     PatreonOnly,
     Public
 }
 
-export function IdentifyNewestSection(sections: SectionAvailability[]) : string {
-    let mostRecentSection = {
-        name: "",
-        releaseDate: new Date()
-    }
-    
-    sections.forEach((section) => {
-
-    })
-
-
+interface MostRecentSection {
+    index: number;
+    releaseDate: Date|undefined;
 }
 
-export function DetermineSectionStatus(status: string, patreonRelease: string, publicRelease: string): PublishStatus {
+export function IdentifyNewestSection(sections: SectionAvailability[]) : number {
+    let mostRecentSection = {
+        index: -1,
+        releaseDate: undefined
+    } as MostRecentSection;
     
-    if(status.toLowerCase() != "published") return PublishStatus.Unpublished;
+    sections.filter((section) => section.status == ItemStatus.Published).forEach((section, index) => {
+        if(section.releaseDate && 
+            (!mostRecentSection.releaseDate || section.releaseDate > mostRecentSection.releaseDate)) {            
+            mostRecentSection = {
+                index,
+                releaseDate: section.releaseDate
+            }
+        }
+    });
+    return mostRecentSection.index;
+}
+
+export function DetermineSectionStatus(status: string, patreonRelease: string, publicRelease: string): ItemStatus {
+    if (status.toLowerCase() != "published") return ItemStatus.Unpublished;
     
     let currentDate = new Date();
     let patreonPublishDate = patreonRelease != undefined ? new Date(patreonRelease) : undefined;
     let publicReleaseDate = publicRelease != undefined ? new Date(publicRelease) : undefined;
 
-    if(publicReleaseDate && publicReleaseDate <= currentDate) return PublishStatus.Public;
-    if(patreonPublishDate && patreonPublishDate <= currentDate) return PublishStatus.PatreonOnly;
+    if (publicReleaseDate && publicReleaseDate <= currentDate) return ItemStatus.Public;
+    if (patreonPublishDate && patreonPublishDate <= currentDate) return ItemStatus.PatreonOnly;
 
-    return PublishStatus.Unpublished;
+    return ItemStatus.Unpublished;
 }

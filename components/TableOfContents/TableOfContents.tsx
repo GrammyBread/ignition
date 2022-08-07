@@ -16,12 +16,12 @@ export default function TableOfContents(props: TOCProps) {
 
   return (
     <>
-        <Paper elevation={0}>
+        <Paper sx={{color: 'primary.main'}} elevation={0}>
             <List>
                 <ListItem>
                     <ListItemText primary={props.partDetails.title}/>
                 </ListItem>
-                <List sx={{ pl: 4 }}>
+                <List sx={{ pl: 4 }} >
                     { availability && availability.map((chapter) => (
                         <TOCChapter {...chapter}></TOCChapter>
                     ))}

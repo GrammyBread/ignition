@@ -17,8 +17,10 @@ export interface Part
     title: string;
     slug: string;
     status?: string;
+    part_number: number;
     metadata?: PartMetadata;
 }
+
 export interface PartMetadata
 {
     table_of_contents_image: Image;

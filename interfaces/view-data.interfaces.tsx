@@ -1,9 +1,4 @@
-export enum ItemStatus {
-    Published = 1,
-    New,
-    OnPatreon,
-    Unpublished
-}
+import { ItemStatus } from "../mappers/state.mappers";
 
 export interface TableOfContentsChapter {
     Title: string;
@@ -18,7 +13,7 @@ export interface SectionAvailability {
     title: string;
     status: ItemStatus;
     slug?: string;
-    releaseDate: Date | undefined;
+    releaseDate?: Date;
 }
 
 export interface ChapterAvailability {

@@ -58,7 +58,7 @@ export async function getAvailableSections(): Promise<Part[]> {
   return response;
 }
 
-export async function getHome(slug:string): Promise<HomePage> {
+export async function getHome(): Promise<HomePage> {
   let response = await getObjects<HomePage[]>(makeGetHomeQuery());
   return response[0];
 }

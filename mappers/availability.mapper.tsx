@@ -1,7 +1,7 @@
 import { TOCProps } from "../components/TableOfContents/TableOfContents";
 import { Section } from "../interfaces/read-metadata.interfaces";
-import { ChapterAvailability, ItemStatus, SectionAvailability, TableOfContentsChapter } from '../interfaces/view-data.interfaces';
-import DeterminePublishStatus, { PublishStatus } from "./state.mappers";
+import { ChapterAvailability, SectionAvailability, TableOfContentsChapter } from '../interfaces/view-data.interfaces';
+import { DetermineSectionStatus, ItemStatus, IdentifyNewestSection } from "./state.mappers";
 
 export interface ChapterInCosmic {
     name: string;
@@ -25,49 +25,36 @@ export function mapSectionAvailability(section: string, cosmicSections: SectionI
     if (cosmicSection == undefined) {
         return {
             title: section,
-            status: ItemStatus.Unpublished
+            status: ItemStatus.Unpublished,
+            releaseDate: undefined
         } as SectionAvailability;
     }
 
-    let publishStatus = DeterminePublishStatus(cosmicSection.status);
-    let currentDate = new Date();
-    let patreonPublishDate = cosmicSection.patreonRelease != undefined ? new Date(cosmicSection.patreonRelease) : undefined;
-    if (publishStatus == PublishStatus.Published) {
-        return {
-            title: section,
-            status: ItemStatus.Published,
-            slug: cosmicSection.slug
-        } as SectionAvailability;
-    }
-
-    if (patreonPublishDate != undefined && patreonPublishDate < currentDate) {
-        return {
-            title: section,
-            status: ItemStatus.OnPatreon,
-            slug: cosmicSection.slug
-        } as SectionAvailability;
-    }
-    else {
-        return {
-            title: section,
-            status: ItemStatus.Unpublished
-        } as SectionAvailability;
-    }
+    let itemStatus = DetermineSectionStatus(cosmicSection.status, cosmicSection.patreonRelease, cosmicSection.publicRelease);
+    
+    return {
+        title: section,
+        status: itemStatus,
+        slug: cosmicSection.slug,
+        releaseDate: cosmicSection.publicRelease ? new Date(cosmicSection.publicRelease) : undefined
+    } as SectionAvailability;
 }
 
 export function mapChaptersSectionsAvailability(sections: string[], cosmicSections: SectionInCosmic[]): [SectionAvailability[], ItemStatus] {
     let chapterStatus = ItemStatus.Unpublished;
 
     let sectionAvailabilities = sections.map((section) => {
-        let sectionAvailability = mapSectionAvailability(section, cosmicSections)
-
+        let sectionAvailability = mapSectionAvailability(section, cosmicSections);
         chapterStatus = sectionAvailability.status == ItemStatus.Published ||
-            sectionAvailability.status == ItemStatus.OnPatreon && chapterStatus != ItemStatus.Published ?
+            sectionAvailability.status == ItemStatus.PatreonOnly && chapterStatus != ItemStatus.Published ?
             sectionAvailability.status :
             chapterStatus;
 
         return sectionAvailability;
     });
+    
+    let newestSection = IdentifyNewestSection(sectionAvailabilities);
+    if(newestSection > -1) sectionAvailabilities[newestSection].status = ItemStatus.New;
     return [sectionAvailabilities, chapterStatus];
 }
 
