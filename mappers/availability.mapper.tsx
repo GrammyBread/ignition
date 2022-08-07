@@ -5,13 +5,21 @@ import DeterminePublishStatus, { PublishStatus } from "./state.mappers";
 
 export interface ChapterInCosmic {
     name: string;
-    sections: Section[] | undefined;
+    sections: SectionInCosmic[] | undefined;
     slug: string;
 }
 
-export function mapSectionAvailability(section: string, cosmicSections: Section[]): SectionAvailability {
+export interface SectionInCosmic {
+    name: string;
+    status: string;
+    slug: string;
+    patreonRelease: string;
+    publicRelease: string;
+}
+
+export function mapSectionAvailability(section: string, cosmicSections: SectionInCosmic[]): SectionAvailability {
     let cosmicSection = cosmicSections.find((cosmicSection) => {
-        cosmicSection.title == section
+        cosmicSection.name == section
     })
 
     if (cosmicSection == undefined) {
@@ -23,7 +31,7 @@ export function mapSectionAvailability(section: string, cosmicSections: Section[
 
     let publishStatus = DeterminePublishStatus(cosmicSection.status);
     let currentDate = new Date();
-    let patreonPublishDate = cosmicSection.metadata?.patreon_realease_date != undefined ? new Date(cosmicSection.metadata.patreon_realease_date) : undefined;
+    let patreonPublishDate = cosmicSection.patreonRelease != undefined ? new Date(cosmicSection.patreonRelease) : undefined;
     if (publishStatus == PublishStatus.Published) {
         return {
             title: section,
@@ -47,7 +55,7 @@ export function mapSectionAvailability(section: string, cosmicSections: Section[
     }
 }
 
-export function mapChaptersSectionsAvailability(sections: string[], cosmicSections: Section[]): [SectionAvailability[], ItemStatus] {
+export function mapChaptersSectionsAvailability(sections: string[], cosmicSections: SectionInCosmic[]): [SectionAvailability[], ItemStatus] {
     let chapterStatus = ItemStatus.Unpublished;
 
     let sectionAvailabilities = sections.map((section) => {
@@ -91,11 +99,13 @@ export function mapChapterAvailability(chapter: TableOfContentsChapter, cosmicCh
 
 export function mapTOCChaptersAvailability(tocData: TOCProps): ChapterAvailability[] {
     let availableChaptersInCosmic = tocData.partDetails.metadata?.chapters.map((chapter) => ({
-        name: chapter.title,
+        name: chapter.metadata?.header,
         slug: chapter.slug,
         sections: chapter.metadata?.sections != undefined ? chapter.metadata.sections.map((section) => ({
-            name: section.title,
+            name: section.metadata?.header,
             status: section.status,
+            patreonRelease: section.metadata?.patreon_release_date,
+            publicRelease: section.metadata?.public_release_date,
             slug: section.slug
         })) : undefined
     } as ChapterInCosmic))

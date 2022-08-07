@@ -40,6 +40,7 @@ export interface ChapterMetadata
 {
     sections: Section[];
     chapter_image?: Image;
+    header: string;
     previous_chapter_recap?: string;
 	chapter_section_data?: TableOfContentsChapter;
 }
@@ -60,8 +61,10 @@ export interface Image
 
 export interface SectionMetadata
 {
+    header: string;
     scripts: Script[];
-    patreon_realease_date: string;
+    patreon_release_date: string;
+    public_release_date: string;
 }
 
 export interface Script

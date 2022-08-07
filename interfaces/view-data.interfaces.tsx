@@ -18,6 +18,7 @@ export interface SectionAvailability {
     title: string;
     status: ItemStatus;
     slug?: string;
+    releaseDate: Date | undefined;
 }
 
 export interface ChapterAvailability {
