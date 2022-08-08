@@ -1,5 +1,16 @@
 import { TableOfContentsPart, TableOfContentsChapter } from "./view-data.interfaces";
 
+export interface BasicMetadata {
+    key: number;
+    header: string;
+}
+
+export interface BasicObject {
+    slug: string;
+    status?: string;
+    title?: string;
+}
+
 export interface NavigationData {
 	title: string;
 	content: string;
@@ -12,46 +23,36 @@ export interface NavMetadata {
     logo: Image;
 }
 
-export interface Part
+export interface Part extends BasicObject
 {
-    title: string;
-    slug: string;
-    status?: string;
-    part_number: number;
     metadata?: PartMetadata;
 }
 
 export interface PartMetadata
 {
-    table_of_contents_image: Image;
+    key: number;
+    chapters: Chapter[];
     part_image: Image;
     part_logline: string;
-    chapters: Chapter[];
 	table_of_contents_data: TableOfContentsPart;
+    table_of_contents_image: Image;
 }
 
-export interface Chapter
+export interface Chapter extends BasicObject
 {
-    slug: string;
-    title: string;
-    status: string;
     metadata?: ChapterMetadata;
 }
 
-export interface ChapterMetadata
+export interface ChapterMetadata extends BasicMetadata
 {
-    sections: Section[];
     chapter_image?: Image;
-    header: string;
-    previous_chapter_recap?: string;
 	chapter_section_data?: TableOfContentsChapter;
+    previous_chapter_recap?: string;
+    sections: Section[];
 }
 
-export interface Section
+export interface Section extends BasicObject
 {
-    slug: string;
-    title: string;
-    status: string;
     metadata?: SectionMetadata;
 }
 
@@ -61,12 +62,11 @@ export interface Image
     imgix_url: string;
 }
 
-export interface SectionMetadata
+export interface SectionMetadata extends BasicMetadata
 {
-    header: string;
-    scripts: Script[];
     patreon_release_date: string;
     public_release_date: string;
+    scripts: Script[];
 }
 
 export interface Script

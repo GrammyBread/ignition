@@ -1,8 +1,7 @@
 import {SectionAvailability } from '../interfaces/view-data.interfaces';
 
 export enum ItemStatus {
-    Published = 1,
-    Unpublished,
+    Unpublished = 1,
     New,
     PatreonOnly,
     Public
@@ -18,10 +17,10 @@ export function IdentifyNewestSection(sections: SectionAvailability[]) : number 
         index: -1,
         releaseDate: undefined
     } as MostRecentSection;
-    
-    sections.filter((section) => section.status == ItemStatus.Published).forEach((section, index) => {
+
+    sections.filter((section) => section.publishStatus == ItemStatus.Public).forEach((section, index) => {
         if(section.releaseDate && 
-            (!mostRecentSection.releaseDate || section.releaseDate > mostRecentSection.releaseDate)) {            
+            (!mostRecentSection.releaseDate || section.releaseDate > mostRecentSection.releaseDate)) {
             mostRecentSection = {
                 index,
                 releaseDate: section.releaseDate
@@ -33,7 +32,7 @@ export function IdentifyNewestSection(sections: SectionAvailability[]) : number 
 
 export function DetermineSectionStatus(status: string, patreonRelease: string, publicRelease: string): ItemStatus {
     if (status.toLowerCase() != "published") return ItemStatus.Unpublished;
-    
+
     let currentDate = new Date();
     let patreonPublishDate = patreonRelease != undefined ? new Date(patreonRelease) : undefined;
     let publicReleaseDate = publicRelease != undefined ? new Date(publicRelease) : undefined;

@@ -1,33 +1,49 @@
 import * as React from 'react';
 import ListItemText from '@mui/material/ListItemText';
-import { TableOfContentsPart } from '../../interfaces/view-data.interfaces';
-import { Part } from '../../interfaces/read-metadata.interfaces';
+import { ChapterAvailability, TableOfContentsChapter, TableOfContentsPart } from '../../interfaces/view-data.interfaces';
+import { Chapter, Part } from '../../interfaces/read-metadata.interfaces';
 import { List, ListItem, Paper } from '@mui/material';
-import { mapTOCChaptersAvailability } from '../../mappers/availability.mapper';
 import TOCChapter from '../TOCChapter/TOCChapter';
+import Styles from './TableOfContents.module.scss';
+import TOCPart from '../TOCPart/TOCPart';
 
-export interface TOCProps {
-    data: TableOfContentsPart;
+export interface TOCPartProps
+{
+    partData: TableOfContentsPart;
     partDetails: Part;
 }
 
-export default function TableOfContents(props: TOCProps) {
-    let availability = mapTOCChaptersAvailability(props);
+export interface TOCChapterProps
+{
+    availability?: ChapterAvailability;
+    cosmicProps?: TOCChapterCosmicProps;
+}
 
-  return (
-    <>
-        <Paper sx={{color: 'primary.main'}} elevation={0}>
-            <List>
-                <ListItem>
-                    <ListItemText primary={props.partDetails.title}/>
-                </ListItem>
-                <List sx={{ pl: 4 }} >
-                    { availability && availability.map((chapter) => (
-                        <TOCChapter {...chapter}></TOCChapter>
-                    ))}
-                </List>
-            </List>
-        </Paper>
-    </>
-  )
+export interface TOCChapterCosmicProps
+{
+    chapterData: TableOfContentsChapter;
+    chapterDetails: Chapter;
+}
+
+export interface TableOfContentsProps
+{
+    partProps?: TOCPartProps;
+    chapterProps?: TOCChapterProps;
+}
+
+
+export default function TableOfContents ( props: TableOfContentsProps )
+{
+    return (
+        <>
+            <Paper className={ Styles.contents } elevation={ 0 }>
+                { props.partProps != undefined &&
+                    <TOCPart { ...props.partProps }></TOCPart>
+                }
+                { props.chapterProps != undefined &&
+                    <TOCChapter { ...props.chapterProps }></TOCChapter>
+                }
+            </Paper>
+        </>
+    );
 };

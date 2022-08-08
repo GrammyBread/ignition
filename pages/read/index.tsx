@@ -15,39 +15,34 @@ import PartCard from '../../components/PartCard/PartCard';
 
 const drawerWidth = 240;
 
-interface Props {
+interface Props
+{
   navData: NavigationData;
 }
-const PageRoot = styled('div')(({ theme }) => ({
-  maxHeight: '100%',
-}));
 
-const Parts = (props: Props): JSX.Element => {
-  if (props == undefined) {
-    return <ErrorPage statusCode={404} />
+const Parts = ( props: Props ): JSX.Element =>
+{
+  if ( props == undefined )
+  {
+    return <ErrorPage statusCode={ 404 } />;
   }
 
   props.navData.navWidth = drawerWidth;
 
   return (
-    <React.Fragment>
-      <ThemeProvider theme={ignitionTheme}>
-        <PageRoot className={Styles.root}>
-          <CssBaseline/>
-          <Navigation {...props.navData}></Navigation>
-          <Main>
-            {props?.navData.metadata.published_parts.map((part: Part) => (<PartCard key={part.slug} {...part}></PartCard>))}
-          </Main>
-          <Image className={Styles.backgroundImage} src="/assets/SiteBack.svg" layout="fill" objectFit='cover' objectPosition='center'/>
-        </PageRoot>
-      </ThemeProvider>
-    </React.Fragment>
+  <>
+    { props?.navData.metadata.published_parts.map( ( part: Part ) => ( <PartCard key={ part.slug } { ...part }></PartCard> ) ) }
+    <Image className={ Styles.backgroundImage } src="/assets/SiteBack.svg" layout="fill" objectFit='cover' objectPosition='center' />
+  </>
   );
 };
 
+
+
 export default Parts;
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async ( context ) =>
+{
   const result = await getNavigation();
 
   return {

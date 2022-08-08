@@ -28,16 +28,18 @@ export const getPartProps: string = `
 title,
 metadata.table_of_contents_image,
 metadata.part_logline,
-metadata.part_number,
+metadata.key,
 metadata.table_of_contents_data,
 metadata.chapters.title,
 metadata.chapters.slug,
 metadata.chapters.status,
 metadata.chapters.metadata.header,
+metadata.chapters.metadata.key,
 metadata.chapters.metadata.sections.title,
 metadata.chapters.metadata.sections.slug,
 metadata.chapters.metadata.sections.status,
 metadata.chapters.metadata.sections.metadata.header,
+metadata.chapters.metadata.sections.metadata.key,
 metadata.chapters.metadata.sections.metadata.patreon_release_date,
 metadata.chapters.metadata.sections.metadata.public_release_date`;
 
@@ -51,6 +53,7 @@ export const getChapterProps: string = `
 title,
 slug,
 metadata.header,
+metadata.key,
 metadata.chapter_section_data,
 metadata.chapter_image,
 metadata.previous_chapter_recap,
@@ -72,5 +75,4 @@ metadata.chapters.slug`;
 export const getSection: string = `
 title,
 status,
-metadata,
-metadata.header`;
+metadata`;
