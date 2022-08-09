@@ -12,6 +12,7 @@ import Image from 'next/image';
 import Styles from '../../styles/parts.module.scss';
 import { Main } from '../../components/Main/Main';
 import PartCard from '../../components/PartCard/PartCard';
+import Layout from '../../components/Main/Layout';
 
 const drawerWidth = 240;
 
@@ -30,10 +31,10 @@ const Parts = ( props: Props ): JSX.Element =>
   props.navData.navWidth = drawerWidth;
 
   return (
-  <>
+  <Layout navData={props.navData}>
     { props?.navData.metadata.published_parts.map( ( part: Part ) => ( <PartCard key={ part.slug } { ...part }></PartCard> ) ) }
     <Image className={ Styles.backgroundImage } src="/assets/SiteBack.svg" layout="fill" objectFit='cover' objectPosition='center' />
-  </>
+  </Layout>
   );
 };
 

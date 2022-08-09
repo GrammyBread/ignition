@@ -34,15 +34,20 @@ export interface TableOfContentsProps
 
 export default function TableOfContents ( props: TableOfContentsProps )
 {
+    let tableChild;
+    if(props.partProps != undefined)
+    {
+        tableChild = <TOCPart { ...props.partProps }></TOCPart>;
+    }
+    else if( props.chapterProps != undefined)
+    {
+        tableChild = <TOCChapter { ...props.chapterProps }></TOCChapter>;
+    }
+
     return (
         <>
             <Paper className={ Styles.contents } elevation={ 0 }>
-                { props.partProps != undefined &&
-                    <TOCPart { ...props.partProps }></TOCPart>
-                }
-                { props.chapterProps != undefined &&
-                    <TOCChapter { ...props.chapterProps }></TOCChapter>
-                }
+                { tableChild}
             </Paper>
         </>
     );

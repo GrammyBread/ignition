@@ -11,17 +11,20 @@ import { NavigationData } from '../../interfaces/read-metadata.interfaces';
 import { getNavigation } from '../../lib/api/client';
 
 export interface LayoutProps {
-    children: React.ReactNode
+    children: React.ReactNode;
+    navData: NavigationData;
+}
+
+const fetchNav = async () => {
+  const data = await getNavigation();
+  return data
 }
 
 const PageRoot = styled( 'div' )( ( { theme } ) => ( {
     maxHeight: '100%',
   } ) );
 
-export default function Layout({ children }: LayoutProps) {
-    let data = await getNavigation();
-
-  if (!data) return <div>Loading...</div>
+export default function Layout({ children, navData }: LayoutProps) {
 
   return (
     <>
@@ -29,7 +32,7 @@ export default function Layout({ children }: LayoutProps) {
       <ThemeProvider theme={ ignitionTheme }>
         <PageRoot className={ Styles.root }>
           <CssBaseline />
-          <Navigation { ...data }></Navigation>
+          <Navigation { ...navData }></Navigation>
           <main>{children}</main>
         </PageRoot>
       </ThemeProvider>

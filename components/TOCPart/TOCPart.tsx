@@ -1,7 +1,5 @@
 import * as React from 'react';
 import ListItemText from '@mui/material/ListItemText';
-import { TableOfContentsChapter, TableOfContentsPart } from '../../interfaces/view-data.interfaces';
-import { Chapter, Part } from '../../interfaces/read-metadata.interfaces';
 import { List, ListItem, Paper } from '@mui/material';
 import {mapTOCPartAvailability } from '../../mappers/availability.mapper';
 import { TOCPartProps } from '../TableOfContents/TableOfContents';
