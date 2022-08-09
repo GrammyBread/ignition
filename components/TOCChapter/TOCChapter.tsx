@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ListItemText from '@mui/material/ListItemText';
-import { SectionAvailability } from '../../interfaces/view-data.interfaces';
+import { ChapterAvailability, SectionAvailability } from '../../interfaces/view-data.interfaces';
 import { Badge, List, ListItem } from '@mui/material';
 import Styles from './TOCChapter.module.scss';
 import { styled } from '@mui/material/styles';
@@ -9,6 +9,14 @@ import Typography from '@mui/material/Typography';
 import { ItemStatus } from '../../mappers/state.mappers';
 import { TOCChapterProps } from '../TableOfContents/TableOfContents';
 import { mapTOCChapterAvailability } from '../../mappers/availability.mapper';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorFallback } from '../Error/Error';
+
+interface ChapterProps
+{
+    availability?: ChapterAvailability;
+}
+
 
 const HtmlTooltip = styled( ( { className, ...props }: TooltipProps ) => (
     <Tooltip { ...props } classes={ { popper: className } } placement="right" />
@@ -48,8 +56,11 @@ const getPatreonSection = ( availability: SectionAvailability ): JSX.Element =>
             <HtmlTooltip title={
                 tooltip
             }>
-                <Badge color="primary" badgeContent="Patreon">
-                    <ListItemText className={ Styles.patreonOnlySection } primary={ availability.header } />
+                <Badge color="primary" badgeContent="Patreon Only">
+                    <ListItemText sx={ {
+                        color: "warning.main"
+                    }
+                    } className={ Styles.patreonOnlySection } primary={ availability.header } />
                 </Badge>
             </HtmlTooltip>
         </ListItem> );
@@ -94,27 +105,40 @@ const getSection = ( availability: SectionAvailability ) =>
     }
 };
 
+function Chapter ( props: ChapterProps ): JSX.Element
+{
+    if ( props.availability == undefined )
+    {
+        throw new Error( 'Availability was wrong!' );
+    }
+
+    return (
+        <>
+            <ListItem>
+                <ListItemText
+                    sx={ { color: props.availability.publishStatus == ItemStatus.Unpublished ? 'text.disabled' : 'inherit' } }
+                    primary={ props.availability.header } />
+            </ListItem>
+            <List sx={ { pl: 8 } }>
+                { props.availability.sections && props.availability.sections.map( ( section ) => getSection( section ) ) }
+            </List>
+        </>
+    );
+}
+
 
 export default function TOCChapter ( props: TOCChapterProps )
 {
     let availability = props.availability == undefined && props.cosmicProps != undefined ?
         mapTOCChapterAvailability( props.cosmicProps ) : props.availability;
 
-    if ( availability == undefined )
-    {
-        throw new Error();
-    }
+    let chapterProps = {
+        availability
+    } as ChapterProps;
 
     return (
-        <div key={ availability.key }>
-            <ListItem >
-                <ListItemText
-                    sx={ { color: availability.publishStatus == ItemStatus.Unpublished ? 'text.disabled' : 'inherit' } }
-                    primary={ availability.header } />
-            </ListItem>
-            <List sx={ { pl: 8 } }>
-                { availability.sections && availability.sections.map( ( section ) => getSection( section ) ) }
-            </List>
-        </div>
+        <ErrorBoundary FallbackComponent={ ErrorFallback }>
+            <Chapter { ...chapterProps }></Chapter>
+        </ErrorBoundary>
     );
 };

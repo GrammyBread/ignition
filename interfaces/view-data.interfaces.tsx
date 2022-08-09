@@ -21,7 +21,7 @@ export interface SectionAvailability extends BasicMetadata {
     slug: string;
 }
 
-export interface ChapterAvailability extends BasicObject, BasicMetadata {
+export interface ChapterAvailability extends BasicMetadata {
     sections: SectionAvailability[];
     publishStatus: ItemStatus;
 }

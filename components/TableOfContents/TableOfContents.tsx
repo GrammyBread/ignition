@@ -1,8 +1,8 @@
 import * as React from 'react';
-import ListItemText from '@mui/material/ListItemText';
 import { ChapterAvailability, TableOfContentsChapter, TableOfContentsPart } from '../../interfaces/view-data.interfaces';
 import { Chapter, Part } from '../../interfaces/read-metadata.interfaces';
-import { List, ListItem, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
+import Image from 'next/image';
 import TOCChapter from '../TOCChapter/TOCChapter';
 import Styles from './TableOfContents.module.scss';
 import TOCPart from '../TOCPart/TOCPart';
@@ -32,23 +32,22 @@ export interface TableOfContentsProps
 }
 
 
+
 export default function TableOfContents ( props: TableOfContentsProps )
 {
     let tableChild;
-    if(props.partProps != undefined)
+    if ( props.partProps != undefined )
     {
         tableChild = <TOCPart { ...props.partProps }></TOCPart>;
     }
-    else if( props.chapterProps != undefined)
+    else if ( props.chapterProps != undefined )
     {
         tableChild = <TOCChapter { ...props.chapterProps }></TOCChapter>;
     }
 
     return (
-        <>
-            <Paper className={ Styles.contents } elevation={ 0 }>
-                { tableChild}
-            </Paper>
-        </>
+        <Paper className={ Styles.contents } elevation={ 0 }>
+            { tableChild }
+        </Paper>
     );
 };

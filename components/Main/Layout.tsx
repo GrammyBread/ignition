@@ -9,6 +9,7 @@ import Styles from '../../styles/parts.module.scss';
 import useSWR, { Key, Fetcher } from 'swr'
 import { NavigationData } from '../../interfaces/read-metadata.interfaces';
 import { getNavigation } from '../../lib/api/client';
+import { Main } from './Main';
 
 export interface LayoutProps {
     children: React.ReactNode;
@@ -33,7 +34,7 @@ export default function Layout({ children, navData }: LayoutProps) {
         <PageRoot className={ Styles.root }>
           <CssBaseline />
           <Navigation { ...navData }></Navigation>
-          <main>{children}</main>
+          <Main>{children}</Main>
         </PageRoot>
       </ThemeProvider>
     </React.Fragment>

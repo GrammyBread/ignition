@@ -77,7 +77,7 @@ export function mapChapterAvailability ( chapter: TableOfContentsChapter, cosmic
     if ( relatedCosmicChapter == undefined || relatedCosmicChapter.sections == undefined )
     {
         return {
-            title: chapter.Title,
+            header: chapter.Title,
             publishStatus: ItemStatus.Unpublished,
             sections: chapter.Sections.map( ( section ) => ( {
                 header: section.Title,
@@ -91,7 +91,8 @@ export function mapChapterAvailability ( chapter: TableOfContentsChapter, cosmic
     {
         let [ sectionAvailability, chapterStatus ] = mapChaptersSectionsAvailability( chapter.Sections, relatedCosmicChapter.sections );
         return {
-            title: chapter.Title,
+            header: chapter.Title,
+            key: chapter.Key,
             publishStatus: chapterStatus,
             sections: sectionAvailability,
             slug: relatedCosmicChapter.slug
@@ -126,9 +127,9 @@ export function mapTOCChapterAvailability ( tocData: TOCChapterCosmicProps ): Ch
 
         return availableChapterInCosmic === undefined ?
             ( {
-                title: tocData.chapterData.Title,
+                header: tocData.chapterData.Title,
                 publishStatus: ItemStatus.Unpublished,
-                sections: tocData.chapterData.Sections.map( ( section ) => ( {
+                sections: tocData.chapterData.Sections.map(( section ) => ( {
                     header: section.Title,
                     key: section.Key,
                     releaseDate: undefined,
@@ -152,7 +153,7 @@ export function mapTOCPartAvailability ( tocData: TOCPartProps ): ChapterAvailab
             tocData.partData.Chapters.map( ( chapter ) => mapChapterAvailability( chapter, availableChaptersInCosmic ) )
             :
             tocData.partData.Chapters.map( ( chapter ) => ( {
-                title: chapter.Title,
+                header: chapter.Title,
                 publishStatus: ItemStatus.Unpublished,
                 sections: chapter.Sections.map( ( section ) => ( {
                     header: section.Title,

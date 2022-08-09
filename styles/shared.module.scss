@@ -1,0 +1,40 @@
+.backgroundImageError, .backgroundImage {
+    z-index: -10;
+    position: fixed !important;
+}
+
+.backgroundImage {
+    top: 8rem !important;
+}
+
+.mainContent, .mainContentError {
+    z-index: -1;
+}
+
+.errorReturnButton {
+    z-index: 1;
+}
+
+.errorContentHolder {    
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    height: 90vh;
+    position: relative;
+    justify-content: flex-end;
+}
+
+.mainContentError {
+    font-family: 'Oswald', sans-serif;    
+    padding: .1rem .5rem;
+    margin: 2rem;
+    background: rgba(256,256,256,.8);
+    color: black;    
+    text-align: center;
+}
+
+.root{
+    span {
+        z-index: -1;
+    }
+}
