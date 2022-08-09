@@ -4,7 +4,7 @@ import { getNavigation, getPart } from '../../lib/api/client';
 import ErrorPage from 'next/error';
 import * as React from 'react';
 import Image from 'next/image';
-import Styles from '../../styles/parts.module.scss';
+import Styles from '../../styles/shared.module.scss';
 import { TableOfContentsProps, TOCPartProps } from '../../components/TableOfContents/TableOfContents';
 import TableOfContents from '../../components/TableOfContents/TableOfContents';
 import Layout from '../../components/Main/Layout';

@@ -5,8 +5,7 @@ import Navigation from '../../components/Navigation/Navigation';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import Styles from '../../styles/parts.module.scss';
-import useSWR, { Key, Fetcher } from 'swr'
+import Styles from '../../styles/shared.module.scss';
 import { NavigationData } from '../../interfaces/read-metadata.interfaces';
 import { getNavigation } from '../../lib/api/client';
 import { Main } from './Main';
