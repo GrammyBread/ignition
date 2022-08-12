@@ -1,6 +1,6 @@
-import { TOCChapterCosmicProps, TOCChapterProps, TOCPartProps } from "../components/TableOfContents/TableOfContents";
-import { Chapter, Section } from "../interfaces/read-metadata.interfaces";
-import { ChapterAvailability, SectionAvailability, TableOfContentsChapter, TableOfContentsItem } from '../interfaces/view-data.interfaces';
+import { TOCChapterCosmicProps, TOCChapterProps, TOCPartProps } from "../../components/TableOfContents/Table/Table";
+import { CosmicChapter, CosmicSection } from "../../interfaces/read-metadata.interfaces";
+import { ChapterAvailability, SectionAvailability, TableOfContentsChapter, TableOfContentsItem } from '../../interfaces/view-data.interfaces';
 import { DetermineSectionStatus, ItemStatus, IdentifyNewestSection } from "./state.mappers";
 
 export interface ChapterInCosmic
@@ -101,7 +101,7 @@ export function mapChapterAvailability ( chapter: TableOfContentsChapter, cosmic
 }
 
 
-function mapChapterInCosmic ( chapter: Chapter )
+function mapChapterInCosmic ( chapter: CosmicChapter )
 {
     return {
         name: chapter.metadata?.header,

@@ -1,10 +1,10 @@
 import { GetStaticProps } from 'next';
-import { NavigationData, Part } from '../../interfaces/read-metadata.interfaces';
+import { CosmicSiteData, CosmicPart } from '../../interfaces/read-metadata.interfaces';
 import { getNavigation } from '../../lib/api/client';
 import ErrorPage from 'next/error';
 import { ThemeProvider } from '@mui/material';
 import { ignitionTheme } from '../../styles/theme';
-import Navigation from '../../components/Navigation/Navigation';
+import Navigation from '../../components/Main/Navigation/Navigation';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,7 +18,7 @@ const drawerWidth = 240;
 
 interface Props
 {
-  navData: NavigationData;
+  navData: CosmicSiteData;
 }
 
 const Parts = ( props: Props ): JSX.Element =>
@@ -28,11 +28,9 @@ const Parts = ( props: Props ): JSX.Element =>
     return <ErrorPage statusCode={ 404 } />;
   }
 
-  props.navData.navWidth = drawerWidth;
-
   return (
   <Layout navData={props.navData}>
-    { props?.navData.metadata.published_parts.map( ( part: Part ) => ( <PartCard key={ part.slug } { ...part }></PartCard> ) ) }
+    { props?.navData.metadata.published_parts.map( ( part: CosmicPart ) => ( <PartCard key={ part.slug } { ...part }></PartCard> ) ) }
     <Image className={ Styles.backgroundImage } src="/assets/SiteBack.svg" layout="fill" objectFit='cover' objectPosition='center' />
   </Layout>
   );

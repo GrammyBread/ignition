@@ -1,4 +1,4 @@
-import {SectionAvailability } from '../interfaces/view-data.interfaces';
+import {SectionAvailability } from '../../interfaces/view-data.interfaces';
 
 export enum ItemStatus {
     Unpublished = 1,

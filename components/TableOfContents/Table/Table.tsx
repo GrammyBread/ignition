@@ -1,28 +1,28 @@
 import * as React from 'react';
-import { ChapterAvailability, TableOfContentsChapter, TableOfContentsPart } from '../../interfaces/view-data.interfaces';
-import { Chapter, Part } from '../../interfaces/read-metadata.interfaces';
+import { ChapterAvailability, TableOfContentsChapter, TableOfContentsPart } from '../../../interfaces/view-data.interfaces';
+import { CosmicChapter, CosmicPart } from '../../../interfaces/read-metadata.interfaces';
 import { Paper } from '@mui/material';
-import Image from 'next/image';
-import TOCChapter from '../TOCChapter/TOCChapter';
-import Styles from './TableOfContents.module.scss';
-import TOCPart from '../TOCPart/TOCPart';
+import TOCChapter from '../Chapter/TOCChapter';
+import Styles from './Table.module.scss';
+import TOCPart from '../Part/TOCPart';
 
 export interface TOCPartProps
 {
     partData: TableOfContentsPart;
-    partDetails: Part;
+    partDetails: CosmicPart;
 }
 
 export interface TOCChapterProps
 {
     availability?: ChapterAvailability;
     cosmicProps?: TOCChapterCosmicProps;
+    partSlug: string;
 }
 
 export interface TOCChapterCosmicProps
 {
     chapterData: TableOfContentsChapter;
-    chapterDetails: Chapter;
+    chapterDetails: CosmicChapter;
 }
 
 export interface TableOfContentsProps
@@ -30,8 +30,6 @@ export interface TableOfContentsProps
     partProps?: TOCPartProps;
     chapterProps?: TOCChapterProps;
 }
-
-
 
 export default function TableOfContents ( props: TableOfContentsProps )
 {

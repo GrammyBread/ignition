@@ -4,7 +4,6 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Styles from './Navigation.module.scss';
 import Image from 'next/image';
 import {
-    ButtonBase,
     Slide,
     Toolbar,
     Backdrop,
@@ -15,28 +14,37 @@ import {
 } from '@mui/material';
 import { Twitter, Instagram } from '@mui/icons-material';
 import Link from 'next/link';
-import NavigationList from '../NavigationList/NavigationList';
-import { NavigationListProps } from '../NavigationList/NavigationList';
-import { NavigationData } from '../../interfaces/read-metadata.interfaces';
-import MapNavigation from '../../mappers/navigation.mapper';
+import NavigationList from './NavigationList/NavigationList';
+import { NavigationListProps } from './NavigationList/NavigationList';
+import { CosmicSiteData, NavigationData } from '../../../interfaces/read-metadata.interfaces';
+import MapSiteData from '../../../mappers/availability/navigation.mapper';
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
 }
 
-export default function Navigation(props: NavigationData) {
+interface ImageProps {
+    drawerWidth?: number;
+}
+
+export interface NavigationProps {
+    navData: NavigationData;
+    drawerWidth: number;
+    openDrawer: () => void;
+    closeDrawer: () => void;
+    open: boolean;
+}
+
+export default function Navigation({navData, drawerWidth, openDrawer, closeDrawer, open}: NavigationProps) {
+    const [leftDirection, setDirection] = React.useState(false);
     const containerRef = React.useRef(null);
-    const [open, setOpen] = React.useState(false);
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
+    const navlistData = MapSiteData(navData.metadata);
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
-
-    const navlistData = MapNavigation(props);
+    React.useEffect(() => {
+        setDirection(Math.floor( Math.random() * 2 ) + 1 == 2 ? true : false)
+    },
+    [open]);
 
     const AppBar = styled(MuiAppBar, {
         shouldForwardProp: (prop) => prop !== 'open',
@@ -46,8 +54,8 @@ export default function Navigation(props: NavigationData) {
             duration: theme.transitions.duration.leavingScreen,
         }),
         ...(open && {
-            width: `calc(100% - ${props.navWidth}px)`,
-            marginLeft: `${props.navWidth}px`,
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: `${drawerWidth}px`,
             transition: theme.transitions.create(['margin', 'width'], {
                 easing: theme.transitions.easing.easeOut,
                 duration: theme.transitions.duration.enteringScreen,
@@ -55,14 +63,15 @@ export default function Navigation(props: NavigationData) {
         }),
     }));
 
-    const ImageContainer = styled('div')(({ theme }) => ({
+    const ImageContainer = styled('div', { shouldForwardProp: (prop) => prop !== 'drawerWidth' })
+    <ImageProps>(({ theme, drawerWidth }) => ({
         position: 'absolute',
         top: '0px',
-        right: '-20px',
+        right: '0px',
         height: '100%',
-        width: 'auto',
+        backgroundColor: 'black',
+        width: `calc(100% - ${drawerWidth}px)`,
         opacity: '.8',
-        aspectRatio: '29/40'
     }));
 
     const Circle = styled('div', {
@@ -77,9 +86,9 @@ export default function Navigation(props: NavigationData) {
     }));
 
     const navListProps = {
-        drawerWidth: props.navWidth,
+        drawerWidth: drawerWidth,
         open: open,
-        closeDrawer: handleDrawerClose,
+        closeDrawer: closeDrawer,
         navlistItems: navlistData
     } as NavigationListProps;
 
@@ -100,7 +109,7 @@ export default function Navigation(props: NavigationData) {
                             </Link>
                             <Box className={Styles.logoContainer}>
                                 <Circle className={Styles.logoCircle} {...{ isPrimary: false }}>
-                                    <Button className={Styles.logoButton} onClick={handleDrawerOpen}>
+                                    <Button className={Styles.logoButton} onClick={openDrawer}>
                                         <Image priority={true} src='/assets/Only1Logo.svg' layout='fill' />
                                     </Button>
                                 </Circle>
@@ -120,8 +129,8 @@ export default function Navigation(props: NavigationData) {
             >
                 <NavigationList {...navListProps}>
                 </NavigationList>
-                <ImageContainer>
-                    <Image className='imageContainer' src={props.metadata.logo.url} layout='fill' />
+                <ImageContainer drawerWidth={drawerWidth}>
+                    <Image src={navData.metadata.logo.url} layout='fill' objectFit='cover' objectPosition={leftDirection ? 'left' : 'right'}  />
                 </ImageContainer>
             </Backdrop>
         </Box >

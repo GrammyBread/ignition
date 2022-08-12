@@ -1,27 +1,25 @@
-import { ItemStatus } from "../mappers/state.mappers";
-import { BasicMetadata, BasicObject } from "./read-metadata.interfaces";
+import { ItemStatus } from "../mappers/availability/state.mappers";
+import { BasicMetadata } from "./read-metadata.interfaces";
 
 
-export interface TableOfContentsItem {    
-    Title: string;
-    Key: number;
-}
-
-export interface TableOfContentsChapter extends TableOfContentsItem {
-    Sections: TableOfContentsItem[];
-}
-
-export interface TableOfContentsPart {
-    Chapters: TableOfContentsChapter[];
-}
-
-export interface SectionAvailability extends BasicMetadata {
-    releaseDate?: Date;
+export interface ReadItem extends BasicMetadata {
     publishStatus: ItemStatus;
-    slug: string;
+    itemSlug?: string;
+    id?: string;
 }
 
-export interface ChapterAvailability extends BasicMetadata {
-    sections: SectionAvailability[];
-    publishStatus: ItemStatus;
+export interface Section extends ReadItem {
+    releaseDate: Date;
+}
+
+export interface Chapter extends ReadItem {
+    sections: Section[];
+}
+
+export interface Part extends ReadItem {
+    chapters: Chapter[];
+}
+
+export interface Story {
+    parts: Part[];
 }

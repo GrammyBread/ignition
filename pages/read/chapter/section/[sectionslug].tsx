@@ -1,7 +1,7 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import ErrorPage from 'next/error';
 import { getSection, getAvailableSections } from '../../../../lib/api/client';
-import { Section, Script } from '../../../../interfaces/read-metadata.interfaces';
+import { CosmicSection, Script } from '../../../../interfaces/read-metadata.interfaces';
 import Image from 'next/image';
 
 interface SectionPath {
@@ -13,7 +13,7 @@ interface SectionPath {
 }
 
 interface Props {
-  section?: Section;
+  section?: CosmicSection;
 }
 
 const GetScriptData = (script: Script): JSX.Element => {
@@ -83,4 +83,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 };
 
-export default Section;
+export default CosmicSection;

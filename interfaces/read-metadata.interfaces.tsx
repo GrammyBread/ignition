@@ -1,5 +1,3 @@
-import { TableOfContentsPart, TableOfContentsChapter } from "./view-data.interfaces";
-
 export interface BasicMetadata {
     key: number;
     header: string;
@@ -9,21 +7,24 @@ export interface BasicObject {
     slug: string;
     status?: string;
     title?: string;
+    id: string;
+}
+
+export interface CosmicSiteData {    
+	published_parts: CosmicPart[];
 }
 
 export interface NavigationData {
 	title: string;
 	content: string;
-	metadata: NavMetadata;
-    navWidth: number;
+	metadata: SiteMetadata;
 }
 
-export interface NavMetadata {
-	published_parts: Part[];
+export interface SiteMetadata extends CosmicSiteData {
     logo: Image;
 }
 
-export interface Part extends BasicObject
+export interface CosmicPart extends BasicObject
 {
     metadata?: PartMetadata;
 }
@@ -31,14 +32,14 @@ export interface Part extends BasicObject
 export interface PartMetadata
 {
     key: number;
-    chapters: Chapter[];
+    chapters: CosmicChapter[];
     part_image: Image;
     part_logline: string;
 	table_of_contents_data: TableOfContentsPart;
     table_of_contents_image: Image;
 }
 
-export interface Chapter extends BasicObject
+export interface CosmicChapter extends BasicObject
 {
     metadata?: ChapterMetadata;
 }
@@ -48,10 +49,10 @@ export interface ChapterMetadata extends BasicMetadata
     chapter_image?: Image;
 	chapter_section_data?: TableOfContentsChapter;
     previous_chapter_recap?: string;
-    sections: Section[];
+    sections: CosmicSection[];
 }
 
-export interface Section extends BasicObject
+export interface CosmicSection extends BasicObject
 {
     metadata?: SectionMetadata;
 }
@@ -66,7 +67,7 @@ export interface SectionMetadata extends BasicMetadata
 {
     patreon_release_date: string;
     public_release_date: string;
-    scripts: Script[];
+    scripts?: Script[];
 }
 
 export interface Script
@@ -100,4 +101,17 @@ export interface ScriptImage
 {
     url: string;
     imgix_url: string;
+}
+
+export interface TableOfContentsItem {    
+    Title: string;
+    Key: number;
+}
+
+export interface TableOfContentsChapter extends TableOfContentsItem {
+    Sections: TableOfContentsItem[];
+}
+
+export interface TableOfContentsPart {
+    Chapters: TableOfContentsChapter[];
 }

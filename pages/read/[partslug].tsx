@@ -1,20 +1,19 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
-import { NavigationData, Part } from '../../interfaces/read-metadata.interfaces';
+import { CosmicSiteData, CosmicPart } from '../../interfaces/read-metadata.interfaces';
 import { getNavigation, getPart } from '../../lib/api/client';
 import ErrorPage from 'next/error';
 import * as React from 'react';
 import Image from 'next/image';
 import Styles from '../../styles/shared.module.scss';
-import { TableOfContentsProps, TOCPartProps } from '../../components/TableOfContents/TableOfContents';
-import TableOfContents from '../../components/TableOfContents/TableOfContents';
+import { TableOfContentsProps, TOCPartProps } from '../../components/TableOfContents/Table/Table';
+import TableOfContents from '../../components/TableOfContents/Table/Table';
 import Layout from '../../components/Main/Layout';
 
-const drawerWidth = 240;
 
 interface Props
 {
-  part?: Part;
-  navData?: NavigationData;
+  part?: CosmicPart;
+  navData?: CosmicSiteData;
 }
 
 const Part = ( props: Props ): JSX.Element =>
@@ -23,8 +22,6 @@ const Part = ( props: Props ): JSX.Element =>
   {
     return <ErrorPage statusCode={ 404 } />;
   }
-
-  props.navData.navWidth = drawerWidth;
 
   let tocProps = {
     partProps: {
@@ -43,7 +40,7 @@ const Part = ( props: Props ): JSX.Element =>
     );
 };
 
-export default Part;
+export default CosmicPart;
 
 export const getStaticProps: GetStaticProps = async ( context ) =>
 {

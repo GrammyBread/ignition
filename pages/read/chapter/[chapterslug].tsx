@@ -2,8 +2,8 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import ErrorPage from 'next/error';
 import { getAvailableChapters, getChapter, getNavigation } from '../../../lib/api/client';
-import { Chapter, NavigationData, Part } from '../../../interfaces/read-metadata.interfaces';
-import TableOfContents, { TableOfContentsProps, TOCChapterCosmicProps, TOCChapterProps } from '../../../components/TableOfContents/TableOfContents';
+import { CosmicChapter, CosmicSiteData, CosmicPart } from '../../../interfaces/read-metadata.interfaces';
+import TableOfContents, { TableOfContentsProps, TOCChapterCosmicProps, TOCChapterProps } from '../../../components/TableOfContents/Table/Table';
 import Layout from '../../../components/Main/Layout';
 import Image from 'next/image';
 import Styles from '../../styles/parts.module.scss';
@@ -20,8 +20,8 @@ interface ChapterPath
 
 interface Props
 {
-  chapter: Chapter;
-  navData: NavigationData;
+  chapter: CosmicChapter;
+  navData: CosmicSiteData;
 }
 
 const Chapter = ( props: Props ): JSX.Element =>
@@ -30,8 +30,6 @@ const Chapter = ( props: Props ): JSX.Element =>
   {
     return <ErrorPage statusCode={ 404 } />;
   }
-
-  props.navData.navWidth = drawerWidth;
 
   let tocProps = {
     chapterProps: {
@@ -94,4 +92,4 @@ export const getStaticPaths: GetStaticPaths = async () =>
   };
 };
 
-export default Chapter;
+export default CosmicChapter;
