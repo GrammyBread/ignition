@@ -1,8 +1,8 @@
 import { ItemStatus } from '../../mappers/availability/state.mappers';
 import Link from 'next/link';
-import { ListItemText } from '@mui/material';
+import { ListItemText, Typography } from '@mui/material';
 
-export default function getLinkedTOCTitle(publishStatus: ItemStatus, title: string, slug?: string): JSX.Element {
+export function getLinkedTitle(publishStatus: ItemStatus, title: string, slug?: string): JSX.Element {
     let shouldDisplayLink = publishStatus != ItemStatus.Unpublished && publishStatus != ItemStatus.PatreonOnly;
     let chapterTitle = (
         <ListItemText
@@ -10,8 +10,19 @@ export default function getLinkedTOCTitle(publishStatus: ItemStatus, title: stri
             primary={title} />);
 
     return shouldDisplayLink && slug ?
-        <Link href={`/${slug}`}>
+        <Link href={slug}>
             {chapterTitle}
         </Link>
         : chapterTitle;
+}
+
+export function getUnlikedTitle(header: string): JSX.Element {
+    return (
+        <ListItemText primary={
+            <Typography align="center" variant="h4" sx={{
+                textDecoration: 'underline'
+            }}>
+                {header}
+            </Typography>
+        } />);
 }

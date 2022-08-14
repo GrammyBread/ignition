@@ -41,6 +41,6 @@ export function CleanSection(section: CosmicSection): CleanedCosmicSection | und
             status: section.status
         } as CleanedCosmicSection;
     }
-
+    
     return undefined;
 }

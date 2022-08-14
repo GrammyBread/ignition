@@ -1,11 +1,11 @@
 import * as React from 'react';
 import ListItemText from '@mui/material/ListItemText';
-import { SectionAvailability } from '../../../interfaces/view-data.interfaces';
 import { Badge, ListItem } from '@mui/material';
 import Styles from './TOCSections.module.scss';
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { Section } from '../../../interfaces/view-data.interfaces';
 
 const HtmlTooltip = styled( ( { className, ...props }: TooltipProps ) => (
     <Tooltip { ...props } classes={ { popper: className } } placement="right" />
@@ -19,7 +19,7 @@ const HtmlTooltip = styled( ( { className, ...props }: TooltipProps ) => (
     },
 } ) );
 
-export const getPatreonSection = ( availability: SectionAvailability ): JSX.Element =>
+export const getPatreonSection = ( availability: Section ): JSX.Element =>
 {
     let tooltip =
         <React.Fragment>

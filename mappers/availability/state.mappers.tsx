@@ -1,4 +1,4 @@
-import {SectionAvailability } from '../../interfaces/view-data.interfaces';
+import { Part } from '../../interfaces/view-data.interfaces';
 
 export enum ItemStatus {
     Unpublished = 1,
@@ -8,26 +8,44 @@ export enum ItemStatus {
 }
 
 interface MostRecentSection {
-    index: number;
+    partIndex: number;
+    chapterIndex: number;
+    sectionIndex: number;
     releaseDate: Date|undefined;
 }
 
-export function IdentifyNewestSection(sections: SectionAvailability[]) : number {
+export function IdentifyNewestSection(parts: Part[]) : [partIndex: number, chapterIndex: number, sectionIndex: number] {
     let mostRecentSection = {
-        index: -1,
+        partIndex: -1,
+        chapterIndex: -1,
+        sectionIndex: -1,
         releaseDate: undefined
     } as MostRecentSection;
 
-    sections.filter((section) => section.publishStatus == ItemStatus.Public).forEach((section, index) => {
-        if(section.releaseDate && 
-            (!mostRecentSection.releaseDate || section.releaseDate > mostRecentSection.releaseDate)) {
-            mostRecentSection = {
-                index,
-                releaseDate: section.releaseDate
-            }
-        }
+    parts.forEach((part, partIndex) => {
+        if(part.publishStatus == ItemStatus.Public) {
+            part.chapters.forEach((chapter, chapterIndex) => {
+                if(chapter.publishStatus == ItemStatus.Public) {
+                    chapter.sections.filter((section) => section.publishStatus == ItemStatus.Public).forEach((section, sectionIndex) => {
+                        if(section.releaseDate != undefined)
+                        {
+                            let releaseDate = new Date(section.releaseDate);
+                            if(!mostRecentSection.releaseDate || releaseDate > mostRecentSection.releaseDate) {
+                                mostRecentSection = {
+                                    partIndex: partIndex,
+                                    chapterIndex: chapterIndex,
+                                    sectionIndex: sectionIndex,
+                                    releaseDate: releaseDate
+                                };
+                            }
+                        }
+                    });
+                }
+            });
+        }        
     });
-    return mostRecentSection.index;
+    
+    return [mostRecentSection.partIndex, mostRecentSection.chapterIndex, mostRecentSection.sectionIndex];
 }
 
 export function DetermineSectionStatus(status: string, patreonRelease: string, publicRelease: string): ItemStatus {

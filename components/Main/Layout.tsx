@@ -1,18 +1,17 @@
 
 import { ThemeProvider, Box, CssBaseline } from '@mui/material';
 import { ignitionTheme } from '../../styles/theme';
-import Navigation from './Navigation/Navigation';
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Styles from '../../styles/shared.module.scss';
-import { CosmicSiteData } from '../../interfaces/read-metadata.interfaces';
 import { Main } from './Main';
-import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Navigation from './Navigation/Navigation';
+import { CleanedNavigation } from '../../interfaces/cleaned-types.interface';
 
 export interface LayoutProps {
     children: React.ReactNode;
-    navData: CosmicSiteData;
+    navData: CleanedNavigation;
 }
 
 const PageRoot = styled(Box)( ( { theme } ) => ( {

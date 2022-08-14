@@ -9,7 +9,7 @@ export interface ReadItem extends BasicMetadata {
 }
 
 export interface Section extends ReadItem {
-    releaseDate: Date;
+    releaseDate?: string;
 }
 
 export interface Chapter extends ReadItem {

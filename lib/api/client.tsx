@@ -1,14 +1,22 @@
 import Cosmic from 'cosmicjs'
-import Error from 'next/error'
 import { CosmicQuery } from './query'
-import { CosmicResponse } from '../../interfaces/shared.interfaces'
-import { CosmicChapter, CosmicSiteData, CosmicPart, CosmicSection } from '../../interfaces/read-metadata.interfaces'
-import { makeGetPartQuery, makeGetPartsQuery, makeGetChapterQuery, makeGetSectionQuery, makeGetAvailableChaptersQuery, makeGetAvailableSectionsQuery, makeGetNavigationQuery } from './readmeta/read-metadata-queries';
+import { 
+  CosmicChapter, 
+  CosmicReadData, 
+  CosmicPart, 
+  CosmicSection, 
+  CosmicSiteData as CosmicNavigation} from '../../interfaces/read-metadata.interfaces'
+import { 
+  makeGetPartQuery, 
+  makeGetPartsQuery, 
+  makeGetChapterQuery, 
+  makeGetSectionQuery, 
+  makeGetAvailableChaptersQuery, 
+  makeGetAvailableSectionsQuery, 
+  makeGetSiteDataQuery as makeGetSiteData } from './readmeta/read-metadata-queries';
 import { HomePage } from '../../interfaces/home.interfaces'
 import { makeGetHomeQuery } from './static/home-queries'
-
-//import page specific queries
-
+import { makeGetAvailablePartsQuery, makeGetChapterHeaderQuery } from './readmeta/read-metadata-queries';
 
 const BUCKET_SLUG = process.env.COSMIC_BUCKET_SLUG
 const READ_KEY = process.env.COSMIC_READ_KEY
@@ -18,14 +26,14 @@ export const bucket = Cosmic().bucket({
   read_key: READ_KEY,
 })
 
-
 async function getObjects<T>(query: CosmicQuery): Promise<T> {
       const data = await bucket.getObjects(query);
       return data.objects;
 }
 
-export async function getNavigation(): Promise<CosmicSiteData> {
-  let response = await getObjects<CosmicSiteData[]>(makeGetNavigationQuery())
+//Read Stuff
+export async function getSiteData(): Promise<CosmicNavigation> {
+  let response = await getObjects<CosmicNavigation[]>(makeGetSiteData())
   return response[0];
 }
 
@@ -43,21 +51,33 @@ export async function getChapter(slug:string): Promise<CosmicChapter> {
   return response[0];
 }
 
-export async function getAvailableChapters(): Promise<CosmicPart[]> {
-  let response = await getObjects<CosmicPart[]>(makeGetAvailableChaptersQuery());
-  return response;
+export async function getChapterHeaderScript(slug:string): Promise<CosmicChapter> {
+  let response = await getObjects<CosmicChapter[]>(makeGetChapterHeaderQuery(slug));
+  return response[0];
 }
 
-export async function getSection(slug:string): Promise<CosmicSection> {
+export async function getSectionData(slug:string): Promise<CosmicSection> {
   let response = await getObjects<CosmicSection[]>(makeGetSectionQuery(slug));
   return response[0];
 }
 
+//Available Stuff
 export async function getAvailableSections(): Promise<CosmicPart[]> {
   let response = await getObjects<CosmicPart[]>(makeGetAvailableSectionsQuery());
   return response;
 }
 
+export async function getAvailableChapters(): Promise<CosmicPart[]> {
+  let response = await getObjects<CosmicPart[]>(makeGetAvailableChaptersQuery());
+  return response;
+}
+
+export async function getAvailableParts(): Promise<CosmicPart[]> {
+  let response = await getObjects<CosmicPart[]>(makeGetAvailablePartsQuery());
+  return response;
+}
+
+//Non-Read Pages
 export async function getHome(): Promise<HomePage> {
   let response = await getObjects<HomePage[]>(makeGetHomeQuery());
   return response[0];

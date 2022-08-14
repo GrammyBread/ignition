@@ -1,4 +1,6 @@
 import { CosmicQuery } from "../query";
+import { minifyProps } from "../shared";
+import { getHomeProps } from './props';
 
 //Get Part Data
 export function makeGetHomeQuery (): CosmicQuery
@@ -8,6 +10,6 @@ export function makeGetHomeQuery (): CosmicQuery
             type: "home",
             slug: "home-page"
           },
-        props: "title,content,metadata"
+        props: minifyProps(getHomeProps)
     };
 }

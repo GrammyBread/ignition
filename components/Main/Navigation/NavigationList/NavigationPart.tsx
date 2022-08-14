@@ -2,15 +2,16 @@ import * as React from 'react';
 import NavigationChapterItem from './NavigationChapter';
 import { Part } from '../../../../interfaces/view-data.interfaces';
 import {
-    ExpandLess,
-    ExpandMore,
+  ExpandLess,
+  ExpandMore,
 } from '@mui/icons-material';
 import {
-    Collapse,
-    List,
-    ListItemButton,
-    ListItemText
+  Collapse,
+  List,
+  ListItemButton,
+  ListItemText
 } from '@mui/material';
+import { ItemStatus } from '../../../../mappers/availability/state.mappers';
 
 
 export default function NavigationPartItem(props: Part) {
@@ -20,13 +21,15 @@ export default function NavigationPartItem(props: Part) {
     setPartOpen(!partOpen);
   };
 
+  let isPartReadable = props.publishStatus != ItemStatus.PatreonOnly && props.publishStatus != ItemStatus.Unpublished;
+
   return (
     <>
       <ListItemButton onClick={handleClick} sx={{ pl: 5 }}>
-        <ListItemText primary={props.header} />
-        {partOpen ? <ExpandLess /> : <ExpandMore />}
+        <ListItemText primary={props.header} sx={{ color: !isPartReadable ? 'text.disabled' : 'inherit' }}/>
+        {isPartReadable && (partOpen ? <ExpandLess /> : <ExpandMore />)}
       </ListItemButton>
-      <Collapse in={partOpen} timeout="auto" unmountOnExit>
+      {isPartReadable && <Collapse in={partOpen} timeout="auto" unmountOnExit>
         <List>
           {props.chapters && props.chapters.map((chapter) => (
             <div key={chapter.key}>
@@ -34,7 +37,7 @@ export default function NavigationPartItem(props: Part) {
             </div>
           ))}
         </List>
-      </Collapse>
+      </Collapse>}
     </>
   )
 };

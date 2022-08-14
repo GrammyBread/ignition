@@ -1,50 +1,33 @@
 import * as React from 'react';
-import { ChapterAvailability } from '../../../interfaces/view-data.interfaces';
 import { List, ListItem } from '@mui/material';
-import { TOCChapterProps } from '../Table/Table';
-import { mapTOCChapterAvailability } from '../../../mappers/availability/availability.mapper';
-import { ErrorBoundary } from 'react-error-boundary';
-import { ErrorFallback } from '../../Error/Error';
 import getSection from '../Sections/shared';
-import getLinkedTOCTitle from '../helper';
+import { getLinkedTitle, getUnlikedTitle } from '../helper';
+import { Chapter } from '../../../interfaces/view-data.interfaces';
 
-interface ChapterProps {
-    availability?: ChapterAvailability;
-    chapterSlug?: string;
+export interface ChapterProps {
+    showLinkedHeader: boolean;
+    availability: Chapter;
 }
 
+export function TOCChapter(props: ChapterProps): JSX.Element {
+    let availability = props.availability;
 
-function Chapter(props: ChapterProps): JSX.Element {
-    if (props.availability == undefined) {
+    if (availability == undefined) {
         throw new Error('Availability was wrong!');
     }
-
-    let data = props.availability;
 
     return (
         <>
             <ListItem>
-                {getLinkedTOCTitle(data.publishStatus, data.header, props.chapterSlug)}
+                {props.showLinkedHeader ?
+                    getLinkedTitle(availability.publishStatus, availability.header, availability?.itemSlug)
+                    :
+                    getUnlikedTitle(availability.header)
+                }
             </ListItem>
             <List sx={{ pl: 6 }}>
-                {data.sections && data.sections.map((section) => getSection(section, props.chapterSlug))}
+                {availability.sections && availability.sections.map((section) => getSection(section))}
             </List>
         </>
     );
 }
-
-export default function TOCChapter(props: TOCChapterProps) {
-    let availability = props.availability == undefined && props.cosmicProps != undefined ?
-        mapTOCChapterAvailability(props.cosmicProps) : props.availability;
-
-    let chapterProps = {
-        availability,
-        chapterSlug: `/read/${props.partSlug}/${props.availability?.slug}`
-    } as ChapterProps;
-
-    return (
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Chapter {...chapterProps}></Chapter>
-        </ErrorBoundary>
-    );
-};

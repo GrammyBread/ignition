@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import MuiAppBar from '@mui/material/AppBar';
 import Styles from './Navigation.module.scss';
 import Image from 'next/image';
 import {
@@ -10,14 +10,14 @@ import {
     Button,
     Box,
     CssBaseline,
-    Fab
+    Fab,
+    AppBarProps as MuiAppBarProps
 } from '@mui/material';
 import { Twitter, Instagram } from '@mui/icons-material';
 import Link from 'next/link';
 import NavigationList from './NavigationList/NavigationList';
 import { NavigationListProps } from './NavigationList/NavigationList';
-import { CosmicSiteData, NavigationData } from '../../../interfaces/read-metadata.interfaces';
-import MapSiteData from '../../../mappers/availability/navigation.mapper';
+import { CleanedNavigation } from '../../../interfaces/cleaned-types.interface';
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -28,7 +28,7 @@ interface ImageProps {
 }
 
 export interface NavigationProps {
-    navData: NavigationData;
+    navData: CleanedNavigation;
     drawerWidth: number;
     openDrawer: () => void;
     closeDrawer: () => void;
@@ -39,7 +39,6 @@ export default function Navigation({navData, drawerWidth, openDrawer, closeDrawe
     const [leftDirection, setDirection] = React.useState(false);
     const containerRef = React.useRef(null);
 
-    const navlistData = MapSiteData(navData.metadata);
 
     React.useEffect(() => {
         setDirection(Math.floor( Math.random() * 2 ) + 1 == 2 ? true : false)
@@ -64,7 +63,7 @@ export default function Navigation({navData, drawerWidth, openDrawer, closeDrawe
     }));
 
     const ImageContainer = styled('div', { shouldForwardProp: (prop) => prop !== 'drawerWidth' })
-    <ImageProps>(({ theme, drawerWidth }) => ({
+    <ImageProps>(({ drawerWidth }) => ({
         position: 'absolute',
         top: '0px',
         right: '0px',
@@ -89,7 +88,7 @@ export default function Navigation({navData, drawerWidth, openDrawer, closeDrawe
         drawerWidth: drawerWidth,
         open: open,
         closeDrawer: closeDrawer,
-        navlistItems: navlistData
+        navlistItems: navData.data
     } as NavigationListProps;
 
     return (
@@ -130,7 +129,7 @@ export default function Navigation({navData, drawerWidth, openDrawer, closeDrawe
                 <NavigationList {...navListProps}>
                 </NavigationList>
                 <ImageContainer drawerWidth={drawerWidth}>
-                    <Image src={navData.metadata.logo.url} layout='fill' objectFit='cover' objectPosition={leftDirection ? 'left' : 'right'}  />
+                    <Image src={navData.logo.url} layout='fill' objectFit='cover' objectPosition={leftDirection ? 'left' : 'right'}  />
                 </ImageContainer>
             </Backdrop>
         </Box >

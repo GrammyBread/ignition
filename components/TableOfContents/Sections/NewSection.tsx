@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { SectionAvailability } from '../../../interfaces/view-data.interfaces';
 import { Badge, ListItem } from '@mui/material';
 import Styles from './TOCSections.module.scss';
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
-import getLinkedTOCTitle from '../helper';
+import { getLinkedTitle } from '../helper';
+import { Section } from '../../../interfaces/view-data.interfaces';
 
 const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} placement="right" />
@@ -17,12 +17,12 @@ const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
     },
 }));
 
-export const getNewSection = (availability: SectionAvailability, slug: string) => {
+export const getNewSection = (availability: Section) => {
     return (
         <ListItem className={Styles.newSection}>
             <LightTooltip title="This is the newest section!">
                 <Badge color="secondary" badgeContent="New">
-                    {getLinkedTOCTitle(availability.publishStatus, availability.header, slug)}
+                    {getLinkedTitle(availability.publishStatus, availability.header, availability.itemSlug)}
                 </Badge>
             </LightTooltip>
         </ListItem>
