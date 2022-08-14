@@ -1,54 +1,69 @@
 import { GetStaticProps } from 'next';
-import { NavigationData, Part } from '../../interfaces/read-metadata.interfaces';
-import { getNavigation } from '../../lib/api/client';
+import { CosmicPart } from '../../interfaces/read-metadata.interfaces';
+import { getParts, getSiteData } from '../../lib/api/client';
 import ErrorPage from 'next/error';
-import { ThemeProvider } from '@mui/material';
-import { ignitionTheme } from '../../styles/theme';
-import Navigation from '../../components/Navigation/Navigation';
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import Image from 'next/image';
-import Styles from '../../styles/parts.module.scss';
-import { Main } from '../../components/Main/Main';
+import Styles from '../../styles/shared.module.scss';
 import PartCard from '../../components/PartCard/PartCard';
 import Layout from '../../components/Main/Layout';
+import MapSiteData from '../../mappers/nav.mapper';
+import { CleanedNavigation } from '../../interfaces/cleaned-types.interface';
+import { Part } from '../../interfaces/view-data.interfaces';
+import { PartCardProps } from '../../components/PartCard/PartCard';
 
-const drawerWidth = 240;
-
-interface Props
-{
-  navData: NavigationData;
+interface Props {
+  navData: CleanedNavigation;
+  parts: CosmicPart[];
 }
 
-const Parts = ( props: Props ): JSX.Element =>
-{
-  if ( props == undefined )
-  {
-    return <ErrorPage statusCode={ 404 } />;
+function MakePartCards(parts: Part[], cosmicParts: CosmicPart[]): JSX.Element[] {
+  let elements = new Array<JSX.Element>();
+  parts.map((part) => {
+    let relatedCosmicPart = cosmicParts.find((cosmic) => {
+      cosmic.id == part.id
+    });
+    if (relatedCosmicPart != undefined && relatedCosmicPart.metadata != undefined) {
+      const props = {
+        data: part,
+        logline: relatedCosmicPart.metadata.part_logline,
+        partImage: relatedCosmicPart.metadata.table_of_contents_image
+      } as PartCardProps;
+      elements.push(<PartCard key={part.key} {...props}></PartCard>);
+    }
+  });
+
+  return elements;
+}
+
+const Parts = (props: Props): JSX.Element => {
+  if (props == undefined) {
+    return <ErrorPage statusCode={404} />;
   }
 
-  props.navData.navWidth = drawerWidth;
+  const partCards = MakePartCards(props.navData.data.parts, props.parts);
 
   return (
-  <Layout navData={props.navData}>
-    { props?.navData.metadata.published_parts.map( ( part: Part ) => ( <PartCard key={ part.slug } { ...part }></PartCard> ) ) }
-    <Image className={ Styles.backgroundImage } src="/assets/SiteBack.svg" layout="fill" objectFit='cover' objectPosition='center' />
-  </Layout>
+    <Layout navData={props.navData}>
+      <div>
+        {partCards}
+        <Image className={Styles.backgroundImage} src="/assets/SiteBack.svg" layout="fill" objectFit='cover' objectPosition='center' />
+      </div>
+    </Layout>
   );
 };
 
-
-
 export default Parts;
 
-export const getStaticProps: GetStaticProps = async ( context ) =>
-{
-  const result = await getNavigation();
+export const getStaticProps: GetStaticProps = async (context) => {
+  const result = await getSiteData();
+  const partResults = await getParts();
 
+  const cleanedNav = MapSiteData(result);
   return {
     props: {
-      navData: result,
+      navData: cleanedNav,
+      parts: partResults
     } as Props,
     revalidate: 120
   };

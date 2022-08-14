@@ -25,7 +25,7 @@ export const ignitionTheme = createTheme({
             main: '#b239cd',
         },
         text: {
-            primary: "#000000",
+            primary: "#ffffff",
             secondary: "#ffffff"
         }
     },

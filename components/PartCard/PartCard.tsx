@@ -1,26 +1,31 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
+import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import Link from 'next/link';
 import { Book } from '@mui/icons-material';
-import { Part } from '../../interfaces/read-metadata.interfaces';
+import { Image } from '../../interfaces/read-metadata.interfaces';
 import Styles from './PartCard.module.scss';
+import { Part } from '../../interfaces/view-data.interfaces';
+import { ItemStatus } from '../../mappers/availability/state.mappers';
 
-export default function PartCard(props: Part) {
-    const url = props.metadata?.part_image?.url;
+export interface PartCardProps {
+    data: Part;
+    partImage: Image;
+    logline: string;
+}
+
+export default function PartCard(props: PartCardProps): JSX.Element {
     const [shouldShowOverlay, setShowOverlay] = useState(true);
     const [shouldAllowScroll, setShouldAllowScroll] = useState(false);
 
-    const toggleScroll = ():void => {
+    const toggleScroll = (): void => {
         setShowOverlay(!shouldShowOverlay);
         setShouldAllowScroll(!shouldAllowScroll);
     }
 
+    const shouldShowLink = props.data.publishStatus != ItemStatus.Unpublished && props.data.itemSlug != undefined;
 
-    return (
+    const card = (
         <Card sx={{
             display: 'flex',
             marginTop: '.5rem',
@@ -30,8 +35,8 @@ export default function PartCard(props: Part) {
             <CardMedia
                 component="img"
                 sx={{ width: 151 }}
-                image={url}
-                alt={`${props.title} cover image`}
+                image={props.partImage.url}
+                alt={`${props.data.header} cover image`}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
@@ -39,7 +44,7 @@ export default function PartCard(props: Part) {
                         color: 'primary.main'
                     }}>
                         <Box className={Styles.partTitle}>
-                            {props.title}
+                            {props.data.header}
                         </Box>
                     </Typography>
                     <Box className={Styles.loglineHolder} onClick={toggleScroll}>
@@ -47,12 +52,12 @@ export default function PartCard(props: Part) {
                             overflow: shouldAllowScroll ? 'auto' : 'hidden'
                         }}>
                             <Box className={Styles.partLogline}>
-                                {props.metadata?.part_logline}
+                                {props.logline}
                             </Box>
                         </Typography>
                         <Box className={Styles.loglineOverlay} sx={{
-                                display: shouldShowOverlay ? 'inherit' : 'none'
-                            }}
+                            display: shouldShowOverlay ? 'inherit' : 'none'
+                        }}
                         ></Box>
                     </Box>
                 </CardContent>
@@ -65,4 +70,13 @@ export default function PartCard(props: Part) {
             </Box>
         </Card>
     );
+
+    return shouldShowLink ?
+        // @ts-ignore
+        //Should show link check should solve null ref here
+        <Link href={props.data.itemSlug}>
+            {card}
+        </Link>
+        :
+        card;
 }

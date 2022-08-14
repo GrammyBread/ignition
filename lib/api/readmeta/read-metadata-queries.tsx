@@ -1,24 +1,37 @@
 import { CosmicQuery } from "../query";
+import { minifyProps } from "../shared";
+import { getAvailablePartsProps, getChapterHeaderScript } from './props';
 import { 
-    minifyProps, 
-    getNavProps, 
+    getSiteProps, 
     getPartProps, 
     getPartsProps,
     getChapterProps, 
     getAvailableChaptersProps,
-    getSection,
+    getSectionProps,
     getAvailableSectionsProps } from "./props";
 
-//Get Part Data
-export function makeGetNavigationQuery(): CosmicQuery {
+
+//Get Site Data
+export function makeGetSiteDataQuery(): CosmicQuery {
 
     return {
         query: {
             type: "navigation",
             slug: "navigation"
           },
-          props: minifyProps(getNavProps)
+          props: minifyProps(getSiteProps)
     }
+}
+
+//Get Part Data
+export function makeGetPartsQuery(): CosmicQuery {
+    return {
+        limit: 5,
+        query: {
+            type: 'parts',
+        },
+        props: minifyProps(getPartsProps)
+    };
 }
 
 export function makeGetPartQuery(name: string): CosmicQuery {
@@ -31,26 +44,7 @@ export function makeGetPartQuery(name: string): CosmicQuery {
     };
 }
 
-export function makeGetPartsQuery(): CosmicQuery {
-    return {
-        limit: 5,
-        query: {
-            type: 'parts',
-        },
-        props: minifyProps(getPartsProps)
-    };
-}
-
 //Get Chapter Data
-export function makeGetAvailableChaptersQuery(): CosmicQuery {
-    return {
-        query: {
-            type: "parts"
-        },
-        props: minifyProps(getAvailableChaptersProps)
-    }
-}
-
 export function makeGetChapterQuery(chapterSlug: string): CosmicQuery {
     return {
         query: {
@@ -61,7 +55,46 @@ export function makeGetChapterQuery(chapterSlug: string): CosmicQuery {
     };
 }
 
+export function makeGetChapterHeaderQuery(chapterSlug: string): CosmicQuery {
+    return {
+        query: {
+            type: "chapters",
+            slug: chapterSlug
+        },
+        props: minifyProps(getChapterHeaderScript)
+    };
+}
+
 //Get Section Data
+export function makeGetSectionQuery(sectionSlug: string): CosmicQuery {
+    return {
+        query: {
+            type: "sections",
+            slug: sectionSlug
+        },
+        props: minifyProps(getSectionProps)
+    };
+}
+
+//Get Available Slugs
+export function makeGetAvailablePartsQuery(): CosmicQuery {
+    return {
+        query: {
+            type: "parts"
+        },
+        props: minifyProps(getAvailablePartsProps)
+    }
+}
+
+export function makeGetAvailableChaptersQuery(): CosmicQuery {
+    return {
+        query: {
+            type: "parts"
+        },
+        props: minifyProps(getAvailableChaptersProps)
+    }
+}
+
 export function makeGetAvailableSectionsQuery(): CosmicQuery {
     return {
         query: {
@@ -69,14 +102,4 @@ export function makeGetAvailableSectionsQuery(): CosmicQuery {
         },
         props: minifyProps(getAvailableSectionsProps)
     }
-}
-
-export function makeGetSectionQuery(sectionSlug: string): CosmicQuery {
-    return {
-        query: {
-            type: "sections",
-            slug: sectionSlug
-        },
-        props: minifyProps(getSection)
-    };
 }
