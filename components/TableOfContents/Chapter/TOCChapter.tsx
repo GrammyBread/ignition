@@ -2,7 +2,7 @@ import * as React from 'react';
 import { List, ListItem } from '@mui/material';
 import getSection from '../Sections/shared';
 import { getLinkedTitle, getUnlikedTitle } from '../helper';
-import { Chapter } from '../../../interfaces/view-data.interfaces';
+import { Chapter } from '../../../interfaces/read/view-data.interfaces';
 
 export interface ChapterProps {
     showLinkedHeader: boolean;

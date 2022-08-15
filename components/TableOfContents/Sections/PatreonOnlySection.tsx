@@ -5,7 +5,7 @@ import Styles from './TOCSections.module.scss';
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { Section } from '../../../interfaces/view-data.interfaces';
+import { Section } from '../../../interfaces/read/view-data.interfaces';
 
 const HtmlTooltip = styled( ( { className, ...props }: TooltipProps ) => (
     <Tooltip { ...props } classes={ { popper: className } } placement="right" />

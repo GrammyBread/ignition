@@ -2,7 +2,7 @@ import { getStandardSection } from "./GetStandardSection";
 import { getPatreonSection } from "./PatreonOnlySection";
 import { getNewSection } from "./NewSection";
 import { ItemStatus } from "../../../mappers/availability/state.mappers";
-import { Section } from "../../../interfaces/view-data.interfaces";
+import { Section } from "../../../interfaces/read/view-data.interfaces";
 
 export default function getSection(availability: Section): JSX.Element {
     switch (availability.publishStatus) {

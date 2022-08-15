@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import Link from 'next/link';
 import { Book } from '@mui/icons-material';
-import { Image } from '../../interfaces/read-metadata.interfaces';
+import { Image } from '../../interfaces/read/read-metadata.interfaces';
 import Styles from './PartCard.module.scss';
-import { Part } from '../../interfaces/view-data.interfaces';
+import { Part } from '../../interfaces/read/view-data.interfaces';
 import { ItemStatus } from '../../mappers/availability/state.mappers';
 
 export interface PartCardProps {

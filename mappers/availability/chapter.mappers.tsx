@@ -1,7 +1,7 @@
 import { MakeDefaultUnpublishedItem, TryFindRelatedCosmicItem, MakeDefaultTOCItem } from './shared.mappers';
-import { TableOfContentsChapter, TableOfContentsItem } from '../../interfaces/read-metadata.interfaces';
-import { Chapter, Section } from "../../interfaces/view-data.interfaces";
-import { CleanedCosmicChapter, CleanedCosmicSection } from '../../interfaces/cleaned-types.interface';
+import { TableOfContentsChapter, TableOfContentsItem } from '../../interfaces/read/read-metadata.interfaces';
+import { Chapter, Section } from "../../interfaces/read/view-data.interfaces";
+import { CleanedCosmicChapter, CleanedCosmicSection } from '../../interfaces/read/cleaned-types.interface';
 import { ItemStatus } from "./state.mappers";
 import { MapSection, MakeDefaultTOCSection } from './section.mappers';
 

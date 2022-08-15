@@ -5,10 +5,12 @@ import * as React from 'react';
 import Image from 'next/image';
 import Styles from '../../../../styles/shared.module.scss';
 import MapSiteData from '../../../../mappers/nav.mapper';
-import { CleanedNavigation } from '../../../../interfaces/cleaned-types.interface';
-import { CosmicSection } from '../../../../interfaces/read-metadata.interfaces';
-import { Section, Part } from '../../../../interfaces/view-data.interfaces';
+import { CleanedNavigation } from '../../../../interfaces/read/cleaned-types.interface';
+import { CosmicSection } from '../../../../interfaces/read/read-metadata.interfaces';
+import { Section, Part } from '../../../../interfaces/read/view-data.interfaces';
 import Layout from '../../../../components/Main/Layout';
+import { GetRequestedResource } from '../../../../lib/api/shared';
+import NotFoundPage from '../../../../components/Error/NotFound';
 
 interface SectionPath {
   params: {
@@ -41,6 +43,7 @@ function GetRelatedSection(parts: Part[], id: string): Section | undefined {
 }
 
 const Section = (props: Props): JSX.Element => {
+  let requestedRes = GetRequestedResource();
   let relatedSection;
   if (props.navData != undefined && props.section != undefined) {
     relatedSection = GetRelatedSection(props.navData.data.parts, props.section.id);
@@ -50,7 +53,7 @@ const Section = (props: Props): JSX.Element => {
     props.section.metadata.script == undefined ||
     props.navData == undefined ||
     relatedSection == undefined) {
-    return <ErrorPage statusCode={404} />;
+      return <NotFoundPage requestedItem={`Section: ${requestedRes}`}/>
   }
 
   let script = props.section.metadata?.script?.metadata.script_image.url;

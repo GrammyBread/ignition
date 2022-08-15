@@ -1,16 +1,19 @@
 import { GetStaticProps } from 'next';
-import { CosmicPart } from '../../interfaces/read-metadata.interfaces';
+import { CosmicPart } from '../../interfaces/read/read-metadata.interfaces';
 import { getParts, getSiteData } from '../../lib/api/client';
-import ErrorPage from 'next/error';
 import * as React from 'react';
 import Image from 'next/image';
 import Styles from '../../styles/shared.module.scss';
 import PartCard from '../../components/PartCard/PartCard';
 import Layout from '../../components/Main/Layout';
 import MapSiteData from '../../mappers/nav.mapper';
-import { CleanedNavigation } from '../../interfaces/cleaned-types.interface';
-import { Part } from '../../interfaces/view-data.interfaces';
+import { CleanedNavigation } from '../../interfaces/read/cleaned-types.interface';
+import { Part } from '../../interfaces/read/view-data.interfaces';
 import { PartCardProps } from '../../components/PartCard/PartCard';
+import { CustomErrorPage } from '../../components/Error/Error';
+import NotFoundPage from '../../components/Error/NotFound';
+import { useRouter } from 'next/router';
+import { GetRequestedResource } from '../../lib/api/shared';
 
 interface Props {
   navData: CleanedNavigation;
@@ -37,8 +40,8 @@ function MakePartCards(parts: Part[], cosmicParts: CosmicPart[]): JSX.Element[] 
 }
 
 const Parts = (props: Props): JSX.Element => {
-  if (props == undefined) {
-    return <ErrorPage statusCode={404} />;
+  if (props == undefined || props.navData == undefined || props.parts == undefined) {
+    return <NotFoundPage requestedItem={`Read Home`}/>
   }
 
   const partCards = MakePartCards(props.navData.data.parts, props.parts);

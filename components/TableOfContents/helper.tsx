@@ -1,6 +1,6 @@
 import { ItemStatus } from '../../mappers/availability/state.mappers';
 import Link from 'next/link';
-import { ListItemText, Typography } from '@mui/material';
+import { Divider, ListItemText, Typography } from '@mui/material';
 
 export function getLinkedTitle(publishStatus: ItemStatus, title: string, slug?: string): JSX.Element {
     let shouldDisplayLink = publishStatus != ItemStatus.Unpublished && publishStatus != ItemStatus.PatreonOnly;
@@ -18,11 +18,13 @@ export function getLinkedTitle(publishStatus: ItemStatus, title: string, slug?: 
 
 export function getUnlikedTitle(header: string): JSX.Element {
     return (
-        <ListItemText primary={
-            <Typography align="center" variant="h4" sx={{
-                textDecoration: 'underline'
-            }}>
-                {header}
-            </Typography>
-        } />);
+        <>
+            <ListItemText primary={
+                <Typography align="center" variant="h4">
+                    {header}
+                </Typography>
+            } />
+            <Divider variant="middle" />
+        </>
+    );
 }

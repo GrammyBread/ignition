@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ListItemText from '@mui/material/ListItemText';
 import { ListItem } from '@mui/material';
-import { Section } from '../../../interfaces/view-data.interfaces';
+import { Section } from '../../../interfaces/read/view-data.interfaces';
 import { getLinkedTitle } from '../helper';
 
 export const getStandardSection = ( isPublished: boolean, availability: Section) =>

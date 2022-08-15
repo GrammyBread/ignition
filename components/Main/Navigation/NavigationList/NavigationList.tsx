@@ -21,7 +21,7 @@ import {
     ListItemIcon,
     ListItemText
 } from '@mui/material';
-import { Story } from '../../../../interfaces/view-data.interfaces';
+import { Story } from '../../../../interfaces/read/view-data.interfaces';
 
 export interface NavigationListProps {
     drawerWidth: number;

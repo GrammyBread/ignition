@@ -1,7 +1,7 @@
-import { ErrorPage } from "../components/Error/Error";
+import NotFoundPage from "../components/Error/NotFound";
 
 const ServerError = (): JSX.Element => {
-return <ErrorPage message="We can't seem to find what you're looking for... 😟"/>;
+return <NotFoundPage/>
 }
 
 export default ServerError

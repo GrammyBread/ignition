@@ -1,4 +1,4 @@
-import { ItemStatus } from "../mappers/availability/state.mappers";
+import { ItemStatus } from "../../mappers/availability/state.mappers";
 import { BasicMetadata } from "./read-metadata.interfaces";
 
 

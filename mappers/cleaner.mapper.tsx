@@ -1,5 +1,5 @@
-import { CleanedCosmicPart, CleanedCosmicChapter, CleanedCosmicSection } from '../interfaces/cleaned-types.interface';
-import { CosmicChapter, CosmicPart, CosmicSection } from "../interfaces/read-metadata.interfaces";
+import { CleanedCosmicPart, CleanedCosmicChapter, CleanedCosmicSection } from '../interfaces/read/cleaned-types.interface';
+import { CosmicChapter, CosmicPart, CosmicSection } from "../interfaces/read/read-metadata.interfaces";
 
 export function CleanPart(part: CosmicPart): CleanedCosmicPart | undefined {
     if (part.metadata != undefined) {

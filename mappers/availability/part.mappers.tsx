@@ -1,9 +1,9 @@
-import { CosmicPart, CosmicReadData } from '../../interfaces/read-metadata.interfaces';
-import { Story, Part, Chapter } from '../../interfaces/view-data.interfaces';
+import { CosmicPart, CosmicReadData } from '../../interfaces/read/read-metadata.interfaces';
+import { Story, Part, Chapter } from '../../interfaces/read/view-data.interfaces';
 import { MapChapter, MakeDefaultTOCChapter } from './chapter.mappers';
 import { MakeDefaultUnpublishedItem, TryFindRelatedCosmicItem } from './shared.mappers';
 import { IdentifyNewestSection, ItemStatus } from './state.mappers';
-import { CleanedCosmicPart, CleanedCosmicChapter } from '../../interfaces/cleaned-types.interface';
+import { CleanedCosmicPart, CleanedCosmicChapter } from '../../interfaces/read/cleaned-types.interface';
 import { CleanPart } from '../cleaner.mapper';
 
 export const READ_PATH = '/read';

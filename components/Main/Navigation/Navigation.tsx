@@ -17,7 +17,7 @@ import { Twitter, Instagram } from '@mui/icons-material';
 import Link from 'next/link';
 import NavigationList from './NavigationList/NavigationList';
 import { NavigationListProps } from './NavigationList/NavigationList';
-import { CleanedNavigation } from '../../../interfaces/cleaned-types.interface';
+import { CleanedNavigation } from '../../../interfaces/read/cleaned-types.interface';
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;

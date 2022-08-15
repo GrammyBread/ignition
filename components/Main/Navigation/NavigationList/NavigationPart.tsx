@@ -1,6 +1,6 @@
 import * as React from 'react';
 import NavigationChapterItem from './NavigationChapter';
-import { Part } from '../../../../interfaces/view-data.interfaces';
+import { Part } from '../../../../interfaces/read/view-data.interfaces';
 import {
   ExpandLess,
   ExpandMore,

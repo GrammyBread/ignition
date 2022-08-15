@@ -1,7 +1,7 @@
 import { MakeDefaultUnpublishedItem, MakeDefaultTOCItem } from './shared.mappers';
-import { TableOfContentsItem } from '../../interfaces/read-metadata.interfaces';
-import { Section } from "../../interfaces/view-data.interfaces";
-import { CleanedCosmicSection } from '../../interfaces/cleaned-types.interface';
+import { TableOfContentsItem } from '../../interfaces/read/read-metadata.interfaces';
+import { Section } from "../../interfaces/read/view-data.interfaces";
+import { CleanedCosmicSection } from '../../interfaces/read/cleaned-types.interface';
 import { DetermineSectionStatus } from "./state.mappers";
 
 function CompleteSectionSetup(section: Section, key?: number) {

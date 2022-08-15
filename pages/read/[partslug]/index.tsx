@@ -1,5 +1,5 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
-import { CosmicPart } from '../../../interfaces/read-metadata.interfaces';
+import { CosmicPart } from '../../../interfaces/read/read-metadata.interfaces';
 import { getSiteData, getPart, getAvailableParts } from '../../../lib/api/client';
 import ErrorPage from 'next/error';
 import * as React from 'react';
@@ -9,7 +9,9 @@ import { TableOfContentsProps } from '../../../components/TableOfContents/Table/
 import TableOfContents from '../../../components/TableOfContents/Table/Table';
 import Layout from '../../../components/Main/Layout';
 import MapSiteData from '../../../mappers/nav.mapper';
-import { CleanedNavigation } from '../../../interfaces/cleaned-types.interface';
+import { CleanedNavigation } from '../../../interfaces/read/cleaned-types.interface';
+import { GetRequestedResource } from '../../../lib/api/shared';
+import NotFoundPage from '../../../components/Error/NotFound';
 
 
 interface Props {
@@ -18,6 +20,7 @@ interface Props {
 }
 
 const Part = (props: Props): JSX.Element => {
+  let requestedRes = GetRequestedResource();
   let relatedPart;
   if (props.navData != undefined && props.part != undefined) {
     relatedPart = props.navData.data.parts.find((part) => {
@@ -26,7 +29,7 @@ const Part = (props: Props): JSX.Element => {
   }
 
   if (props.part?.metadata == undefined || props.navData == undefined || relatedPart == undefined) {
-    return <ErrorPage statusCode={404} />;
+    return <NotFoundPage requestedItem={`Part: ${requestedRes}`}/>
   }
 
   let tocProps = {

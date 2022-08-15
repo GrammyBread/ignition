@@ -8,10 +8,12 @@ import { TableOfContentsProps } from '../../../../components/TableOfContents/Tab
 import TableOfContents from '../../../../components/TableOfContents/Table/Table';
 import Layout from '../../../../components/Main/Layout';
 import MapSiteData from '../../../../mappers/nav.mapper';
-import { CleanedNavigation } from '../../../../interfaces/cleaned-types.interface';
-import { CosmicChapter } from '../../../../interfaces/read-metadata.interfaces';
-import { Chapter, Part } from '../../../../interfaces/view-data.interfaces';
+import { CleanedNavigation } from '../../../../interfaces/read/cleaned-types.interface';
+import { CosmicChapter } from '../../../../interfaces/read/read-metadata.interfaces';
+import { Chapter, Part } from '../../../../interfaces/read/view-data.interfaces';
 import { ChapterProps } from '../../../../components/TableOfContents/Chapter/TOCChapter';
+import { GetRequestedResource } from '../../../../lib/api/shared';
+import NotFoundPage from '../../../../components/Error/NotFound';
 
 interface ChapterPath {
   params: {
@@ -40,18 +42,20 @@ function GetRelatedChapter(parts: Part[], id: string): Chapter | undefined {
 }
 
 const Chapter = (props: Props): JSX.Element => {
+  let requestedRes = GetRequestedResource();
   let relatedChapter;
   if (props.navData != undefined && props.chapter != undefined) {
     relatedChapter = GetRelatedChapter(props.navData.data.parts, props.chapter.id);
   }
 
   if (props.chapter?.metadata == undefined || props.navData == undefined || relatedChapter == undefined) {
-    return <ErrorPage statusCode={404} />;
+    return <NotFoundPage requestedItem={`Chapter: ${requestedRes}`}/>
   }
 
   let tocProps = {
     chapterProps: {
       showLinkedHeader: false,
+      showUnderlinedHeader: false,
       availability: relatedChapter
     } as ChapterProps
   } as TableOfContentsProps;

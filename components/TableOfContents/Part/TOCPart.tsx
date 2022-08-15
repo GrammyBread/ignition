@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ListItemText from '@mui/material/ListItemText';
 import { List, ListItem, Typography } from '@mui/material';
-import { Part } from '../../../interfaces/view-data.interfaces';
+import { Part } from '../../../interfaces/read/view-data.interfaces';
 import { ChapterProps, TOCChapter } from '../Chapter/TOCChapter';
 
 export function TOCPart(props: Part) {

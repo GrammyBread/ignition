@@ -3,8 +3,8 @@ import { Paper } from '@mui/material';
 import { ChapterProps, TOCChapter } from '../Chapter/TOCChapter';
 import Styles from './Table.module.scss';
 import { TOCPart } from '../Part/TOCPart';
-import { Part } from '../../../interfaces/view-data.interfaces';
-import { ErrorPage } from '../../Error/Error';
+import { Part } from '../../../interfaces/read/view-data.interfaces';
+import { CustomErrorPage } from '../../Error/Error';
 
 export interface TableOfContentsProps {
     partProps?: Part;
@@ -31,5 +31,5 @@ export default function TableOfContents(props: TableOfContentsProps) {
         {tableChild}
     </Paper >
     :
-    <ErrorPage message="We can't seem to find what you're looking for 🤔?"/>;
+    <CustomErrorPage message="We can't seem to find what you're looking for 🤔?"/>;
 };

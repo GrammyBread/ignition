@@ -7,7 +7,7 @@ import Styles from '../../styles/shared.module.scss';
 import { Main } from './Main';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Navigation from './Navigation/Navigation';
-import { CleanedNavigation } from '../../interfaces/cleaned-types.interface';
+import { CleanedNavigation } from '../../interfaces/read/cleaned-types.interface';
 
 export interface LayoutProps {
     children: React.ReactNode;

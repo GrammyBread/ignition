@@ -6,7 +6,7 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import NavigationSectionItem from './NavigationSection';
-import { Chapter } from '../../../../interfaces/view-data.interfaces';
+import { Chapter } from '../../../../interfaces/read/view-data.interfaces';
 import { ItemStatus } from '../../../../mappers/availability/state.mappers';
 
 export default function NavigationChapterItem(props: Chapter) {

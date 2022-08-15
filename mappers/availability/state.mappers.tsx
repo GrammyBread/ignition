@@ -1,4 +1,4 @@
-import { Part } from '../../interfaces/view-data.interfaces';
+import { Part } from '../../interfaces/read/view-data.interfaces';
 
 export enum ItemStatus {
     Unpublished = 1,

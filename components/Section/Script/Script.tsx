@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Paper } from '@mui/material';
 import Styles from './Table.module.scss';
-import { Script } from '../../interfaces/read-metadata.interfaces';
+import { Script } from '../../../interfaces/read/read-metadata.interfaces';
 
 export interface ScriptProps {
     script: Script;

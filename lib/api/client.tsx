@@ -5,7 +5,7 @@ import {
   CosmicReadData, 
   CosmicPart, 
   CosmicSection, 
-  CosmicSiteData as CosmicNavigation} from '../../interfaces/read-metadata.interfaces'
+  CosmicSiteData as CosmicNavigation} from '../../interfaces/read/read-metadata.interfaces'
 import { 
   makeGetPartQuery, 
   makeGetPartsQuery, 
@@ -14,9 +14,10 @@ import {
   makeGetAvailableChaptersQuery, 
   makeGetAvailableSectionsQuery, 
   makeGetSiteDataQuery as makeGetSiteData } from './readmeta/read-metadata-queries';
-import { HomePage } from '../../interfaces/home.interfaces'
-import { makeGetHomeQuery } from './static/home-queries'
+import { HomePage } from '../../interfaces/static/home.interfaces'
+import { makeGetHomeQuery } from './static/page-queries'
 import { makeGetAvailablePartsQuery, makeGetChapterHeaderQuery } from './readmeta/read-metadata-queries';
+import { PatreonPage } from '../../interfaces/static/patreon.interface';
 
 const BUCKET_SLUG = process.env.COSMIC_BUCKET_SLUG
 const READ_KEY = process.env.COSMIC_READ_KEY
@@ -80,5 +81,10 @@ export async function getAvailableParts(): Promise<CosmicPart[]> {
 //Non-Read Pages
 export async function getHome(): Promise<HomePage> {
   let response = await getObjects<HomePage[]>(makeGetHomeQuery());
+  return response[0];
+}
+
+export async function getPatreon(): Promise<PatreonPage> {
+  let response = await getObjects<PatreonPage[]>(makeGetHomeQuery());
   return response[0];
 }

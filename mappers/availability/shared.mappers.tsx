@@ -1,5 +1,5 @@
-import { BasicMetadata, BasicObject, TableOfContentsItem } from "../../interfaces/read-metadata.interfaces";
-import { ReadItem } from "../../interfaces/view-data.interfaces";
+import { BasicMetadata, BasicObject, TableOfContentsItem } from "../../interfaces/read/read-metadata.interfaces";
+import { ReadItem } from "../../interfaces/read/view-data.interfaces";
 import { ItemStatus } from "./state.mappers";
 
 export function TryFindRelatedCosmicItem<T extends BasicMetadata>(tocItem: TableOfContentsItem, cosmicItems: T[]): T | undefined {
