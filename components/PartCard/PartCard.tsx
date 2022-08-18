@@ -40,7 +40,7 @@ export default function PartCard(props: PartCardProps): JSX.Element {
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h5" sx={{
+                    <Typography component="h2" variant="h5" sx={{
                         color: 'primary.main'
                     }}>
                         <Box className={Styles.partTitle}>
@@ -48,7 +48,7 @@ export default function PartCard(props: PartCardProps): JSX.Element {
                         </Box>
                     </Typography>
                     <Box className={Styles.loglineHolder} onClick={toggleScroll}>
-                        <Typography className={Styles.partLoglineContainer} variant="subtitle1" component="div" sx={{
+                        <Typography className={Styles.partLoglineContainer} variant="subtitle1" component="h3" sx={{
                             overflow: shouldAllowScroll ? 'auto' : 'hidden'
                         }}>
                             <Box className={Styles.partLogline}>
@@ -63,7 +63,7 @@ export default function PartCard(props: PartCardProps): JSX.Element {
                 </CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                     <Book></Book>
-                    <Typography variant="subtitle1" component="div">
+                    <Typography variant="subtitle1">
                         Read Now
                     </Typography>
                 </Box>

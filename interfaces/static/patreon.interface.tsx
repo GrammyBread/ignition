@@ -8,9 +8,11 @@ export interface Cta {
 export interface Reason {
 	text: string;
 	id: string;
+	catch: string;
 }
 
 export interface PatreonMetadata {
+	patreon_logo: Image;
 	background: Image;
 	header: string;
 	body: string;

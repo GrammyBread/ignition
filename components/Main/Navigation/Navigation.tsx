@@ -18,6 +18,7 @@ import Link from 'next/link';
 import NavigationList from './NavigationList/NavigationList';
 import { NavigationListProps } from './NavigationList/NavigationList';
 import { CleanedNavigation } from '../../../interfaces/read/cleaned-types.interface';
+import { Circle } from '../../TableOfContents/helper';
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -71,17 +72,6 @@ export default function Navigation({navData, drawerWidth, openDrawer, closeDrawe
         backgroundColor: 'black',
         width: `calc(100% - ${drawerWidth}px)`,
         opacity: '.8',
-    }));
-
-    const Circle = styled('div', {
-        shouldForwardProp: (prop) => prop !== 'isPrimary',
-    })<{ isPrimary?: boolean }>(({ theme, isPrimary }) => ({
-        backgroundColor: isPrimary ? theme.palette.primary.main : theme.palette.background.paper,
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        height: 'fit-content',
-        padding: '5px'
     }));
 
     const navListProps = {

@@ -15,7 +15,7 @@ import {
   makeGetAvailableSectionsQuery, 
   makeGetSiteDataQuery as makeGetSiteData } from './readmeta/read-metadata-queries';
 import { HomePage } from '../../interfaces/static/home.interfaces'
-import { makeGetHomeQuery } from './static/page-queries'
+import { makeGetHomeQuery, makeGetPatreonQuery } from './static/page-queries'
 import { makeGetAvailablePartsQuery, makeGetChapterHeaderQuery } from './readmeta/read-metadata-queries';
 import { PatreonPage } from '../../interfaces/static/patreon.interface';
 
@@ -85,6 +85,6 @@ export async function getHome(): Promise<HomePage> {
 }
 
 export async function getPatreon(): Promise<PatreonPage> {
-  let response = await getObjects<PatreonPage[]>(makeGetHomeQuery());
+  let response = await getObjects<PatreonPage[]>(makeGetPatreonQuery());
   return response[0];
 }

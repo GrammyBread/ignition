@@ -55,7 +55,6 @@ const Chapter = (props: Props): JSX.Element => {
   let tocProps = {
     chapterProps: {
       showLinkedHeader: false,
-      showUnderlinedHeader: false,
       availability: relatedChapter
     } as ChapterProps
   } as TableOfContentsProps;

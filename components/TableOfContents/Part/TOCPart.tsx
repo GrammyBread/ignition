@@ -9,7 +9,7 @@ export function TOCPart(props: Part) {
         <List>
             <ListItem>
                 <ListItemText primary={
-                        <Typography align="center" variant="h4" sx={{
+                        <Typography align="center" variant="h4" component="h2" sx={{
                             textDecoration: 'underline'
                         }}>
                             {props.header}

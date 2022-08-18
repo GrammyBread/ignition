@@ -66,7 +66,7 @@ export default function NavigationList(props: NavigationListProps) {
             open={props.open}
         >
             <DrawerHeader>
-                <Typography variant="h5" sx={{ textAlign: 'left' }}>Only One Way To Burn It Down</Typography>
+                <Typography variant="h5" component={"h3"} sx={{ textAlign: 'left' }}>Only One Way To Burn It Down</Typography>
                 <ChevronLeft onClick={props.closeDrawer}></ChevronLeft>
             </DrawerHeader>
             <Divider />
