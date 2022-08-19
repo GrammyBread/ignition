@@ -5,7 +5,7 @@ import { Divider, ListItemText, styled, Typography } from '@mui/material';
 export const Circle = styled('div', {
     shouldForwardProp: (prop) => prop !== 'isPrimary',
 })<{ isPrimary?: boolean }>(({ theme, isPrimary }) => ({
-    backgroundColor: isPrimary ? theme.palette.primary.main : theme.palette.background.paper,
+    backgroundColor: isPrimary ? theme.palette.primary.main : theme.palette.error.main,
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',

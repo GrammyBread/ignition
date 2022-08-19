@@ -14,6 +14,7 @@ import { Chapter, Part } from '../../../../interfaces/read/view-data.interfaces'
 import { ChapterProps } from '../../../../components/TableOfContents/Chapter/TOCChapter';
 import { GetRequestedResource } from '../../../../lib/api/shared';
 import NotFoundPage from '../../../../components/Error/NotFound';
+import { ItemStatus } from '../../../../mappers/availability/state.mappers';
 
 interface ChapterPath {
   params: {
@@ -24,6 +25,7 @@ interface ChapterPath {
 
 interface Props {
   chapter: CosmicChapter;
+  relatedChapter: Chapter;
   navData: CleanedNavigation;
 }
 
@@ -43,19 +45,16 @@ function GetRelatedChapter(parts: Part[], id: string): Chapter | undefined {
 
 const Chapter = (props: Props): JSX.Element => {
   let requestedRes = GetRequestedResource();
-  let relatedChapter;
-  if (props.navData != undefined && props.chapter != undefined) {
-    relatedChapter = GetRelatedChapter(props.navData.data.parts, props.chapter.id);
-  }
 
-  if (props.chapter?.metadata == undefined || props.navData == undefined || relatedChapter == undefined) {
-    return <NotFoundPage requestedItem={`Chapter: ${requestedRes}`}/>
+  if (props.chapter?.metadata == undefined || props.navData == undefined || props.relatedChapter == undefined ||
+    props.relatedChapter != undefined && props.relatedChapter.publishStatus == ItemStatus.Unpublished) {
+    return <NotFoundPage requestedItem={`Chapter: ${requestedRes}`} />
   }
 
   let tocProps = {
     chapterProps: {
       showLinkedHeader: false,
-      availability: relatedChapter
+      availability: props.relatedChapter
     } as ChapterProps
   } as TableOfContentsProps;
 
@@ -84,10 +83,24 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const cleanedNav = MapSiteData(navData);
 
+  let relatedChapter: Chapter | undefined;
+  if (cleanedNav != undefined && data != undefined) {
+    let relatedChapter = GetRelatedChapter(cleanedNav.data.parts, data.id);
+    if (relatedChapter != undefined && relatedChapter.publishStatus == ItemStatus.PatreonOnly) {
+      return {
+        redirect: {
+          destination: '/patreon',
+          permanent: false,
+        },
+      }
+    }
+  }
+
   return {
     props: {
       chapter: data,
-      navData: cleanedNav
+      navData: cleanedNav,
+      relatedChapter
     } as Props,
     revalidate: 120
   };

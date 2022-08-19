@@ -1,10 +1,11 @@
 import { createTheme } from '@mui/material/styles';
 
-export const ignitionTheme = createTheme({
+export const ignitionThemeDark = createTheme({
     palette: {
         mode: 'dark',
         background: {
-            paper: '#424242'
+            paper: 'rgba(42, 42, 42, .9)',
+            default: '#00000'
         },
         primary: {
             main: '#39cdb2',
@@ -13,7 +14,7 @@ export const ignitionTheme = createTheme({
             main: '#cd3954',
         },
         error: {
-            main: '#ff8f00',
+            main: '#424242',
         },
         warning: {
             main: '#ffea00',
@@ -22,7 +23,8 @@ export const ignitionTheme = createTheme({
             main: '#39cd68',
         },
         info: {
-            main: '#b239cd',
+            main: '#000000',
+            contrastText: '#ffffff'
         },
         text: {
             primary: "#ffffff",

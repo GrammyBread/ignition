@@ -1,8 +1,6 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { getSiteData, getAvailableChapters, getChapter } from '../../../../lib/api/client';
 import * as React from 'react';
-import Image from 'next/image';
-import Styles from '../../../../styles/shared.module.scss';
 import Layout from '../../../../components/Main/Layout';
 import MapSiteData from '../../../../mappers/nav.mapper';
 import { CleanedNavigation } from '../../../../interfaces/read/cleaned-types.interface';
@@ -10,6 +8,7 @@ import { CosmicChapter } from '../../../../interfaces/read/read-metadata.interfa
 import { Chapter, Part } from '../../../../interfaces/read/view-data.interfaces';
 import { GetRequestedResource } from '../../../../lib/api/shared';
 import NotFoundPage from '../../../../components/Error/NotFound';
+import ScriptComponent, { ScriptProps } from '../../../../components/Script/Script';
 
 interface ChapterPath {
   params: {
@@ -44,17 +43,18 @@ const ChapterIntro = (props: Props): JSX.Element => {
     relatedChapter = GetRelatedChapter(props.navData.data.parts, props.chapter.id);
   }
 
-  if (props.chapter?.metadata == undefined || props.navData == undefined || relatedChapter == undefined) {
+  if (props.chapter?.metadata == undefined || props.navData == undefined || relatedChapter == undefined || props.chapter?.metadata.header_scripts == undefined) {
     return <NotFoundPage requestedItem={`Chapter Intro: ${requestedRes}`}/>
   }
 
+  const scriptProps = {
+    script: props.chapter.metadata.header_scripts,
+    header: props.chapter.metadata.header
+  } as ScriptProps;
+
   return (
     <Layout navData={props.navData}>
-        <div>HEADER CHAPTER</div>
-      {
-        props.chapter.metadata.chapter_image?.url &&
-        <Image className={Styles.backgroundImage} src={props.chapter.metadata.chapter_image?.url} layout="fill" objectFit='cover' objectPosition='center' />
-      }
+      <ScriptComponent {...scriptProps}></ScriptComponent>
     </Layout>
   );
 };

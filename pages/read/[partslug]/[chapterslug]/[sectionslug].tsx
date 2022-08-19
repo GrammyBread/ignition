@@ -1,9 +1,6 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { getSiteData, getAvailableChapters, getSectionData } from '../../../../lib/api/client';
-import ErrorPage from 'next/error';
 import * as React from 'react';
-import Image from 'next/image';
-import Styles from '../../../../styles/shared.module.scss';
 import MapSiteData from '../../../../mappers/nav.mapper';
 import { CleanedNavigation } from '../../../../interfaces/read/cleaned-types.interface';
 import { CosmicSection } from '../../../../interfaces/read/read-metadata.interfaces';
@@ -11,6 +8,8 @@ import { Section, Part } from '../../../../interfaces/read/view-data.interfaces'
 import Layout from '../../../../components/Main/Layout';
 import { GetRequestedResource } from '../../../../lib/api/shared';
 import NotFoundPage from '../../../../components/Error/NotFound';
+import { ItemStatus } from '../../../../mappers/availability/state.mappers';
+import ScriptComponent, { ScriptProps } from '../../../../components/Script/Script';
 
 interface SectionPath {
   params: {
@@ -23,6 +22,7 @@ interface SectionPath {
 interface Props {
   section: CosmicSection;
   navData: CleanedNavigation;
+  relatedSection: Section;
 }
 
 function GetRelatedSection(parts: Part[], id: string): Section | undefined {
@@ -44,25 +44,26 @@ function GetRelatedSection(parts: Part[], id: string): Section | undefined {
 
 const Section = (props: Props): JSX.Element => {
   let requestedRes = GetRequestedResource();
-  let relatedSection;
-  if (props.navData != undefined && props.section != undefined) {
-    relatedSection = GetRelatedSection(props.navData.data.parts, props.section.id);
-  }
+
+  let script = props.section.metadata?.script;
 
   if (props.section.metadata == undefined ||
     props.section.metadata.script == undefined ||
     props.navData == undefined ||
-    relatedSection == undefined) {
-      return <NotFoundPage requestedItem={`Section: ${requestedRes}`}/>
+    props.relatedSection == undefined ||
+    props.relatedSection != undefined && props.relatedSection.publishStatus == ItemStatus.Unpublished ||
+    script == undefined) {
+    return <NotFoundPage requestedItem={`Section: ${requestedRes}`} />
   }
 
-  let script = props.section.metadata?.script?.metadata.script_image.url;
+  const scriptProps = {
+    script: script,
+    header: props.relatedSection.header
+  } as ScriptProps
 
   return (
     <Layout navData={props.navData}>
-      {script &&
-        <Image className={Styles.backgroundImage} src={script} layout="fill" objectFit='cover' objectPosition='center' />
-      }
+      <ScriptComponent {...scriptProps}></ScriptComponent>
     </Layout>
   );
 };
@@ -77,21 +78,26 @@ export const getStaticProps: GetStaticProps = async (context) => {
     data = await getSectionData(slug.toString());
   }
 
-  if(data == undefined) {
-    return {
-      redirect: {
-        destination: '/404',
-        permanent: false
-      },
+  const cleanedNav = MapSiteData(navData);
+
+  let relatedSection: Section | undefined;
+  if (cleanedNav != undefined && data != undefined) {
+    relatedSection = GetRelatedSection(cleanedNav.data.parts, data.id);
+    if (relatedSection != undefined && relatedSection.publishStatus == ItemStatus.PatreonOnly) {
+      return {
+        redirect: {
+          destination: '/patreon',
+          permanent: false,
+        },
+      }
     }
   }
-
-  const cleanedNav = MapSiteData(navData);
 
   return {
     props: {
       section: data,
-      navData: cleanedNav
+      navData: cleanedNav,
+      relatedSection
     } as Props,
     revalidate: 120
   };

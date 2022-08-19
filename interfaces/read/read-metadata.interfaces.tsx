@@ -123,8 +123,9 @@ export interface Script
 
 export interface ScriptMetadata
 {
-    script_name: string;
+    title: string;
     script_image: Image;
+    header_image: Image;
 }
 
 export interface TableOfContentsItem {    

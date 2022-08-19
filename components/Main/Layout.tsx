@@ -1,6 +1,6 @@
 
 import { ThemeProvider, Box, CssBaseline } from '@mui/material';
-import { ignitionTheme } from '../../styles/theme';
+import { ignitionThemeDark } from '../../styles/theme';
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Styles from '../../styles/shared.module.scss';
@@ -70,7 +70,7 @@ export default function Layout({ children, navData }: LayoutProps) {
   return (
     <>
     <React.Fragment>
-      <ThemeProvider theme={ ignitionTheme }>
+      <ThemeProvider theme={ ignitionThemeDark }>
         <PageRoot className={ Styles.root }>
           <CssBaseline />
           <Navigation 

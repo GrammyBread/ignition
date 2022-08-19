@@ -13,12 +13,13 @@ import {
     Fab,
     AppBarProps as MuiAppBarProps
 } from '@mui/material';
-import { Twitter, Instagram } from '@mui/icons-material';
+import { Twitter, Instagram, NavigateNext, NavigateBefore } from '@mui/icons-material';
 import Link from 'next/link';
 import NavigationList from './NavigationList/NavigationList';
 import { NavigationListProps } from './NavigationList/NavigationList';
 import { CleanedNavigation } from '../../../interfaces/read/cleaned-types.interface';
 import { Circle } from '../../TableOfContents/helper';
+import { Section } from '../../../interfaces/read/view-data.interfaces';
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -34,17 +35,18 @@ export interface NavigationProps {
     openDrawer: () => void;
     closeDrawer: () => void;
     open: boolean;
+    nextSection?: Section;
+    previousSection?: Section;
 }
 
-export default function Navigation({navData, drawerWidth, openDrawer, closeDrawer, open}: NavigationProps) {
+export default function Navigation({ navData, drawerWidth, openDrawer, closeDrawer, open, nextSection, previousSection }: NavigationProps) {
     const [leftDirection, setDirection] = React.useState(false);
     const containerRef = React.useRef(null);
 
-
     React.useEffect(() => {
-        setDirection(Math.floor( Math.random() * 2 ) + 1 == 2 ? true : false)
+        setDirection(Math.floor(Math.random() * 2) + 1 == 2 ? true : false)
     },
-    [open]);
+        [open]);
 
     const AppBar = styled(MuiAppBar, {
         shouldForwardProp: (prop) => prop !== 'open',
@@ -64,15 +66,15 @@ export default function Navigation({navData, drawerWidth, openDrawer, closeDrawe
     }));
 
     const ImageContainer = styled('div', { shouldForwardProp: (prop) => prop !== 'drawerWidth' })
-    <ImageProps>(({ drawerWidth }) => ({
-        position: 'absolute',
-        top: '0px',
-        right: '0px',
-        height: '100%',
-        backgroundColor: 'black',
-        width: `calc(100% - ${drawerWidth}px)`,
-        opacity: '.8',
-    }));
+        <ImageProps>(({ drawerWidth }) => ({
+            position: 'absolute',
+            top: '0px',
+            right: '0px',
+            height: '100%',
+            backgroundColor: 'black',
+            width: `calc(100% - ${drawerWidth}px)`,
+            opacity: '.8',
+        }));
 
     const navListProps = {
         drawerWidth: drawerWidth,
@@ -84,18 +86,33 @@ export default function Navigation({navData, drawerWidth, openDrawer, closeDrawe
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open}>
+            <AppBar position="fixed" open={open} sx={{
+                backgroundColor: 'error.main'
+            }}>
                 <Toolbar ref={containerRef} sx={{
-                    backgroundColor: 'background.paper',
+                    backgroundColor: 'error.main',
+                    borderBottom: '.5rem solid',
+                    borderColor: 'background.paper',
                     width: '100%'
                 }}>
                     <Slide in={!open} direction="left" container={containerRef.current} unmountOnExit>
                         <Box className={Styles.navbar}>
-                            <Link href="https://twitter.com/TheGrammyBread">
-                                <Fab color="primary" aria-label="add" size="medium">
-                                    <Twitter></Twitter>
-                                </Fab>
-                            </Link>
+                            {
+                                previousSection && previousSection.itemSlug ?
+                                    <Link href={previousSection.itemSlug}>
+                                        <Fab color="primary" aria-label="add" size="medium">
+                                            <NavigateBefore></NavigateBefore>
+                                        </Fab>
+                                        Previous Section
+                                    </Link>
+                                    :
+                                    <Link href="https://twitter.com/TheGrammyBread">
+                                        <Fab color="primary" aria-label="add" size="medium">
+                                            <Twitter></Twitter>
+                                        </Fab>
+                                    </Link>
+                            }
+
                             <Box className={Styles.logoContainer}>
                                 <Circle className={Styles.logoCircle} {...{ isPrimary: false }}>
                                     <Button className={Styles.logoButton} onClick={openDrawer}>
@@ -103,11 +120,21 @@ export default function Navigation({navData, drawerWidth, openDrawer, closeDrawe
                                     </Button>
                                 </Circle>
                             </Box>
-                            <Link href="https://www.instagram.com/thegrammybread/">
-                                <Fab color="primary" aria-label="add" size="medium">
-                                        <Instagram></Instagram>
-                                </Fab>
-                            </Link>
+                            {
+                                nextSection && nextSection.itemSlug ?
+                                    <Link href={nextSection.itemSlug}>
+                                        Forward Section
+                                        <Fab color="primary" aria-label="add" size="medium">
+                                            <NavigateNext></NavigateNext>
+                                        </Fab>
+                                    </Link>
+                                    :
+                                    <Link href="https://www.instagram.com/thegrammybread/">
+                                        <Fab color="primary" aria-label="add" size="medium">
+                                            <Instagram></Instagram>
+                                        </Fab>
+                                    </Link>
+                            }
                         </Box>
                     </Slide>
                 </Toolbar>
@@ -119,7 +146,7 @@ export default function Navigation({navData, drawerWidth, openDrawer, closeDrawe
                 <NavigationList {...navListProps}>
                 </NavigationList>
                 <ImageContainer drawerWidth={drawerWidth}>
-                    <Image src={navData.logo.url} layout='fill' objectFit='cover' objectPosition={leftDirection ? 'left' : 'right'}  />
+                    <Image src={navData.logo.url} layout='fill' objectFit='cover' objectPosition={leftDirection ? 'left' : 'right'} />
                 </ImageContainer>
             </Backdrop>
         </Box >

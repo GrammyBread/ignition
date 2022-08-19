@@ -24,7 +24,7 @@ function MakePartCards(parts: Part[], cosmicParts: CosmicPart[]): JSX.Element[] 
   let elements = new Array<JSX.Element>();
   parts.map((part) => {
     let relatedCosmicPart = cosmicParts.find((cosmic) => {
-      cosmic.id == part.id
+      return cosmic.id == part.id
     });
     if (relatedCosmicPart != undefined && relatedCosmicPart.metadata != undefined) {
       const props = {
