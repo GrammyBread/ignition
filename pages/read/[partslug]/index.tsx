@@ -30,7 +30,7 @@ const Part = (props: Props): JSX.Element => {
   }
 
   let tocProps = {
-    partProps: props.relatedPart
+    partProps: props.relatedPart,
   } as TableOfContentsProps;
 
   let table = <TableOfContents {...tocProps}></TableOfContents>;

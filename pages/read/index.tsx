@@ -26,11 +26,12 @@ function MakePartCards(parts: Part[], cosmicParts: CosmicPart[]): JSX.Element[] 
     let relatedCosmicPart = cosmicParts.find((cosmic) => {
       return cosmic.id == part.id
     });
+
     if (relatedCosmicPart != undefined && relatedCosmicPart.metadata != undefined) {
       const props = {
         data: part,
         logline: relatedCosmicPart.metadata.part_logline,
-        partImage: relatedCosmicPart.metadata.table_of_contents_image
+        partImage: relatedCosmicPart.metadata.part_image
       } as PartCardProps;
       elements.push(<PartCard key={part.key} {...props}></PartCard>);
     }

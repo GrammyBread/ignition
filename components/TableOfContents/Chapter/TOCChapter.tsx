@@ -18,7 +18,7 @@ export function TOCChapter(props: ChapterProps): JSX.Element {
 
     return (
         <>
-            <ListItem>
+            <ListItem key={props.availability.key}>
                 {props.showLinkedHeader ?
                     getLinkedTitle(availability.publishStatus, availability.header, availability?.itemSlug)
                     :

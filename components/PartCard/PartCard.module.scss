@@ -19,10 +19,10 @@
     position: absolute;
     height: 100%;
     pointer-events: none;
-    top: 0;    
+    top: 0;
     width: calc(100% + 10px);
     left: -10px;
-    background: linear-gradient(180deg, rgba(18, 18, 18, 0) 0%, #1f1e1e 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #333333 100%);
     z-index: 900;
 }
 

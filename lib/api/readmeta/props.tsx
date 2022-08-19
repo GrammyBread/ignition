@@ -30,7 +30,8 @@ export const getPartsProps: string = `
 title,
 id,
 metadata.part_image,
-metadata.part_number`;
+metadata.part_logline,
+metadata.key`;
 
 export const getPartProps: string = `
 title,
