@@ -21,7 +21,7 @@ export interface CosmicSiteData {
 }
 
 export interface SiteMetadata extends CosmicReadData {
-    logo: Image;
+    logo: Resource;
 }
 
 export interface CosmicPart extends BasicObject
@@ -33,10 +33,10 @@ export interface PartMetadata
 {
     key: number;
     chapters: CosmicChapter[];
-    part_image: Image;
+    part_image: Resource;
     part_logline: string;
 	table_of_contents_data: TableOfContentsPart;
-    table_of_contents_image: Image;
+    table_of_contents_image: Resource;
 }
 
 export interface CosmicChapter extends BasicObject
@@ -46,7 +46,7 @@ export interface CosmicChapter extends BasicObject
 
 export interface ChapterMetadata extends BasicMetadata
 {
-    chapter_image?: Image;
+    chapter_image?: Resource;
 	chapter_section_data?: TableOfContentsChapter;
     previous_chapter_recap?: string;
     header_scripts?: Script;
@@ -58,7 +58,7 @@ export interface CosmicSection extends BasicObject
     metadata?: SectionMetadata;
 }
 
-export interface Image
+export interface Resource
 {
     url: string;
     imgix_url: string;
@@ -124,8 +124,8 @@ export interface Script
 export interface ScriptMetadata
 {
     title: string;
-    script_image: Image;
-    header_image: Image;
+    script_image: Resource;
+    header_image: Resource;
 }
 
 export interface TableOfContentsItem {    

@@ -59,10 +59,11 @@ export function NavigationText ( header: string, slug?: string, open?: boolean )
         <React.Fragment>
             {
                 slug != undefined ?
-                <Link href={ slug }>{ link }</Link> : link;
+                <Link href={ slug }>{ link }</Link> : link
             }
             {
-                open && open ? <ExpandLess /> : <ExpandMore /> 
+                open != undefined && 
+                open ? <ExpandLess /> : <ExpandMore /> 
             }
         </React.Fragment>
     );

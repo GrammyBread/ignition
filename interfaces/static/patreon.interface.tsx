@@ -1,4 +1,4 @@
-import { Image } from "../read/read-metadata.interfaces";
+import { Resource } from "../read/read-metadata.interfaces";
 
 export interface Cta {
 	text: string;
@@ -12,8 +12,8 @@ export interface Reason {
 }
 
 export interface PatreonMetadata {
-	patreon_logo: Image;
-	background: Image;
+	patreon_logo: Resource;
+	background: Resource;
 	header: string;
 	body: string;
 	cta: Cta;

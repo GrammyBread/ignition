@@ -1,4 +1,4 @@
-import { BasicObject, ChapterMetadata, Image, PartMetadata, SectionMetadata } from "./read-metadata.interfaces";
+import { BasicObject, ChapterMetadata, Resource, PartMetadata, SectionMetadata } from "./read-metadata.interfaces";
 import { Story } from "./view-data.interfaces";
 
 export interface CleanedCosmicPart extends PartMetadata, BasicObject {
@@ -14,5 +14,5 @@ export interface CleanedCosmicSection extends SectionMetadata, BasicObject {
 
 export interface CleanedNavigation {
     data: Story;
-    logo: Image;
+    logo: Resource;
 }
