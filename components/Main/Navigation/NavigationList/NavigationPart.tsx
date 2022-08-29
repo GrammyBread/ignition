@@ -12,21 +12,32 @@ import {
   ListItemText
 } from '@mui/material';
 import { ItemStatus } from '../../../../mappers/availability/state.mappers';
+import { useRouter } from 'next/router';
 
 
 export default function NavigationPartItem(props: Part) {
   const [partOpen, setPartOpen] = React.useState(false);
+  const router = useRouter()
 
-  const handleClick = () => {
-    setPartOpen(!partOpen);
+  const handleNavLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    switch (event.detail) {
+      case 1:
+        setPartOpen(!partOpen);
+        break;
+      case 2:
+        if (event.currentTarget.href != '') {
+          router.push(event.currentTarget.href);
+        }
+        break;
+    }
   };
 
   let isPartReadable = props.publishStatus != ItemStatus.PatreonOnly && props.publishStatus != ItemStatus.Unpublished;
 
   return (
     <>
-      <ListItemButton onClick={handleClick} sx={{ pl: 5 }}>
-        <ListItemText primary={props.header} sx={{ color: !isPartReadable ? 'text.disabled' : 'inherit' }}/>
+      <ListItemButton href={props.itemSlug ?? ''} onClick={handleNavLinkClick} sx={{ pl: 5 }}>
+        <ListItemText primary={props.header} sx={{ color: !isPartReadable ? 'text.disabled' : 'inherit' }} />
         {isPartReadable && (partOpen ? <ExpandLess /> : <ExpandMore />)}
       </ListItemButton>
       {isPartReadable && <Collapse in={partOpen} timeout="auto" unmountOnExit>

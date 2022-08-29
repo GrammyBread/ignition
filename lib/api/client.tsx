@@ -15,9 +15,10 @@ import {
   makeGetAvailableSectionsQuery, 
   makeGetSiteDataQuery as makeGetSiteData } from './readmeta/read-metadata-queries';
 import { HomePage } from '../../interfaces/static/home.interfaces'
-import { makeGetHomeQuery, makeGetPatreonQuery } from './static/page-queries'
+import { makeGetCharactersQuery, makeGetHomeQuery, makeGetPatreonQuery } from './static/page-queries'
 import { makeGetAvailablePartsQuery, makeGetChapterHeaderQuery } from './readmeta/read-metadata-queries';
 import { PatreonPage } from '../../interfaces/static/patreon.interface';
+import { Character } from '../../interfaces/static/character.interface';
 
 const BUCKET_SLUG = process.env.COSMIC_BUCKET_SLUG
 const READ_KEY = process.env.COSMIC_READ_KEY
@@ -87,4 +88,9 @@ export async function getHome(): Promise<HomePage> {
 export async function getPatreon(): Promise<PatreonPage> {
   let response = await getObjects<PatreonPage[]>(makeGetPatreonQuery());
   return response[0];
+}
+
+export async function getCharacters(): Promise<Character[]> {
+  let response = await getObjects<Character[]>(makeGetCharactersQuery());
+  return response;
 }

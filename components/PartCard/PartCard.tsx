@@ -25,7 +25,7 @@ export default function PartCard(props: PartCardProps): JSX.Element {
 
     const shouldShowLink = props.data.publishStatus != ItemStatus.Unpublished && props.data.itemSlug != undefined;
 
-    const card = (
+    return (
         <Card sx={{
             display: 'flex',
             marginTop: '.5rem',
@@ -61,22 +61,20 @@ export default function PartCard(props: PartCardProps): JSX.Element {
                         ></Box>
                     </Box>
                 </CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                    <Book></Book>
-                    <Typography variant="subtitle1">
-                        Read Now
-                    </Typography>
-                </Box>
+                {
+                    (props.data.itemSlug != '' && shouldShowLink)
+                    &&
+                    <Link href={props.data.itemSlug ?? '/read'}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+
+                            <Book></Book>
+                            <Typography variant="subtitle1">
+                                Read Now
+                            </Typography>
+                        </Box>
+                    </Link>
+                }
             </Box>
         </Card>
     );
-
-    return shouldShowLink ?
-        // @ts-ignore
-        //Should show link check should solve null ref here
-        <Link href={props.data.itemSlug}>
-            {card}
-        </Link>
-        :
-        card;
 }
