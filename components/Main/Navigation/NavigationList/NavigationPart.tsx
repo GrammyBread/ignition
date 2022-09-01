@@ -18,25 +18,29 @@ import { useRouter } from 'next/router';
 export default function NavigationPartItem(props: Part) {
   const [partOpen, setPartOpen] = React.useState(false);
   const router = useRouter()
+  const [partClickTime, setPartClickTime] = React.useState(Date.now() - 1000);
 
-  const handleNavLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    switch (event.detail) {
-      case 1:
-        setPartOpen(!partOpen);
-        break;
-      case 2:
-        if (event.currentTarget.href != '') {
-          router.push(event.currentTarget.href);
-        }
-        break;
-    }
+  function handleClick(event: React.MouseEvent<HTMLDivElement>) {
+      const dif = Date.now() - partClickTime;
+      console.log(dif);
+      if(dif < 500 && props.itemSlug)
+      {
+          console.log('here')
+          router.push(props.itemSlug);
+      }
+      else
+      {
+          setPartOpen(!partOpen);
+          setPartClickTime(Date.now())
+      }
+
   };
 
   let isPartReadable = props.publishStatus != ItemStatus.PatreonOnly && props.publishStatus != ItemStatus.Unpublished;
 
   return (
     <>
-      <ListItemButton href={props.itemSlug ?? ''} onClick={handleNavLinkClick} sx={{ pl: 5 }}>
+      <ListItemButton onClick={handleClick} sx={{ pl: 5 }}>
         <ListItemText primary={props.header} sx={{ color: !isPartReadable ? 'text.disabled' : 'inherit' }} />
         {isPartReadable && (partOpen ? <ExpandLess /> : <ExpandMore />)}
       </ListItemButton>

@@ -4,8 +4,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import NavigationPartItem from './NavigationPart';
 import {
-    ExpandLess,
-    ExpandMore,
     ChevronLeft,
     HomeOutlined,
     MenuBook
@@ -50,16 +48,20 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function NavigationList(props: NavigationListProps) {
     const router = useRouter()
     const [readOpen, setReadOpen] = React.useState(false);
+    const [lastClickTime, setLastClickTime] = React.useState(Date.now() - 1000);
 
-    const handleNavLinkClick = (event: React.MouseEvent) => {
-        switch (event.detail) {
-            case 1:
-                setReadOpen(!readOpen);
-                break;
-            case 2:
-                router.push('/read');
-                break;
+    function handleClick(event: React.MouseEvent<HTMLDivElement>) {
+        const dif = Date.now() - lastClickTime;
+        if(dif < 500)
+        {
+            router.push('/read');
         }
+        else
+        {
+            setReadOpen(!readOpen);
+            setLastClickTime(Date.now())
+        }
+        event.stopPropagation();
     };
 
     return (
@@ -84,7 +86,7 @@ export default function NavigationList(props: NavigationListProps) {
             <DrawerSection sx={{
                 color: 'text.secondary'
             }}>
-                <ListItemButton onClick={handleNavLinkClick}>
+                <ListItemButton onClick={handleClick}>
                     {NavigationText("Read")}
                 </ListItemButton>
                 <Collapse in={readOpen} timeout="auto" unmountOnExit>
