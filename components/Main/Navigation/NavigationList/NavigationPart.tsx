@@ -33,7 +33,7 @@ export default function NavigationPartItem(props: Part) {
           setPartOpen(!partOpen);
           setPartClickTime(Date.now())
       }
-
+      event.stopPropagation();
   };
 
   let isPartReadable = props.publishStatus != ItemStatus.PatreonOnly && props.publishStatus != ItemStatus.Unpublished;
