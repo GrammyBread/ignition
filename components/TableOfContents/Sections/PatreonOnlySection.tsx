@@ -7,39 +7,40 @@ import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { Section } from '../../../interfaces/read/view-data.interfaces';
 
-const HtmlTooltip = styled( ( { className, ...props }: TooltipProps ) => (
-    <Tooltip { ...props } classes={ { popper: className } } placement="right" />
-) )( ( { theme } ) => ( {
-    [ `& .${ tooltipClasses.tooltip }` ]: {
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} placement="right" />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: '#f5f5f9',
         color: 'rgba(0, 0, 0, 0.87)',
         maxWidth: 220,
-        fontSize: theme.typography.pxToRem( 12 ),
+        fontSize: theme.typography.pxToRem(12),
         border: '1px solid #dadde9',
     },
-} ) );
+}));
 
-export const getPatreonSection = ( availability: Section ): JSX.Element =>
-{
+export const getPatreonSection = (availability: Section): JSX.Element => {
     let tooltip =
         <React.Fragment>
             <Typography color="inherit">This Section is Patreon Only</Typography>
-            <b>{ 'Want to keep reading?' }</b>
+            <b>{'Want to keep reading?'}</b>
             <br />
-            { "You can read this section by subscribing on Patreon" }
+            {"You can read this section by subscribing on Patreon"}
         </React.Fragment>;
 
     return (
-        <ListItem className={ Styles.patreonOnlySection }>
+        <ListItem className={Styles.patreonOnlySection}>
             <HtmlTooltip title={
                 tooltip
             }>
                 <Badge color="primary" badgeContent="Patreon Only">
-                    <ListItemText sx={ {
-                        color: "warning.main"
+                    <ListItemText sx={{
+                        color: "warning.main",
+                        paddingTop: ".25rem",
+                        paddingBottom: ".25rem"
                     }
-                    } className={ Styles.patreonOnlySection } primary={ availability.header } />
+                    } className={Styles.patreonOnlySection} primary={availability.header} />
                 </Badge>
             </HtmlTooltip>
-        </ListItem> );
+        </ListItem>);
 };

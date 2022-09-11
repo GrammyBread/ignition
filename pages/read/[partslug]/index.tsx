@@ -36,9 +36,8 @@ const Part = (props: Props): JSX.Element => {
   let table = <TableOfContents {...tocProps}></TableOfContents>;
 
   return (
-    <Layout navData={props.navData}>
+    <Layout navData={props.navData} backgroundImageUrl={props.part.metadata.table_of_contents_image.url}>
       {table}
-      <Image className={Styles.backgroundImage} src={props.part.metadata.table_of_contents_image.url} layout="fill" objectFit='cover' objectPosition='center' />
     </Layout>
   );
 };

@@ -5,7 +5,7 @@ export const ignitionThemeDark = createTheme({
         mode: 'dark',
         background: {
             paper: 'rgba(42, 42, 42, .9)',
-            default: '#00000'
+            default: '#000000'
         },
         primary: {
             main: '#39cdb2',

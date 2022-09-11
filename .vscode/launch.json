@@ -21,7 +21,7 @@
       "console": "integratedTerminal",
       "serverReadyAction": {
         "pattern": "started server on .+, url: (https?://.+)",
-        "uriFormat": "%s/read/ember",
+        "uriFormat": "%s/read/ember/1-chp1/intro",
         "action": "debugWithChrome"
       }
     }

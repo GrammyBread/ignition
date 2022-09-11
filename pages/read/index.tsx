@@ -14,6 +14,7 @@ import { CustomErrorPage } from '../../components/Error/Error';
 import NotFoundPage from '../../components/Error/NotFound';
 import { useRouter } from 'next/router';
 import { GetRequestedResource } from '../../lib/api/shared';
+import { Grid } from '@mui/material';
 
 interface Props {
   navData: CleanedNavigation;
@@ -33,7 +34,11 @@ function MakePartCards(parts: Part[], cosmicParts: CosmicPart[]): JSX.Element[] 
         logline: relatedCosmicPart.metadata.part_logline,
         partImage: relatedCosmicPart.metadata.part_image
       } as PartCardProps;
-      elements.push(<PartCard key={part.key} {...props}></PartCard>);
+      elements.push(
+        <Grid item xs={12} sm={10} md={8} lg={6} xl={4} >
+          <PartCard key={part.key} {...props}></PartCard>
+        </Grid>
+      );
     }
   });
 
@@ -42,17 +47,20 @@ function MakePartCards(parts: Part[], cosmicParts: CosmicPart[]): JSX.Element[] 
 
 const Parts = (props: Props): JSX.Element => {
   if (props == undefined || props.navData == undefined || props.parts == undefined) {
-    return <NotFoundPage requestedItem={`Read Home`}/>
+    return <NotFoundPage requestedItem={`Read Home`} />
   }
 
   const partCards = MakePartCards(props.navData.data.parts, props.parts);
 
   return (
-    <Layout navData={props.navData}>
-      <div>
+    <Layout navData={props.navData} backgroundImageUrl={"/assets/SiteBack.svg"}>
+      <Grid container
+        spacing={8}
+        direction="row"
+        justifyContent="center"
+        alignItems="flex-start">
         {partCards}
-        <Image className={Styles.backgroundImage} src="/assets/SiteBack.svg" layout="fill" objectFit='cover' objectPosition='center' />
-      </div>
+      </Grid>
     </Layout>
   );
 };

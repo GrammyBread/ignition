@@ -61,12 +61,8 @@ const Chapter = (props: Props): JSX.Element => {
   let table = <TableOfContents {...tocProps}></TableOfContents>;
 
   return (
-    <Layout navData={props.navData}>
+    <Layout navData={props.navData} backgroundImageUrl={props.chapter.metadata.chapter_image?.url}>
       {table}
-      {
-        props.chapter.metadata.chapter_image?.url &&
-        <Image className={Styles.backgroundImage} src={props.chapter.metadata.chapter_image?.url} layout="fill" objectFit='cover' objectPosition='center' />
-      }
     </Layout>
   );
 };
@@ -85,7 +81,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   let relatedChapter: Chapter | undefined;
   if (cleanedNav != undefined && data != undefined) {
-    let relatedChapter = GetRelatedChapter(cleanedNav.data.parts, data.id);
+    relatedChapter = GetRelatedChapter(cleanedNav.data.parts, data.id);
     if (relatedChapter != undefined && relatedChapter.publishStatus == ItemStatus.PatreonOnly) {
       return {
         redirect: {

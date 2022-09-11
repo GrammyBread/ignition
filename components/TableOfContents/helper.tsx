@@ -1,6 +1,6 @@
 import { ItemStatus } from '../../mappers/availability/state.mappers';
 import Link from 'next/link';
-import { Divider, ListItemText, styled, Typography } from '@mui/material';
+import { ListItemText, styled, Typography } from '@mui/material';
 
 export const Circle = styled('div', {
     shouldForwardProp: (prop) => prop !== 'isPrimary',
@@ -14,11 +14,17 @@ export const Circle = styled('div', {
 }));
 
 
-export function getLinkedTitle(publishStatus: ItemStatus, title: string, slug?: string): JSX.Element {
+export function getLinkedTitle(publishStatus: ItemStatus, title: string, slug?: string, shouldPad?: boolean): JSX.Element {
     let shouldDisplayLink = publishStatus != ItemStatus.Unpublished && publishStatus != ItemStatus.PatreonOnly;
     let listTitle = (
         <ListItemText
-            sx={{ color: publishStatus == ItemStatus.Unpublished ? 'text.disabled' : 'inherit' }}
+            sx={{
+                color: publishStatus == ItemStatus.Unpublished ? 'text.disabled' : 'inherit',
+                ...(shouldPad && {
+                    paddingTop: ".25rem",
+                    paddingBottom: ".25rem"
+                })
+            }}
             primary={title} />);
 
     return shouldDisplayLink && slug ?
@@ -36,7 +42,6 @@ export function getUnlikedTitle(header: string): JSX.Element {
                     {header}
                 </Typography>
             } />
-            <Divider variant="middle" />
         </>
     );
 }

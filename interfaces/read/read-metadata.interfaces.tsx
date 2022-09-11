@@ -126,6 +126,34 @@ export interface ScriptMetadata
     title: string;
     script_image: Resource;
     header_image: Resource;
+    social_details: SocialDetail;
+}
+
+export interface SocialImage {
+	url: string;
+	imgix_url: string;
+}
+
+export interface SocialMetadata {
+	description: string;
+	social_image: SocialImage;
+}
+
+export interface SocialDetail {
+	id: string;
+	slug: string;
+	title: string;
+	content: string;
+	bucket: string;
+	created_at: string;
+	created_by: string;
+	modified_at: string;
+	created: string;
+	status: string;
+	thumbnail: string;
+	published_at: string;
+	type: string;
+	metadata: SocialMetadata;
 }
 
 export interface TableOfContentsItem {    

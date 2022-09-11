@@ -22,7 +22,7 @@ export const getNewSection = (availability: Section) => {
         <ListItem className={Styles.newSection}>
             <LightTooltip title="This is the newest section!">
                 <Badge color="secondary" badgeContent="New">
-                    {getLinkedTitle(availability.publishStatus, availability.header, availability.itemSlug)}
+                    {getLinkedTitle(availability.publishStatus, availability.header, availability.itemSlug, true)}
                 </Badge>
             </LightTooltip>
         </ListItem>

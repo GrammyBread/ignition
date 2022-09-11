@@ -25,7 +25,6 @@ export default function NavigationPartItem(props: Part) {
       console.log(dif);
       if(dif < 500 && props.itemSlug)
       {
-          console.log('here')
           router.push(props.itemSlug);
       }
       else

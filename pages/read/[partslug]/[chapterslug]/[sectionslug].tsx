@@ -1,5 +1,5 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
-import { getSiteData, getAvailableChapters, getSectionData } from '../../../../lib/api/client';
+import { getSiteData, getAvailableSections, getSectionData } from '../../../../lib/api/client';
 import * as React from 'react';
 import MapSiteData from '../../../../mappers/nav.mapper';
 import { CleanedNavigation } from '../../../../interfaces/read/cleaned-types.interface';
@@ -10,6 +10,8 @@ import { GetRequestedResource } from '../../../../lib/api/shared';
 import NotFoundPage from '../../../../components/Error/NotFound';
 import { ItemStatus } from '../../../../mappers/availability/state.mappers';
 import ScriptComponent, { ScriptProps } from '../../../../components/Script/Script';
+import { useRouter } from 'next/router';
+import MapSocialData from '../../../../mappers/socials.mapper';
 
 interface SectionPath {
   params: {
@@ -43,9 +45,13 @@ function GetRelatedSection(parts: Part[], id: string): Section | undefined {
 }
 
 const Section = (props: Props): JSX.Element => {
+  const router = useRouter();
   let requestedRes = GetRequestedResource();
 
   let script = props.section.metadata?.script;
+  const scriptURL = router.domainLocales && router.domainLocales.length > 1 ? 
+  `https://www.${router.domainLocales[0]}/${router.pathname}` : 
+  "https://www.onlyonewaytoburnitdown.com"
 
   if (props.section.metadata == undefined ||
     props.section.metadata.script == undefined ||
@@ -56,13 +62,15 @@ const Section = (props: Props): JSX.Element => {
     return <NotFoundPage requestedItem={`Section: ${requestedRes}`} />
   }
 
+  const socialData = MapSocialData(script.metadata.social_details, scriptURL);
   const scriptProps = {
     script: script,
-    header: props.relatedSection.header
+    header: props.relatedSection.header,
+    fullURL: scriptURL
   } as ScriptProps
 
   return (
-    <Layout navData={props.navData}>
+    <Layout navData={props.navData} backgroundImageUrl={scriptProps.script.metadata.script_image.url} socials={socialData}>
       <ScriptComponent {...scriptProps}></ScriptComponent>
     </Layout>
   );
@@ -104,7 +112,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const result = await getAvailableChapters();
+  const result = await getAvailableSections();
   let availablePaths = new Array<SectionPath>();
   result.map((part) => {
     if (part.metadata != undefined) {

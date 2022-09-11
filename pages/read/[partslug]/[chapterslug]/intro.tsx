@@ -44,7 +44,7 @@ const ChapterIntro = (props: Props): JSX.Element => {
   }
 
   if (props.chapter?.metadata == undefined || props.navData == undefined || relatedChapter == undefined || props.chapter?.metadata.header_scripts == undefined) {
-    return <NotFoundPage requestedItem={`Chapter Intro: ${requestedRes}`}/>
+    return <NotFoundPage requestedItem={`Chapter Intro: ${requestedRes}`} />
   }
 
   const scriptProps = {
@@ -53,7 +53,7 @@ const ChapterIntro = (props: Props): JSX.Element => {
   } as ScriptProps;
 
   return (
-    <Layout navData={props.navData}>
+    <Layout navData={props.navData} backgroundImageUrl={scriptProps.script.metadata.script_image.url}>
       <ScriptComponent {...scriptProps}></ScriptComponent>
     </Layout>
   );

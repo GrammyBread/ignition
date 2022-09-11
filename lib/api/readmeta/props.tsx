@@ -46,6 +46,7 @@ id,
 metadata.header,
 metadata.key,
 metadata.previous_chapter_recap,
+metadata.header_scripts,
 metadata.chapter_image`;
 
 export const getChapterHeaderScript: string = `

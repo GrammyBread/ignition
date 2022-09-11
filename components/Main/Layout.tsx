@@ -9,12 +9,23 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { NavigationProps, Navigation } from './Navigation/Navigation';
 import { CleanedNavigation } from '../../interfaces/read/cleaned-types.interface';
 import { Section } from '../../interfaces/read/view-data.interfaces';
+import Image from 'next/image';
+import Head from 'next/head';
 
 export interface LayoutProps {
   children: React.ReactNode;
   navData: CleanedNavigation;
   previousSection?: Section;
   nextSection?: Section;
+  backgroundImageUrl?: string;
+  socials?: Socials;
+}
+
+export interface Socials {
+  url: string;
+  title: string;
+  description: string;
+  imageUrl: string;
 }
 
 const PageRoot = styled(Box)(({ theme }) => ({
@@ -31,7 +42,7 @@ enum ScreenSize {
   Giant = 500
 }
 
-export default function Layout({ children, navData, previousSection, nextSection }: LayoutProps) {
+export default function Layout({ children, navData, previousSection, nextSection, backgroundImageUrl, socials }: LayoutProps) {
   const [open, setOpen] = React.useState(false);
   const [drawerWidth, setDrawerWidth] = React.useState(ScreenSize.Tiny);
 
@@ -81,17 +92,30 @@ export default function Layout({ children, navData, previousSection, nextSection
   } as NavigationProps
 
   return (
-    <>
-      <React.Fragment>
-        <ThemeProvider theme={ignitionThemeDark}>
-          <PageRoot className={Styles.root}>
-            <CssBaseline />
-            <Navigation {...navigationProps}
-            ></Navigation>
-            <Main open={open} drawerWidth={drawerWidth} >{children}</Main>
-          </PageRoot>
-        </ThemeProvider>
-      </React.Fragment>
-    </>
+    <React.Fragment>
+      {
+        socials &&
+        <Head>
+          <meta property="og:url" content={socials.url} />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content={socials.title} />
+          <meta property="og:description" content={socials.description} />
+          <meta property="og:image" content={socials.imageUrl} />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:creator" content="@TheGrammyBread" />
+        </Head>
+      }
+      <ThemeProvider theme={ignitionThemeDark}>
+        <PageRoot className={Styles.root}>
+          <CssBaseline />
+          <Navigation {...navigationProps}
+          ></Navigation>
+          <Main open={open} drawerWidth={drawerWidth} >
+            {children}
+            {backgroundImageUrl && <Image className={Styles.backgroundImage} src={backgroundImageUrl} layout="fill" objectFit='cover' objectPosition='center' />}
+          </Main>
+        </PageRoot>
+      </ThemeProvider>
+    </React.Fragment>
   )
 }
