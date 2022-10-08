@@ -15,4 +15,5 @@ export interface CleanedCosmicSection extends SectionMetadata, BasicObject {
 export interface CleanedNavigation {
     data: Story;
     logo: Resource;
+    domain: string;
 }

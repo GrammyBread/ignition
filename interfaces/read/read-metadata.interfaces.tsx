@@ -18,6 +18,7 @@ export interface CosmicSiteData {
 	title: string;
 	content: string;
 	metadata: SiteMetadata;
+    domain: string;
 }
 
 export interface SiteMetadata extends CosmicReadData {
@@ -127,6 +128,7 @@ export interface ScriptMetadata
     script_image: Resource;
     header_image: Resource;
     social_details: SocialDetail;
+    small_script: string;
 }
 
 export interface SocialImage {

@@ -49,9 +49,9 @@ const Section = (props: Props): JSX.Element => {
   let requestedRes = GetRequestedResource();
 
   let script = props.section.metadata?.script;
-  const scriptURL = router.domainLocales && router.domainLocales.length > 1 ? 
-  `https://www.${router.domainLocales[0]}/${router.pathname}` : 
-  "https://www.onlyonewaytoburnitdown.com"
+  const scriptURL = router.asPath ?
+    `${props.navData.domain}${router.asPath}` :
+    props.navData.domain;
 
   if (props.section.metadata == undefined ||
     props.section.metadata.script == undefined ||
@@ -62,7 +62,7 @@ const Section = (props: Props): JSX.Element => {
     return <NotFoundPage requestedItem={`Section: ${requestedRes}`} />
   }
 
-  const socialData = MapSocialData(script.metadata.social_details, scriptURL);
+  const socialData = script.metadata.social_details ? MapSocialData(script.metadata.social_details, scriptURL) : undefined;
   const scriptProps = {
     script: script,
     header: props.relatedSection.header,

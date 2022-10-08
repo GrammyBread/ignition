@@ -6,6 +6,7 @@ export default function MapSiteData(siteData: CosmicSiteData) : CleanedNavigatio
     const story = MapParts(siteData.metadata);
     return {
         data: story,
-        logo: siteData.metadata.logo
+        logo: siteData.metadata.logo,
+        domain: siteData.domain,
     } as CleanedNavigation;
 }

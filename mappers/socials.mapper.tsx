@@ -1,9 +1,7 @@
-import { CosmicSiteData, SocialDetail } from '../interfaces/read/read-metadata.interfaces';
-import { CleanedNavigation } from '../interfaces/read/cleaned-types.interface';
-import MapParts from "./availability/part.mappers";
+import { SocialDetail } from '../interfaces/read/read-metadata.interfaces';
 import { Socials } from '../components/Main/Layout';
 
-export default function MapSocialData(socialData: SocialDetail, fullUrl: string) : Socials {
+export default function MapSocialData(socialData: SocialDetail, fullUrl: string): Socials {
     return {
         title: socialData.title,
         url: fullUrl,

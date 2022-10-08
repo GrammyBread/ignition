@@ -22,7 +22,8 @@ export default function ScriptComponent(props: ScriptProps) {
     } as ScriptHeaderProps
 
     const bodyProps = {
-        body: props.script.content
+        body: props.script.content,
+        smallScript: props.script.metadata.small_script
     } as ScriptBodyProps
 
     return <React.Fragment>

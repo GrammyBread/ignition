@@ -36,7 +36,9 @@ async function getObjects<T>(query: CosmicQuery): Promise<T> {
 //Read Stuff
 export async function getSiteData(): Promise<CosmicNavigation> {
   let response = await getObjects<CosmicNavigation[]>(makeGetSiteData())
-  return response[0];
+  let nav = response[0];
+  nav.domain = process.env.DOMAIN!;
+  return nav;
 }
 
 export async function getParts(): Promise<CosmicPart[]> {
