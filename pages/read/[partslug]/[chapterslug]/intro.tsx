@@ -1,14 +1,15 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
-import { getSiteData, getAvailableChapters, getChapter } from '../../../../lib/api/client';
+import { getChapter } from '../../../../src/lib/api/client';
 import * as React from 'react';
-import Layout from '../../../../components/Main/Layout';
-import MapSiteData from '../../../../mappers/nav.mapper';
-import { CleanedNavigation } from '../../../../interfaces/read/cleaned-types.interface';
-import { CosmicChapter } from '../../../../interfaces/read/read-metadata.interfaces';
-import { Chapter, Part } from '../../../../interfaces/read/view-data.interfaces';
-import { GetRequestedResource } from '../../../../lib/api/shared';
-import NotFoundPage from '../../../../components/Error/NotFound';
-import ScriptComponent, { ScriptProps } from '../../../../components/Script/Script';
+import Layout from '../../../../src/components/Main/Layout';
+import { CleanedNavigation } from '../../../../src/interfaces/read/cleaned-types.interface';
+import { CosmicChapter } from '../../../../src/interfaces/read/read-metadata.interfaces';
+import { GetRequestedResource } from '../../../../src/lib/api/shared';
+import NotFoundPage from '../../../../src/components/Error/NotFound';
+import ScriptComponent, { ScriptProps } from '../../../../src/components/Script/Script';
+import getCleanSiteData from '../../../../src/lib/api/sitedata/cache-site-data';
+import { RedirectTo404, RedirectToPatreon } from '../../../../src/common/common-redirects';
+import { ItemStatus } from '../../../../src/mappers/availability/state.mappers';
 
 interface ChapterPath {
   params: {
@@ -18,43 +19,20 @@ interface ChapterPath {
 }
 
 interface Props {
-  chapter: CosmicChapter;
+  scriptDetails: ScriptProps;
   navData: CleanedNavigation;
-}
-
-function GetRelatedChapter(parts: Part[], id: string): Chapter | undefined {
-  let relatedChapter: Chapter | undefined;
-  for (let pi = 0; pi < parts.length && relatedChapter == undefined; pi++) {
-    let part = parts[pi];
-    for (let ci = 0; ci < part.chapters.length && relatedChapter == undefined; ci++) {
-      let chapter = part.chapters[ci];
-      if (chapter.id == id) {
-        relatedChapter = chapter;
-      }
-    }
-  }
-  return relatedChapter;
 }
 
 const ChapterIntro = (props: Props): JSX.Element => {
   let requestedRes = GetRequestedResource();
-  let relatedChapter;
-  if (props.navData != undefined && props.chapter != undefined) {
-    relatedChapter = GetRelatedChapter(props.navData.data.parts, props.chapter.id);
-  }
 
-  if (props.chapter?.metadata == undefined || props.navData == undefined || relatedChapter == undefined || props.chapter?.metadata.header_scripts == undefined) {
+  if (props.navData == undefined || props.scriptDetails == undefined) {
     return <NotFoundPage requestedItem={`Chapter Intro: ${requestedRes}`} />
   }
 
-  const scriptProps = {
-    script: props.chapter.metadata.header_scripts,
-    header: props.chapter.metadata.header
-  } as ScriptProps;
-
   return (
-    <Layout navData={props.navData} backgroundImageUrl={scriptProps.script.metadata.script_image.url}>
-      <ScriptComponent {...scriptProps}></ScriptComponent>
+    <Layout navData={props.navData} backgroundImageUrl={props.scriptDetails.script.metadata.script_image.url}>
+      <ScriptComponent {...props.scriptDetails}></ScriptComponent>
     </Layout>
   );
 };
@@ -62,38 +40,54 @@ const ChapterIntro = (props: Props): JSX.Element => {
 export default ChapterIntro;
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  let data = undefined;
-  let navData = await getSiteData();
+  let data: CosmicChapter | undefined = undefined;
   let slug = context?.params?.chapterslug;
   if (slug != undefined) {
     data = await getChapter(slug.toString());
   }
 
-  const cleanedNav = MapSiteData(navData);
+  if (!data?.id || !data.metadata?.header_scripts) {
+    return RedirectTo404();
+  }
+
+  const cleanSiteData = await getCleanSiteData();
+  if (!cleanSiteData) {
+    throw Error("Could not get site data!");
+  }
+
+  const relatedChapter = cleanSiteData.getRelatedChapter(data.id);
+  if (!relatedChapter) {
+    return RedirectTo404();
+  }
+  else if (relatedChapter.publishStatus == ItemStatus.PatreonOnly) {
+    return RedirectToPatreon();
+  }
 
   return {
     props: {
-      chapter: data,
-      navData: cleanedNav
+      scriptDetails: {
+        script: data.metadata.header_scripts,
+        header: data.metadata.header
+      } as ScriptProps,
+      navData: cleanSiteData.getSimpleNav()
     } as Props,
     revalidate: 120
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const result = await getAvailableChapters();
+  const cleanSiteData = await getCleanSiteData();
+  if (!cleanSiteData) {
+    throw Error("Could not get site data!");
+  }
+
   let availablePaths = new Array<ChapterPath>();
-  result.map((part) => {
-    if (part.metadata != undefined) {
-      part.metadata.chapters.map((chapter) => {
+  cleanSiteData.getSimpleNav(true).data.forEach((part) => {
+    part.chapters.forEach((chapter) => {
         availablePaths.push({
-          params: {
-            partslug: part.slug,
-            chapterslug: chapter.slug
-          }
+          params: chapter.slug.params
         } as ChapterPath)
-      })
-    }
+    })
   });
 
   return {

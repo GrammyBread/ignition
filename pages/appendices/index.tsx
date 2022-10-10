@@ -1,21 +1,19 @@
 import { GetStaticProps } from 'next';
-import { getParts, getSiteData } from '../../lib/api/client';
 import * as React from 'react';
 import Image from 'next/image';
-import Styles from '../../styles/shared.module.scss';
-import Layout from '../../components/Main/Layout';
-import MapSiteData from '../../mappers/nav.mapper';
-import { CleanedNavigation } from '../../interfaces/read/cleaned-types.interface';
-import NotFoundPage from '../../components/Error/NotFound';
+import Styles from '../../src/styles/shared.module.scss';
+import Layout from '../../src/components/Main/Layout';
+import { CleanedNavigation } from '../../src/interfaces/read/cleaned-types.interface';
+import NotFoundPage from '../../src/components/Error/NotFound';
 import { Paper, Typography } from '@mui/material';
 import Link from 'next/link';
+import getCleanSiteData from '../../src/lib/api/sitedata/cache-site-data';
 
 interface Props {
     navData: CleanedNavigation;
 }
 
-
-const Parts = (props: Props): JSX.Element => {
+const ApendicesHome = (props: Props): JSX.Element => {
     if (props == undefined || props.navData == undefined) {
         return <NotFoundPage requestedItem={`Appendices`} />
     }
@@ -27,24 +25,26 @@ const Parts = (props: Props): JSX.Element => {
                     <Link href="/appendices/characters">
                         <Typography variant='h2'>
                             Character Look Up
-                            </Typography>
+                        </Typography>
                     </Link>
                 </Paper>
-                <Image className={Styles.backgroundImage} src="/assets/SiteBack.svg" layout="fill" objectFit='cover' objectPosition='center' />
+                <Image className={Styles.backgroundImage} alt="" src="/assets/SiteBack.svg" layout="fill" objectFit='cover' objectPosition='center' />
             </div>
         </Layout>
     );
 };
 
-export default Parts;
+export default ApendicesHome;
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const result = await getSiteData();
+    const cleanSiteData = await getCleanSiteData();
+    if (!cleanSiteData) {
+        throw Error("Could not get site data!")
+    }
 
-    const cleanedNav = MapSiteData(result);
     return {
         props: {
-            navData: cleanedNav
+            navData: cleanSiteData.getSimpleNav()
         } as Props,
         revalidate: 120
     };

@@ -1,32 +1,39 @@
-import { GetStaticProps, GetStaticPaths } from 'next';
-import { CosmicPart } from '../../../interfaces/read/read-metadata.interfaces';
-import { getSiteData, getPart, getAvailableParts } from '../../../lib/api/client';
-import ErrorPage from 'next/error';
-import * as React from 'react';
-import Image from 'next/image';
-import Styles from '../../../styles/shared.module.scss';
-import { TableOfContentsProps } from '../../../components/TableOfContents/Table/Table';
-import TableOfContents from '../../../components/TableOfContents/Table/Table';
-import Layout from '../../../components/Main/Layout';
-import MapSiteData from '../../../mappers/nav.mapper';
-import { CleanedNavigation } from '../../../interfaces/read/cleaned-types.interface';
-import { GetRequestedResource } from '../../../lib/api/shared';
-import NotFoundPage from '../../../components/Error/NotFound';
-import { Part } from '../../../interfaces/read/view-data.interfaces';
-import { ItemStatus } from '../../../mappers/availability/state.mappers';
-
+import { GetStaticProps, GetStaticPaths } from "next";
+import { CosmicPart } from "../../../src/interfaces/read/read-metadata.interfaces";
+import {
+  getPart,
+} from "../../../src/lib/api/client";
+import * as React from "react";
+import { TableOfContentsProps } from "../../../src/components/TableOfContents/Table/Table";
+import TableOfContents from "../../../src/components/TableOfContents/Table/Table";
+import Layout from "../../../src/components/Main/Layout";
+import { CleanedNavigation } from "../../../src/interfaces/read/cleaned-types.interface";
+import { GetRequestedResource } from "../../../src/lib/api/shared";
+import NotFoundPage from "../../../src/components/Error/NotFound";
+import { Part } from "../../../src/interfaces/read/view-data.interfaces";
+import { ItemStatus } from "../../../src/mappers/availability/state.mappers";
+import getCleanSiteData from "../../../src/lib/api/sitedata/cache-site-data";
+import {
+  RedirectTo404,
+  RedirectToPatreon,
+} from "../../../src/common/common-redirects";
 
 interface Props {
-  part?: CosmicPart;
+  partImageUrl: string;
   relatedPart: Part;
-  navData?: CleanedNavigation;
+  navData: CleanedNavigation;
 }
 
 const Part = (props: Props): JSX.Element => {
   let requestedRes = GetRequestedResource();
-  if (props.part?.metadata == undefined || props.navData == undefined || props.relatedPart == undefined || 
-    props.relatedPart != undefined && props.relatedPart.publishStatus == ItemStatus.Unpublished) {
-    return <NotFoundPage requestedItem={`Part: ${requestedRes}`}/>
+  if (
+    props.partImageUrl == undefined ||
+    props.navData == undefined ||
+    props.relatedPart == undefined ||
+    (props.relatedPart != undefined &&
+      props.relatedPart.publishStatus == ItemStatus.Unpublished)
+  ) {
+    return <NotFoundPage requestedItem={`Part: ${requestedRes}`} />;
   }
 
   let tocProps = {
@@ -36,7 +43,10 @@ const Part = (props: Props): JSX.Element => {
   let table = <TableOfContents {...tocProps}></TableOfContents>;
 
   return (
-    <Layout navData={props.navData} backgroundImageUrl={props.part.metadata.table_of_contents_image.url}>
+    <Layout
+      navData={props.navData}
+      backgroundImageUrl={props.partImageUrl}
+    >
       {table}
     </Layout>
   );
@@ -45,48 +55,50 @@ const Part = (props: Props): JSX.Element => {
 export default Part;
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  let data:CosmicPart | undefined;
-  data = undefined;
-  let navData = await getSiteData();
+  let data: CosmicPart | undefined = undefined;
   let slug = context?.params?.partslug;
   if (slug != undefined) {
-    data = await getPart(slug.toString()) as CosmicPart;
+    data = (await getPart(slug.toString())) as CosmicPart;
   }
 
-  const cleanedNav = MapSiteData(navData);
+  if (!data?.id) {
+    return RedirectTo404();
+  }
+  
+  const cleanSiteData = await getCleanSiteData();
+  if (!cleanSiteData) {
+    throw Error("Could not get site data!");
+  }
 
-  let relatedPart;
-  if (cleanedNav != undefined && data != undefined) {
-    relatedPart = cleanedNav.data.parts.find((part) => {
-      return part.id === data?.id
-    });
-
-    if(relatedPart != undefined && relatedPart.publishStatus == ItemStatus.PatreonOnly)
-    {
-      return {
-        redirect: {
-          destination: '/patreon',
-          permanent: false,
-        },
-      }
-    }
+  let relatedPart = cleanSiteData.getRelatedPart(data.id);
+  if (!relatedPart) {
+    return RedirectTo404();
+  }
+  else if (relatedPart.publishStatus == ItemStatus.PatreonOnly) {
+    return RedirectToPatreon();
   }
 
   return {
     props: {
-      part: data,
-      navData: cleanedNav,
-      relatedPart
+      partImageUrl: data.metadata?.table_of_contents_image.url ?? "/assets/SiteBack.svg",
+      navData: cleanSiteData.getSimpleNav(),
+      relatedPart,
     } as Props,
-    revalidate: 120
+    revalidate: 120,
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const result = await getAvailableParts();
-  let availablePaths = result.map((part) => ({
-    params: { partslug: part.slug },
+  const cleanSiteData = await getCleanSiteData();
+
+  if (!cleanSiteData) {
+    throw Error("Could not get site data!");
+  }
+
+  let availablePaths = cleanSiteData.getSimpleNav(true).data.map((part) => ({
+    params: part.slug.params,
   }));
+
   return {
     paths: availablePaths,
     fallback: false,

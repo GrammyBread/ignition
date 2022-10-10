@@ -1,7 +1,7 @@
-import { CustomErrorPage } from "../components/Error/Error";
+import ServerErrorPage from "../src/components/Error/ServerError";
 
 const ServerError = (): JSX.Element => {
-return <CustomErrorPage message="Things are on fire 🔥! Check back later."/>;
+return <ServerErrorPage/>
 }
 
 export default ServerError

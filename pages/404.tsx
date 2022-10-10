@@ -1,7 +1,7 @@
-import NotFoundPage from "../components/Error/NotFound";
+import NotFoundPage from "../src/components/Error/NotFound";
 
-const ServerError = (): JSX.Element => {
+const NotFound = (): JSX.Element => {
 return <NotFoundPage/>
 }
 
-export default ServerError
+export default NotFound

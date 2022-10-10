@@ -1,48 +1,25 @@
 import { GetStaticProps } from 'next';
-import { CosmicPart } from '../../interfaces/read/read-metadata.interfaces';
-import { getParts, getSiteData } from '../../lib/api/client';
+import { getParts, getSiteData } from '../../src/lib/api/client';
 import * as React from 'react';
-import Image from 'next/image';
-import Styles from '../../styles/shared.module.scss';
-import PartCard from '../../components/PartCard/PartCard';
-import Layout from '../../components/Main/Layout';
-import MapSiteData from '../../mappers/nav.mapper';
-import { CleanedNavigation } from '../../interfaces/read/cleaned-types.interface';
-import { Part } from '../../interfaces/read/view-data.interfaces';
-import { PartCardProps } from '../../components/PartCard/PartCard';
-import { CustomErrorPage } from '../../components/Error/Error';
-import NotFoundPage from '../../components/Error/NotFound';
-import { useRouter } from 'next/router';
-import { GetRequestedResource } from '../../lib/api/shared';
+import PartCard from '../../src/components/PartCard/PartCard';
+import Layout from '../../src/components/Main/Layout';
+import { CleanedNavigation } from '../../src/interfaces/read/cleaned-types.interface';
+import { PartCardProps } from '../../src/components/PartCard/PartCard';
+import NotFoundPage from '../../src/components/Error/NotFound';
 import { Grid } from '@mui/material';
+import getCleanSiteData from '../../src/lib/api/sitedata/cache-site-data';
 
 interface Props {
   navData: CleanedNavigation;
-  parts: CosmicPart[];
+  parts: PartCardProps[]
 }
 
-function MakePartCards(parts: Part[], cosmicParts: CosmicPart[]): JSX.Element[] {
-  let elements = new Array<JSX.Element>();
-  parts.map((part) => {
-    let relatedCosmicPart = cosmicParts.find((cosmic) => {
-      return cosmic.id == part.id
-    });
-
-    if (relatedCosmicPart != undefined && relatedCosmicPart.metadata != undefined) {
-      const props = {
-        data: part,
-        logline: relatedCosmicPart.metadata.part_logline,
-        partImage: relatedCosmicPart.metadata.part_image
-      } as PartCardProps;
-      elements.push(
-        <Grid item xs={12} sm={10} md={8} lg={6} xl={4} >
-          <PartCard key={part.key} {...props}></PartCard>
-        </Grid>
-      );
-    }
-  });
-
-  return elements;
+function MakePartCards(parts: PartCardProps[]): JSX.Element[] {
+  return parts.map((part) =>
+    <Grid key={part.key} item xs={12} sm={10} md={8} lg={7} xl={6} >
+      <PartCard {...part}></PartCard>
+    </Grid>
+  );
 }
 
 const Parts = (props: Props): JSX.Element => {
@@ -50,7 +27,7 @@ const Parts = (props: Props): JSX.Element => {
     return <NotFoundPage requestedItem={`Read Home`} />
   }
 
-  const partCards = MakePartCards(props.navData.data.parts, props.parts);
+  const partCards = MakePartCards(props.parts);
 
   return (
     <Layout navData={props.navData} backgroundImageUrl={"/assets/SiteBack.svg"}>
@@ -68,14 +45,16 @@ const Parts = (props: Props): JSX.Element => {
 export default Parts;
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const result = await getSiteData();
+  const cleanSiteData = await getCleanSiteData();
   const partResults = await getParts();
+  if (!cleanSiteData) {
+    throw Error("Could not get site data!")
+  }
 
-  const cleanedNav = MapSiteData(result);
   return {
     props: {
-      navData: cleanedNav,
-      parts: partResults
+      navData: cleanSiteData.getSimpleNav(),
+      parts: cleanSiteData.getPartsForDisplay(partResults)
     } as Props,
     revalidate: 120
   };

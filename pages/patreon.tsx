@@ -1,21 +1,22 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { Accordion, AccordionDetails, AccordionSummary, Button, Fade, Paper, Stack, Typography } from '@mui/material';
-import { getPatreon, getSiteData } from '../lib/api/client';
-import MapSiteData from '../mappers/nav.mapper';
+import { getPatreon, getSiteData } from '../src/lib/api/client';
 import { GetStaticProps } from 'next';
-import { CleanedNavigation } from '../interfaces/read/cleaned-types.interface';
-import Layout from '../components/Main/Layout';
-import { PatreonPage, Reason } from '../interfaces/static/patreon.interface';
-import NotFoundPage from '../components/Error/NotFound';
+import { CleanedNavigation } from '../src/interfaces/read/cleaned-types.interface';
+import Layout from '../src/components/Main/Layout';
+import { PatreonPage, Reason } from '../src/interfaces/static/patreon.interface';
+import NotFoundPage from '../src/components/Error/NotFound';
 import { ColorLens, Description, Favorite, MailOutline, VolunteerActivism } from '@mui/icons-material';
-import { Circle } from '../components/TableOfContents/helper';
-import Styles from '../styles/patreon.module.scss';
+import { Circle } from '../src/components/TableOfContents/helper';
+import Styles from '../src/styles/patreon.module.scss';
+import getCleanSiteData from '../src/lib/api/sitedata/cache-site-data';
 
 
 interface Props {
     navData: CleanedNavigation;
-    pageData: PatreonPage;}
+    pageData: PatreonPage;
+}
 
 function MapIcon(id: number) {
     switch (id) {
@@ -29,7 +30,8 @@ function MapIcon(id: number) {
             return <VolunteerActivism fontSize='large'></VolunteerActivism>;
         default:
             return <Favorite fontSize='large'></Favorite>
-    }}
+    }
+}
 
 function GetFeatures(reasons: Reason[]): JSX.Element[] {
     let features = reasons.map((reason) => {
@@ -101,7 +103,7 @@ const Patreon = (props: Props): JSX.Element => {
                         </Button>
                     </Stack>
                 </Paper>
-                <Image className={Styles.backgroundLogo} src={data.background.url} layout="fill" objectFit='cover' objectPosition='center' />
+                <Image className={Styles.backgroundLogo} alt="" src={data.background.url} layout="fill" objectFit='cover' objectPosition='center' />
             </React.Fragment>
         </Layout>);
 }
@@ -109,13 +111,16 @@ const Patreon = (props: Props): JSX.Element => {
 export default Patreon
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const navData = await getSiteData();
+    const cleanSiteData = await getCleanSiteData();
     const patreonData = await getPatreon();
 
-    const cleanedNav = MapSiteData(navData);
+    if (!cleanSiteData) {
+        throw Error("Could not get site data!")
+    }
+
     return {
         props: {
-            navData: cleanedNav,
+            navData: cleanSiteData.getSimpleNav(),
             pageData: patreonData
         } as Props,
         revalidate: 120
