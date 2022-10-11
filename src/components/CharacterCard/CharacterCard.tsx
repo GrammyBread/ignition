@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Card, CardContent, CardMedia, Typography, Box, Accordion, AccordionSummary, AccordionDetails, Stack } from '@mui/material';
-import { Character } from '../../interfaces/static/character.interface';
+import { Character } from '../../interfaces/appendices/character.interface';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
 import Image from 'next/image';
 import { styled } from '@mui/material/styles';
@@ -28,6 +28,7 @@ export default function CharacterCard(props: Character): JSX.Element {
                 alt={`${characterName} cover image`}
             />
             <CardContent>
+                <audio src={props.metadata.pronunciation.url}></audio>
                 <Accordion elevation={0} sx={{
                     backgroundColor: 'transparent',
                     color: 'primary.contrastText'
@@ -57,7 +58,7 @@ export default function CharacterCard(props: Character): JSX.Element {
                                     }}>
                                         <Image 
                                         src={props.metadata.name.station_image.url} 
-                                        alt={`${props.metadata.name.first_name} ${props.metadata.name.additional_names} character image`} 
+                                        alt={`${props.metadata.name.first_name} ${props.metadata.name.additional_names} character station image`} 
                                         layout="fill" />
                                     </Box>
                                 }

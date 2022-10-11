@@ -1,4 +1,5 @@
 import { Resource } from "../read/read-metadata.interfaces";
+import { BasicObject } from "./home.interface";
 
 export interface Name {
 	first_name: string;
@@ -15,8 +16,6 @@ export interface CharacterMetadata {
 	pronunciation: Resource;
 }
 
-export interface Character {
-	title: string;
-	id: string;
+export interface Character extends BasicObject {
 	metadata: CharacterMetadata;
 }

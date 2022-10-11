@@ -3,7 +3,7 @@ export interface BasicMetadata {
     header: string;
 }
 
-export interface BasicObject {
+export interface BasicReadObject {
     slug: string;
     status: string;
     title: string;
@@ -25,7 +25,7 @@ export interface SiteMetadata extends CosmicReadData {
     logo: Resource;
 }
 
-export interface CosmicPart extends BasicObject
+export interface CosmicPart extends BasicReadObject
 {
     metadata?: PartMetadata;
 }
@@ -40,7 +40,7 @@ export interface PartMetadata
     table_of_contents_image: Resource;
 }
 
-export interface CosmicChapter extends BasicObject
+export interface CosmicChapter extends BasicReadObject
 {
     metadata?: ChapterMetadata;
 }
@@ -54,7 +54,7 @@ export interface ChapterMetadata extends BasicMetadata
     sections: CosmicSection[];
 }
 
-export interface CosmicSection extends BasicObject
+export interface CosmicSection extends BasicReadObject
 {
     metadata?: SectionMetadata;
 }

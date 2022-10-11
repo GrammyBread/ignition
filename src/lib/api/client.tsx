@@ -13,14 +13,17 @@ import {
   makeGetSiteDataQuery } from './readmeta/read-metadata-queries';
 import { HomePage } from '../../interfaces/static/home.interfaces'
 import { 
-  makeGetCharactersQuery, 
   makeGetHomeQuery, 
   makeGetPatreonQuery } from './static/page-queries'
 import { makeGetChapterHeaderQuery } from './readmeta/read-metadata-queries';
 import { PatreonPage } from '../../interfaces/static/patreon.interface';
-import { Character } from '../../interfaces/static/character.interface';
+import { Character } from '../../interfaces/appendices/character.interface';
 import { CleanSiteData } from '../../interfaces/read/clean-site-data.class';
 import CleanUpSiteData from './sitedata/nav.mapper';
+import { makeGetArchQuery, makeGetCharacterPageQuery, makeGetCharactersQuery, makeGetLoreDocument, makeGetLoreDocuments, makeGetStationPageQuery, makeGetStationsQuery } from './appendices/appendices-queries';
+import { AppendixDocument, AppendixPage, AvailableAppendixDocs } from '../../interfaces/appendices/documents.interface';
+import { Arch, Station } from '../../interfaces/appendices/stations.interface';
+import { AppendixHome } from '../../interfaces/appendices/home.interface';
 
 const BUCKET_SLUG = process.env.COSMIC_BUCKET_SLUG
 const READ_KEY = process.env.COSMIC_READ_KEY
@@ -78,7 +81,43 @@ export async function getPatreon(): Promise<PatreonPage> {
   return response[0];
 }
 
+export async function getAppendicesHome(): Promise<AppendixHome> {
+  let response = await getObjects<AppendixHome[]>(makeGetPatreonQuery());
+  return response[0];
+}
+
+//Appendices Queries
 export async function getCharacters(): Promise<Character[]> {
   let response = await getObjects<Character[]>(makeGetCharactersQuery());
+  return response;
+}
+
+export async function getCharacterPage(): Promise<AppendixPage> {
+  let response = await getObjects<AppendixPage[]>(makeGetCharacterPageQuery());
+  return response[0];
+}
+
+export async function getAllStations(): Promise<Station[]> {
+  let response = await getObjects<Station[]>(makeGetStationsQuery());
+  return response;
+}
+
+export async function getAllArches(): Promise<Arch[]> {
+  let response = await getObjects<Arch[]>(makeGetArchQuery());
+  return response;
+}
+
+export async function getStationPage(): Promise<AppendixPage> {
+  let response = await getObjects<AppendixPage[]>(makeGetStationPageQuery());
+  return response[0];
+}
+
+export async function getLoreDocument(slug: string): Promise<AppendixDocument> {
+  let response = await getObjects<AppendixDocument[]>(makeGetLoreDocument(slug));
+  return response[0];
+}
+
+export async function getAllAvailableLoreDocs(): Promise<AvailableAppendixDocs[]> {
+  let response = await getObjects<AvailableAppendixDocs[]>(makeGetLoreDocuments());
   return response;
 }

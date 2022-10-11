@@ -1,4 +1,4 @@
-import { BasicMetadata, BasicObject, TableOfContentsItem } from "../../interfaces/read/read-metadata.interfaces";
+import { BasicMetadata, BasicReadObject, TableOfContentsItem } from "../../interfaces/read/read-metadata.interfaces";
 import { ReadItem } from "../../interfaces/read/view-data.interfaces";
 import { ItemStatus } from "./state.mappers";
 
@@ -14,7 +14,7 @@ export function MakeDefaultTOCItem(tocItem: TableOfContentsItem): ReadItem {
     } as ReadItem;
 }
 
-export function MakeDefaultUnpublishedItem(item: BasicObject): ReadItem {
+export function MakeDefaultUnpublishedItem(item: BasicReadObject): ReadItem {
     return  {
         header: item.title,
         publishStatus: ItemStatus.Unpublished,

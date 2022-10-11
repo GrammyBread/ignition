@@ -1,19 +1,19 @@
 import { NavPart } from "./nav-data.interfaces";
 import { 
-    BasicObject, 
+    BasicReadObject, 
     ChapterMetadata, 
     PartMetadata, 
     SectionMetadata } from "./read-metadata.interfaces";
 
-export interface CleanedCosmicPart extends PartMetadata, BasicObject {
+export interface CleanedCosmicPart extends PartMetadata, BasicReadObject {
     cleaned_chapters: CleanedCosmicChapter[]
 }
 
-export interface CleanedCosmicChapter extends ChapterMetadata, BasicObject {
+export interface CleanedCosmicChapter extends ChapterMetadata, BasicReadObject {
     cleaned_sections: CleanedCosmicSection[]
 }
 
-export interface CleanedCosmicSection extends SectionMetadata, BasicObject {
+export interface CleanedCosmicSection extends SectionMetadata, BasicReadObject {
 }
 
 export interface CleanedNavigation {

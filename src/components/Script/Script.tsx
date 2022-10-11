@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Script } from '../../interfaces/read/read-metadata.interfaces';
 import Image from 'next/image';
 import { ScriptHeader, ScriptHeaderProps } from './Parts/ScriptHeader';
-import { ScriptBody, ScriptBodyProps } from './Parts/ScriptBody';
+import { ScriptBody, TextBodyProps } from './Parts/ScriptBody';
 import Styles from '../../styles/shared.module.scss';
 import ScriptStyles from './Script.module.scss';
 import { Stack } from '@mui/material';
@@ -24,7 +24,7 @@ export default function ScriptComponent(props: ScriptProps) {
     const bodyProps = {
         body: props.script.content,
         smallScript: props.script.metadata.small_script
-    } as ScriptBodyProps
+    } as TextBodyProps
 
     return <React.Fragment>
         <Stack

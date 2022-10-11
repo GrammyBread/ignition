@@ -3,11 +3,7 @@ import { Paper, Stack, styled } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { grey } from '@mui/material/colors';
-
-export interface TextBodyProps {
-    body: string;
-    smallScript: string;
-}
+import { TextBodyProps } from '../../Script/Parts/ScriptBody';
 
 const BodyPaper = styled(Paper)(({ theme }) => ({
     margin: 'auto',
@@ -55,11 +51,10 @@ const BodyPaper = styled(Paper)(({ theme }) => ({
     }
 }));
 
-
-export function ScriptBody(props: TextBodyProps): JSX.Element {
+export function AppendixBody(props: TextBodyProps): JSX.Element {
     const [scriptBody, setScriptBody] = React.useState(props.body);
     const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
+    const isSmallScreen = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
     React.useEffect(() => {
         setScriptBody(isSmallScreen ? props.smallScript : props.body);
@@ -70,7 +65,6 @@ export function ScriptBody(props: TextBodyProps): JSX.Element {
     return <Stack spacing={10}>
         {
             fades.map((script, index) => {
-
                 const cuts = scriptBody.split('[insrtLB]');
                 return <Stack spacing={5} key={index}>
                     {

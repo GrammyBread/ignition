@@ -1,6 +1,9 @@
 import { CosmicQuery } from "../query";
 import { minifyProps } from "../shared";
-import { getHomeProps, getPatreonProps, getCharacterProps } from './props';
+import {
+    getHomeProps,
+    getPatreonProps
+} from './props';
 
 export function makeGetHomeQuery(): CosmicQuery {
     return {
@@ -19,14 +22,5 @@ export function makeGetPatreonQuery(): CosmicQuery {
             slug: "patreon"
         },
         props: minifyProps(getPatreonProps)
-    };
-}
-
-export function makeGetCharactersQuery(): CosmicQuery {
-    return {
-        query: {
-            type: "character-cards"
-        },
-        props: minifyProps(getCharacterProps)
     };
 }
