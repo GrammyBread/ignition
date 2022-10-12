@@ -1,8 +1,6 @@
 import { GetStaticProps } from 'next';
 import { getCharacterPage, getCharacters } from '../../src/lib/api/client';
 import * as React from 'react';
-import Image from 'next/image';
-import Styles from '../../src/styles/shared.module.scss';
 import Layout from '../../src/components/Main/Layout';
 import { CleanedNavigation } from '../../src/interfaces/read/cleaned-types.interface';
 import NotFoundPage from '../../src/components/Error/NotFound';
@@ -12,11 +10,14 @@ import {
   TextField,
   Paper,
   Stack,
-  Grid
+  Grid,
+  Typography,
+  Divider
 } from '@mui/material';
 import CharacterCard from '../../src/components/CharacterCard/CharacterCard';
 import getCleanSiteData from '../../src/lib/api/sitedata/cache-site-data';
 import { AppendixPage } from '../../src/interfaces/appendices/documents.interface';
+import { useRouter } from 'next/router';
 
 interface Props {
   navData: CleanedNavigation;
@@ -25,12 +26,17 @@ interface Props {
 }
 
 const CharacterSearch = (props: Props): JSX.Element => {
+  const router = useRouter();
   const [filterName, setFilterName] = React.useState<string>('');
   const STATION = "STATION";
 
   if (props == undefined || props.navData == undefined || props.characters == undefined) {
     return <NotFoundPage requestedItem={`Character Page`} />
   }
+
+  const baseURL = router.asPath ?
+    `${props.navData.domain}${router.asPath}` :
+    props.navData.domain;
 
   const characterNames = props.characters.map((character) => {
     const stationName = character.metadata.name.station_name && character.metadata.name.station_image.url ?
@@ -42,6 +48,13 @@ const CharacterSearch = (props: Props): JSX.Element => {
     <Layout navData={props.navData} backgroundImageUrl={"/assets/SiteBack.svg"}>
       <Stack spacing={2}>
         <Paper>
+          <Typography gutterBottom variant="h2" component="h1" textAlign={"center"} sx={{ lineHeight: "1" }}>
+            {props.pageDetails.title}
+          </Typography>
+          <Divider variant='middle' />
+          <Typography gutterBottom variant="body1" component="h2" textAlign={"center"} sx={{ margin: "1rem" }}>
+            <div dangerouslySetInnerHTML={{ __html: props.pageDetails.content }} />
+          </Typography>
           <Autocomplete
             disablePortal
             id="combo-box-demo"
@@ -55,9 +68,10 @@ const CharacterSearch = (props: Props): JSX.Element => {
               if (newValue) setFilterName(newValue);
             }}
             sx={{
-              maxWidth: '400'
+              maxWidth: '400',
+              margin: "1rem"
             }}
-            renderInput={(params) => <TextField {...params} label="Name" />}
+            renderInput={(params) => <TextField {...params} label="Search by Name" />}
           />
         </Paper>
         <Grid container spacing={2} sx={{
@@ -69,7 +83,7 @@ const CharacterSearch = (props: Props): JSX.Element => {
               .map((character) => {
                 return (
                   <Grid key={character.id} item xs={12} sm={6} md={4} lg={2} xl={2}>
-                    <CharacterCard {...character}></CharacterCard>
+                    <CharacterCard baseURL={baseURL} info={character}></CharacterCard>
                   </Grid>
                 );
               })

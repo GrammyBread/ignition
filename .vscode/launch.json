@@ -21,7 +21,7 @@
       "console": "integratedTerminal",
       "serverReadyAction": {
         "pattern": "started server on .+, url: (https?://.+)",
-        "uriFormat": "%s/read",
+        "uriFormat": "%s/appendices",
         "action": "debugWithChrome"
       }
     }

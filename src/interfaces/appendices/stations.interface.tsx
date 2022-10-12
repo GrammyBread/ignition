@@ -1,5 +1,5 @@
 import { Resource } from "../read/read-metadata.interfaces";
-import { BasicObject } from "./home.interface";
+import { BasicObject, SelectOption } from './home.interface';
 
 export interface Name {
 	first_name: string;
@@ -10,7 +10,7 @@ export interface Name {
 
 export interface StationMetadata {
 	orbiting_planet: string;
-	station_type: string;
+	station_type: SelectOption;
 	station_symbol: Resource;
 	relations: string;
 	notes: string;

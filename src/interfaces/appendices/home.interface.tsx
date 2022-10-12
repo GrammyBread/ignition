@@ -6,6 +6,11 @@ export interface BasicObject {
 	title: string;
 }
 
+export interface SelectOption {
+	key: string;
+	value: string;
+}
+
 export interface Document {
 	slug: string;
 }
@@ -16,12 +21,7 @@ export interface AppendixItem {
 	document: Document;
 }
 
-export interface CharacterLookup {
-	header: string;
-	image: Resource;
-}
-
-export interface StationLookup {
+export interface SpecialAppendixItem {
 	header: string;
 	image: Resource;
 }
@@ -29,8 +29,8 @@ export interface StationLookup {
 export interface AppendixHomeMetadata {
 	map: Resource;
 	appendix_items: AppendixItem[];
-	character_lookup: CharacterLookup;
-	station_lookup: StationLookup;
+	character_lookup: SpecialAppendixItem;
+	station_lookup: SpecialAppendixItem;
 }
 
 export interface AppendixHome {

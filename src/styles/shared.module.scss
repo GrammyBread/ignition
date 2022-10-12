@@ -38,4 +38,8 @@
     main > span {
         z-index: -1;
     }
+
+    main > img.specialBackground {
+        z-index: 100 !important;
+    }
 }

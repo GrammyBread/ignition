@@ -20,7 +20,7 @@ import { PatreonPage } from '../../interfaces/static/patreon.interface';
 import { Character } from '../../interfaces/appendices/character.interface';
 import { CleanSiteData } from '../../interfaces/read/clean-site-data.class';
 import CleanUpSiteData from './sitedata/nav.mapper';
-import { makeGetArchQuery, makeGetCharacterPageQuery, makeGetCharactersQuery, makeGetLoreDocument, makeGetLoreDocuments, makeGetStationPageQuery, makeGetStationsQuery } from './appendices/appendices-queries';
+import { makeGetAppendicesHome, makeGetArchQuery, makeGetCharacterPageQuery, makeGetCharactersQuery, makeGetLoreDocument, makeGetLoreDocuments, makeGetStationPageQuery, makeGetStationsQuery } from './appendices/appendices-queries';
 import { AppendixDocument, AppendixPage, AvailableAppendixDocs } from '../../interfaces/appendices/documents.interface';
 import { Arch, Station } from '../../interfaces/appendices/stations.interface';
 import { AppendixHome } from '../../interfaces/appendices/home.interface';
@@ -82,7 +82,7 @@ export async function getPatreon(): Promise<PatreonPage> {
 }
 
 export async function getAppendicesHome(): Promise<AppendixHome> {
-  let response = await getObjects<AppendixHome[]>(makeGetPatreonQuery());
+  let response = await getObjects<AppendixHome[]>(makeGetAppendicesHome());
   return response[0];
 }
 
