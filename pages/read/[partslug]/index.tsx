@@ -1,8 +1,6 @@
 import { GetStaticProps, GetStaticPaths } from "next";
 import { CosmicPart } from "../../../src/interfaces/read/read-metadata.interfaces";
-import {
-  getPart,
-} from "../../../src/lib/api/client";
+import { getPart } from "../../../src/lib/api/client";
 import * as React from "react";
 import { TableOfContentsProps } from "../../../src/components/TableOfContents/Table/Table";
 import TableOfContents from "../../../src/components/TableOfContents/Table/Table";

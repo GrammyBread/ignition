@@ -11,11 +11,11 @@ import { CleanedNavigation } from '../../interfaces/read/cleaned-types.interface
 import { Section } from '../../interfaces/read/view-data.interfaces';
 import Image from 'next/image';
 import Head from 'next/head';
-import classNames from 'classnames';
 import { useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
-export interface LayoutProps {
+export interface LayoutProps
+{
   children: React.ReactNode;
   navData: CleanedNavigation;
   previousSection?: Section;
@@ -26,19 +26,21 @@ export interface LayoutProps {
   socials?: Socials;
 }
 
-export interface Socials {
+export interface Socials
+{
   url: string;
   title: string;
   description: string;
   imageUrl: string;
 }
 
-const PageRoot = styled(Box)(({ theme }) => ({
+const PageRoot = styled( Box )( ( { theme } ) => ( {
   maxHeight: '100%',
   display: 'flex'
-}));
+} ) );
 
-enum ScreenSize {
+enum ScreenSize
+{
   Tiny = 240,
   Small = 300,
   Medium = 350,
@@ -49,95 +51,101 @@ enum ScreenSize {
 const animationVariants = {
   visible: { opacity: 1 },
   hidden: { opacity: 0 },
-}
+};
 
-export interface ImageProps {
+export interface ImageProps
+{
   backgroundImageUrl: string;
 }
 
-const FadeInImage = ({backgroundImageUrl}: ImageProps) => {
-  const [loaded, setLoaded] = useState(false);
+const FadeInImage = ( { backgroundImageUrl }: ImageProps ) =>
+{
   const animationControls = useAnimation();
 
-  React.useEffect(
-    () => {
-      if (loaded) {
-        animationControls.start("visible");
-      }
-    },
-    [loaded]
-  );
+  React.useEffect(() => {
+    animationControls.start( "hidden" );
+    animationControls.start( "visible" );
+  }, [backgroundImageUrl, animationControls]);
+
   return (
     <motion.div
-      initial={"hidden"}
-      animate={animationControls}
-      variants={animationVariants}
-      className={Styles.bgWrap}
-      transition={{ ease: "easeOut", duration: 1 }}
+      initial={ "hidden" }
+      animate={ animationControls }
+      variants={ animationVariants }
+      className={ Styles.bgWrap }
+      transition={ { ease: "easeOut", duration: 2 } }
     >
       <Image
         alt="background"
-        src={backgroundImageUrl}
-        key={backgroundImageUrl}
+        src={ backgroundImageUrl }
+        key={ backgroundImageUrl }
         priority
         placeholder='blur'
         blurDataURL='/assets/SiteBack.svg'
         layout="fill"
         objectFit="cover"
-        quality={100}
-        onLoadingComplete={() => setLoaded(true)}
+        quality={ 100 }
       />
     </motion.div>
   );
-}
+};
 
 
 
-export default function Layout({
+export default function Layout ( {
   children,
   navData,
   previousSection,
   nextSection,
   backgroundImageUrl,
   socials,
-  fadeIn }: LayoutProps) {
-  const [open, setOpen] = React.useState(false);
-  const [fadeClass, setFadeClass] = React.useState(Styles.FadeIn);
-  const [drawerWidth, setDrawerWidth] = React.useState(ScreenSize.Tiny);
+  fadeIn }: LayoutProps )
+{
+  const [ open, setOpen ] = React.useState( false );
+  const [ fadeClass, setFadeClass ] = React.useState( Styles.FadeIn );
+  const [ drawerWidth, setDrawerWidth ] = React.useState( ScreenSize.Tiny );
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const handleDrawerOpen = () =>
+  {
+    setOpen( true );
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const handleDrawerClose = () =>
+  {
+    setOpen( false );
   };
 
   const theme = useTheme();
-  const isTinyScreen = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
-  const isSmallScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.between('md', 'lg'));
-  const isLargeScreen = useMediaQuery(theme.breakpoints.between('lg', 'xl'));
-  const isGiantScreen = useMediaQuery(theme.breakpoints.up('xl'));
+  const isTinyScreen = useMediaQuery( theme.breakpoints.between( 'xs', 'sm' ) );
+  const isSmallScreen = useMediaQuery( theme.breakpoints.between( 'sm', 'md' ) );
+  const isMediumScreen = useMediaQuery( theme.breakpoints.between( 'md', 'lg' ) );
+  const isLargeScreen = useMediaQuery( theme.breakpoints.between( 'lg', 'xl' ) );
+  const isGiantScreen = useMediaQuery( theme.breakpoints.up( 'xl' ) );
 
-  React.useEffect(() => {
-    if (isTinyScreen) {
-      setDrawerWidth(ScreenSize.Tiny)
+  React.useEffect( () =>
+  {
+    if ( isTinyScreen )
+    {
+      setDrawerWidth( ScreenSize.Tiny );
     }
-    else if (isSmallScreen) {
-      setDrawerWidth(ScreenSize.Small)
+    else if ( isSmallScreen )
+    {
+      setDrawerWidth( ScreenSize.Small );
     }
-    else if (isMediumScreen) {
-      setDrawerWidth(ScreenSize.Medium)
+    else if ( isMediumScreen )
+    {
+      setDrawerWidth( ScreenSize.Medium );
     }
-    else if (isLargeScreen) {
-      setDrawerWidth(ScreenSize.Large)
+    else if ( isLargeScreen )
+    {
+      setDrawerWidth( ScreenSize.Large );
     }
-    else if (isGiantScreen) {
-      setDrawerWidth(ScreenSize.Giant)
+    else if ( isGiantScreen )
+    {
+      setDrawerWidth( ScreenSize.Giant );
     }
 
-  }, [isTinyScreen, isSmallScreen, isMediumScreen, isLargeScreen, isGiantScreen]); // Only re-run the effect if count changes
+  }, [ isTinyScreen, isSmallScreen, isMediumScreen, isLargeScreen, isGiantScreen ] ); // Only re-run the effect if count changes
 
   const navigationProps = {
     drawerWidth: drawerWidth,
@@ -147,45 +155,45 @@ export default function Layout({
     closeDrawer: handleDrawerClose,
     previousSection: previousSection,
     nextScript: nextSection?.fullPath
-  } as NavigationProps
+  } as NavigationProps;
 
   return (
     <React.Fragment>
       {
         socials &&
         <Head>
-          <meta property="og:url" content={socials.url} />
+          <meta property="og:url" content={ socials.url } />
           <meta property="og:type" content="website" />
-          <meta property="og:title" content={socials.title} />
-          <meta property="og:description" content={socials.description} />
-          <meta property="og:image" content={socials.imageUrl} />
+          <meta property="og:title" content={ socials.title } />
+          <meta property="og:description" content={ socials.description } />
+          <meta property="og:image" content={ socials.imageUrl } />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:creator" content="@TheGrammyBread" />
         </Head>
       }
-      <ThemeProvider theme={ignitionThemeDark}>
-        <PageRoot className={Styles.root}>
+      <ThemeProvider theme={ ignitionThemeDark }>
+        <PageRoot className={ Styles.root }>
           <CssBaseline />
-          <Navigation {...navigationProps}
+          <Navigation { ...navigationProps }
           ></Navigation>
-          <Main open={open} drawerWidth={drawerWidth} >
-            {backgroundImageUrl && (
+          { backgroundImageUrl && (
               fadeIn ?
-                <FadeInImage backgroundImageUrl={backgroundImageUrl}/>
+                <FadeInImage backgroundImageUrl={ backgroundImageUrl } />
                 :
-                <div className={Styles.bgWrap}>
+                <div className={ Styles.bgWrap }>
                   <Image
                     alt="background"
-                    src={backgroundImageUrl}
+                    src={ backgroundImageUrl }
                     layout="fill"
                     objectFit="cover"
-                    quality={100}
+                    quality={ 100 }
                   />
-                </div>)}
-            {children}
+                </div> ) }
+          <Main open={ open } drawerWidth={ drawerWidth } >
+            { children }
           </Main>
         </PageRoot>
       </ThemeProvider>
     </React.Fragment>
-  )
+  );
 }
