@@ -9,7 +9,7 @@ export interface SpecialItemProps {
 }
 
 export default function SpecialItem(props: SpecialItemProps): JSX.Element {
-    return <Grid item xs={12} sm={8} md={6} lg={7} xl={8}>
+    return <Grid item xs={12} sm={8} md={6} lg={7} xl={4}>
         <Link href={props.url}>
             <Card>
                 <CardMedia

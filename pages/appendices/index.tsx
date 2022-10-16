@@ -11,36 +11,28 @@ import { getAppendicesHome } from '../../src/lib/api/client';
 import { AppendixHome } from '../../src/interfaces/appendices/home.interface';
 import SpecialItem, { SpecialItemProps } from '../../src/components/Appendix/HomeItems/SpecialItem';
 import DocItemComponent from '../../src/components/Appendix/HomeItems/DocItems';
+import { useState } from 'react';
 
 interface Props {
     navData: CleanedNavigation;
     homeData: AppendixHome;
 }
 
-interface HideOnScrollProps {
-    threshold: number;
-    children: React.ReactElement;
-}
-
-interface Background {
-    url: string;
-    threshold: number;
-}
-
-function HideOnScroll({ threshold, children }: HideOnScrollProps) {
-    const trigger = useScrollTrigger({
-        threshold: threshold
-    });
-
-    return (
-        <Fade appear={trigger}>
-            {children}
-        </Fade>
-    );
-}
-
-
 const ApendicesHome = (props: Props): JSX.Element => {
+    const [background, setBackground] = useState('/assets/SiteBack.svg')
+    const trigger100 = useScrollTrigger();
+
+    let backgrounds = props.homeData.metadata.appendix_items.map((item) => (item.image.url));
+    backgrounds.push(props.homeData.metadata.character_lookup.image.url);
+    backgrounds.push(props.homeData.metadata.station_lookup.image.url);
+
+    React.useEffect(() => {
+        if (trigger100) {
+            let ran = Math.floor(Math.random() * backgrounds.length);
+            setBackground(backgrounds[ran]);
+        }
+    }, [trigger100, backgrounds]);
+
     if (props == undefined || props.homeData == undefined) {
         return <NotFoundPage requestedItem={`Appendices`} />
     }
@@ -55,23 +47,10 @@ const ApendicesHome = (props: Props): JSX.Element => {
         url: "/appendices/station-lookup"
     } as SpecialItemProps;
 
-    let threshold = 200;
-    let backgrounds = props.homeData.metadata.appendix_items.map((item) => ({
-        url: item.image.url,
-        threshold: threshold + 100
-    }));
 
-    backgrounds.push({
-        url: props.homeData.metadata.character_lookup.image.url,
-        threshold: 100
-    });
-    backgrounds.push({
-        url: props.homeData.metadata.station_lookup.image.url,
-        threshold: 200
-    });
 
     return (
-        <Layout navData={props.navData} backgroundImageUrl={"/assets/SiteBack.svg"}>
+        <Layout navData={props.navData} backgroundImageUrl={background} fadeIn={true}>
             <Paper sx={{
                 padding: "1rem",
                 margin: "1rem 0"
@@ -89,17 +68,9 @@ const ApendicesHome = (props: Props): JSX.Element => {
             </Paper>
             <Grid container spacing={3}>
                 <SpecialItem {...characterSearchProps} />
+                {props.homeData.metadata.appendix_items.map((item) => <DocItemComponent key={item.document.slug} {...item} />)}                
                 <SpecialItem {...stationSearchProps} />
-                {props.homeData.metadata.appendix_items.map((item) => <DocItemComponent key={item.document.slug} {...item} />)}
             </Grid>
-            {
-                backgrounds.map((background) =>
-                    <HideOnScroll threshold={background.threshold}>
-                        <Image className={Styles.specialBackground} alt="" src={background.url} height={30} width={100} />
-                    </HideOnScroll>
-                )
-            }
-
         </Layout>
     );
 };

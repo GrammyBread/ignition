@@ -1,5 +1,5 @@
 
-import { ThemeProvider, Box, CssBaseline } from '@mui/material';
+import { ThemeProvider, Box, CssBaseline, Fade } from '@mui/material';
 import { ignitionThemeDark } from '../../styles/theme';
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
@@ -11,12 +11,17 @@ import { CleanedNavigation } from '../../interfaces/read/cleaned-types.interface
 import { Section } from '../../interfaces/read/view-data.interfaces';
 import Image from 'next/image';
 import Head from 'next/head';
+import classNames from 'classnames';
+import { useState } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 
 export interface LayoutProps {
   children: React.ReactNode;
   navData: CleanedNavigation;
   previousSection?: Section;
   nextSection?: Section;
+  fadeIn?: boolean;
+  fadeInTrigger?: boolean;
   backgroundImageUrl?: string;
   socials?: Socials;
 }
@@ -33,7 +38,6 @@ const PageRoot = styled(Box)(({ theme }) => ({
   display: 'flex'
 }));
 
-
 enum ScreenSize {
   Tiny = 240,
   Small = 300,
@@ -42,8 +46,63 @@ enum ScreenSize {
   Giant = 500
 }
 
-export default function Layout({ children, navData, previousSection, nextSection, backgroundImageUrl, socials }: LayoutProps) {
+const animationVariants = {
+  visible: { opacity: 1 },
+  hidden: { opacity: 0 },
+}
+
+export interface ImageProps {
+  backgroundImageUrl: string;
+}
+
+const FadeInImage = ({backgroundImageUrl}: ImageProps) => {
+  const [loaded, setLoaded] = useState(false);
+  const animationControls = useAnimation();
+
+  React.useEffect(
+    () => {
+      if (loaded) {
+        animationControls.start("visible");
+      }
+    },
+    [loaded]
+  );
+  return (
+    <motion.div
+      initial={"hidden"}
+      animate={animationControls}
+      variants={animationVariants}
+      className={Styles.bgWrap}
+      transition={{ ease: "easeOut", duration: 1 }}
+    >
+      <Image
+        alt="background"
+        src={backgroundImageUrl}
+        key={backgroundImageUrl}
+        priority
+        placeholder='blur'
+        blurDataURL='/assets/SiteBack.svg'
+        layout="fill"
+        objectFit="cover"
+        quality={100}
+        onLoadingComplete={() => setLoaded(true)}
+      />
+    </motion.div>
+  );
+}
+
+
+
+export default function Layout({
+  children,
+  navData,
+  previousSection,
+  nextSection,
+  backgroundImageUrl,
+  socials,
+  fadeIn }: LayoutProps) {
   const [open, setOpen] = React.useState(false);
+  const [fadeClass, setFadeClass] = React.useState(Styles.FadeIn);
   const [drawerWidth, setDrawerWidth] = React.useState(ScreenSize.Tiny);
 
   const handleDrawerOpen = () => {
@@ -80,7 +139,6 @@ export default function Layout({ children, navData, previousSection, nextSection
 
   }, [isTinyScreen, isSmallScreen, isMediumScreen, isLargeScreen, isGiantScreen]); // Only re-run the effect if count changes
 
-
   const navigationProps = {
     drawerWidth: drawerWidth,
     navData: navData,
@@ -88,7 +146,7 @@ export default function Layout({ children, navData, previousSection, nextSection
     openDrawer: handleDrawerOpen,
     closeDrawer: handleDrawerClose,
     previousSection: previousSection,
-    nextScript: nextSection
+    nextScript: nextSection?.fullPath
   } as NavigationProps
 
   return (
@@ -111,9 +169,20 @@ export default function Layout({ children, navData, previousSection, nextSection
           <Navigation {...navigationProps}
           ></Navigation>
           <Main open={open} drawerWidth={drawerWidth} >
+            {backgroundImageUrl && (
+              fadeIn ?
+                <FadeInImage backgroundImageUrl={backgroundImageUrl}/>
+                :
+                <div className={Styles.bgWrap}>
+                  <Image
+                    alt="background"
+                    src={backgroundImageUrl}
+                    layout="fill"
+                    objectFit="cover"
+                    quality={100}
+                  />
+                </div>)}
             {children}
-            {backgroundImageUrl && 
-            <Image className={Styles.backgroundImage} alt="" src={backgroundImageUrl} layout="fill" objectFit='cover' objectPosition='center' />}
           </Main>
         </PageRoot>
       </ThemeProvider>

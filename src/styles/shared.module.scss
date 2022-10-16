@@ -1,4 +1,5 @@
-.backgroundImageError, .backgroundImage {
+.backgroundImageError,
+.backgroundImage {
     z-index: -10;
     position: fixed !important;
 }
@@ -8,7 +9,8 @@
     opacity: .3;
 }
 
-.mainContent, .mainContentError {
+.mainContent,
+.mainContentError {
     z-index: -1;
 }
 
@@ -16,7 +18,7 @@
     z-index: 1;
 }
 
-.errorContentHolder {    
+.errorContentHolder {
     display: flex;
     flex-flow: column;
     align-items: center;
@@ -26,20 +28,31 @@
 }
 
 .mainContentError {
-    font-family: 'Oswald', sans-serif;    
+    font-family: 'Oswald', sans-serif;
     padding: .1rem .5rem;
     margin: 2rem;
-    background: rgba(256,256,256,.8);
-    color: black;    
+    background: rgba(256, 256, 256, .8);
+    color: black;
     text-align: center;
 }
 
-.root{
-    main > span {
-        z-index: -1;
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
     }
 
-    main > img.specialBackground {
-        z-index: 100 !important;
+    100% {
+        opacity: .7;
     }
+}
+
+.bgWrap {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: -1;
+    opacity: .7;
 }
