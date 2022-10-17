@@ -22,12 +22,13 @@ interface Props {
 }
 
 const StationSearch = (props: Props): JSX.Element => {
-    const [filterName, setFilterName] = React.useState<string>('');
+    const [filterName, setFilterName] = React.useState<string | null>('');
 
     if (props == undefined || props.arches == undefined || props.stations == undefined) {
         return <NotFoundPage requestedItem={`Character Page`} />
     }
 
+    props.stations.sort((a, b) => (a.title < b.title) ? -1 : 1);
     const stationNames = props.stations.map((station) => station.title);
 
     return (
@@ -36,15 +37,16 @@ const StationSearch = (props: Props): JSX.Element => {
                 <Paper>
                     <Autocomplete
                         disablePortal
-                        id="combo-box-demo"
+                        id="search-by-station-box"
                         options={stationNames}
                         onChange={(event: any, newValue: string | null) => {
                             if (newValue) setFilterName(newValue);
+                            else setFilterName(null);
                         }}
                         sx={{
                             maxWidth: '400'
                         }}
-                        renderInput={(params) => <TextField {...params} label="Name" />}
+                        renderInput={(params) => <TextField {...params} label="Search by Station Name" />}
                     />
                 </Paper>
                 <Grid container spacing={2} sx={{
@@ -55,7 +57,7 @@ const StationSearch = (props: Props): JSX.Element => {
                             .filter((station) => !filterName || filterName && station.title.includes(filterName))
                             .map((station) => {
                                 return (
-                                    <Grid key={station.id} item xs={12} sm={6} md={4} lg={2} xl={2}>
+                                    <Grid key={station.id} item xs={6} sm={6} md={4} lg={2} xl={2}>
                                         <StationCard {...station}></StationCard>
                                     </Grid>
                                 );

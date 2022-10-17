@@ -27,7 +27,7 @@ interface Props {
 
 const CharacterSearch = (props: Props): JSX.Element => {
   const router = useRouter();
-  const [filterName, setFilterName] = React.useState<string>('');
+  const [filterName, setFilterName] = React.useState<string | null>('');
   const STATION = "STATION";
 
   if (props == undefined || props.navData == undefined || props.characters == undefined) {
@@ -66,6 +66,7 @@ const CharacterSearch = (props: Props): JSX.Element => {
                 return;
               }
               if (newValue) setFilterName(newValue);
+              else setFilterName(null);
             }}
             sx={{
               maxWidth: '400',

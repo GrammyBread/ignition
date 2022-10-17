@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Card, CardContent, CardMedia, Typography, Box, Accordion, AccordionSummary, AccordionDetails, Stack, IconButton, Button, CardActions, ButtonGroup } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, Box, Accordion, AccordionSummary, AccordionDetails, Stack, Button, CardActions, ButtonGroup } from '@mui/material';
 import { Character } from '../../interfaces/appendices/character.interface';
 import Image from 'next/image';
 import { styled } from '@mui/material/styles';
 import { Mic, ReadMore, Twitter, Facebook, Reddit } from '@mui/icons-material';
-import { motion } from 'framer-motion'
 
 const CCard = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
