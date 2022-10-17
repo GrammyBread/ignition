@@ -23,16 +23,20 @@ const delay = ( ms: number ) => new Promise( res => setTimeout( res, ms ) );
 const AppendicesHome = ( props: Props ): JSX.Element =>
 {
     const [ background, setBackground ] = useState( '/assets/SiteBack.svg' );
-    const paperRef = React.useRef<HTMLDivElement>( null );
-
-    // The scroll listener
-    let backgrounds = props.homeData.metadata.appendix_items.map( ( item ) => ( item.image.url ) );
-    backgrounds.push( props.homeData.metadata.character_lookup.image.url );
-    backgrounds.push( props.homeData.metadata.station_lookup.image.url );
 
     if ( props == undefined || props.homeData == undefined )
     {
         return <NotFoundPage requestedItem={ `Appendices` } />;
+    }
+
+    const functionSetBackground = (newImage?: string) => {
+        if(newImage)
+        {
+            setBackground(newImage);
+        }
+        else {
+            setBackground('/assets/SiteBack.svg');
+        }
     }
 
     const appendixProps = {
@@ -44,7 +48,8 @@ const AppendicesHome = ( props: Props ): JSX.Element =>
             item: props.homeData.metadata.station_lookup,
             url: "/appendices/station-lookup"
         },
-        Documents: props.homeData.metadata.appendix_items
+        Documents: props.homeData.metadata.appendix_items,
+        changeBackground: functionSetBackground
     } as AppendixListProps;
 
     return (

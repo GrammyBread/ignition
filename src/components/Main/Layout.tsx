@@ -63,7 +63,7 @@ const FadeInImage = ( { backgroundImageUrl }: ImageProps ) =>
   const animationControls = useAnimation();
 
   React.useEffect(() => {
-    animationControls.start( "hidden" );
+    animationControls.set("hidden");
     animationControls.start( "visible" );
   }, [backgroundImageUrl, animationControls]);
 
@@ -79,8 +79,6 @@ const FadeInImage = ( { backgroundImageUrl }: ImageProps ) =>
         alt="background"
         src={ backgroundImageUrl }
         key={ backgroundImageUrl }
-        priority
-        placeholder='blur'
         blurDataURL='/assets/SiteBack.svg'
         layout="fill"
         objectFit="cover"
@@ -89,8 +87,6 @@ const FadeInImage = ( { backgroundImageUrl }: ImageProps ) =>
     </motion.div>
   );
 };
-
-
 
 export default function Layout ( {
   children,
@@ -102,7 +98,6 @@ export default function Layout ( {
   fadeIn }: LayoutProps )
 {
   const [ open, setOpen ] = React.useState( false );
-  const [ fadeClass, setFadeClass ] = React.useState( Styles.FadeIn );
   const [ drawerWidth, setDrawerWidth ] = React.useState( ScreenSize.Tiny );
 
   const handleDrawerOpen = () =>

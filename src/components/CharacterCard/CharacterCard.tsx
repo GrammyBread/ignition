@@ -4,6 +4,7 @@ import { Character } from '../../interfaces/appendices/character.interface';
 import Image from 'next/image';
 import { styled } from '@mui/material/styles';
 import { Mic, ReadMore, Twitter, Facebook, Reddit } from '@mui/icons-material';
+import { motion } from 'framer-motion'
 
 const CCard = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -47,7 +48,7 @@ export interface CardProps {
     baseURL: string
 }
 
-export default function CharacterCard({info, baseURL}: CardProps): JSX.Element {
+export default function CharacterCard({ info, baseURL }: CardProps): JSX.Element {
     const whitespace = /\W/gi;
     const characterName = info.metadata.name.first_name.replace(whitespace, '');
     const audioRef = React.useRef<HTMLAudioElement>(null);
@@ -62,9 +63,9 @@ export default function CharacterCard({info, baseURL}: CardProps): JSX.Element {
     }
 
     return (
-        <CCard id={characterName}>            
+        <CCard id={characterName}>
             <CardActions disableSpacing>
-            <ButtonGroup sx={{ margin: 'auto' }}
+                <ButtonGroup sx={{ margin: 'auto' }}
                     disableElevation
                     color={coloring.primary}
                     size="large"
@@ -108,6 +109,7 @@ export default function CharacterCard({info, baseURL}: CardProps): JSX.Element {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
+
                         <Stack spacing={0}>
                             <Typography gutterBottom variant="h4" component="p">
                                 {info.metadata.name.first_name.toUpperCase()}
