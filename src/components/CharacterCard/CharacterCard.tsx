@@ -108,12 +108,11 @@ export default function CharacterCard({ info, baseURL }: CardProps): JSX.Element
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-
                         <Stack spacing={0}>
-                            <Typography gutterBottom variant="h4" component="p">
+                            <Typography gutterBottom variant="h4" component="div">
                                 {info.metadata.name.first_name.toUpperCase()}
                             </Typography>
-                            <Typography variant="h6" component="p">
+                            <Typography variant="h6" component="div">
                                 {info.metadata.name.additional_names}
                                 {
                                     info.metadata.name.station_image.url &&

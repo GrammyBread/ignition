@@ -12,8 +12,7 @@ const AppendixListContainer = styled('ul')(({ theme }) => ({
     display: 'flex',
     listStyle: 'none',
     height: 'fit-content',
-    [theme.breakpoints.only('xs')]: {
-        overflowY: 'scroll',
+    [theme.breakpoints.down('sm')]: {
         flexFlow: 'column'
     },
     [theme.breakpoints.between('sm', 'xl')]: {
@@ -87,7 +86,7 @@ const SpecialLi = ({ setInside, children, id }: specialLIProps) => {
 
 export default function AppendixList(props: AppendixListProps): JSX.Element {
     const theme = useTheme();
-    const isTinyScreen = useMediaQuery(theme.breakpoints.only('xs'));
+    const isTinyScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     let imageStates = props.Documents.map((doc) => ({ id: doc.document.slug, image: doc.image.url, state: false }));
     imageStates.push(({ id: 'c', image: props.CharacterProps.item.image.url, state: false }));

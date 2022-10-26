@@ -53,7 +53,7 @@ const AppendicesHome = ( props: Props ): JSX.Element =>
     } as AppendixListProps;
 
     return (
-        <Layout navData={ props.navData } backgroundImageUrl={ background } fadeIn={ true }>
+        <Layout navData={ props.navData } backgroundImageUrl={ background }>
             <Paper sx={ {
                 padding: "1rem",
                 margin: "1rem 0"

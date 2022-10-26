@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next';
-import { getAllArches, getAllStations } from '../../src/lib/api/client';
+import { getAllArches, getAllStations, getStationPage } from '../../src/lib/api/client';
 import * as React from 'react';
 import Layout from '../../src/components/Main/Layout';
 import { CleanedNavigation } from '../../src/interfaces/read/cleaned-types.interface';
@@ -9,16 +9,20 @@ import {
     TextField,
     Paper,
     Stack,
-    Grid
+    Grid,
+    Typography,
+    Divider
 } from '@mui/material';
 import getCleanSiteData from '../../src/lib/api/sitedata/cache-site-data';
 import { Arch, Station } from '../../src/interfaces/appendices/stations.interface';
 import StationCard from '../../src/components/StationCard/StationCard';
+import { AppendixPage } from '../../src/interfaces/appendices/documents.interface';
 
 interface Props {
     navData: CleanedNavigation;
     stations: Station[];
     arches: Arch[];
+    pageDetails: AppendixPage;
 }
 
 const StationSearch = (props: Props): JSX.Element => {
@@ -35,6 +39,13 @@ const StationSearch = (props: Props): JSX.Element => {
         <Layout navData={props.navData} backgroundImageUrl={"/assets/SiteBack.svg"}>
             <Stack spacing={2}>
                 <Paper>
+                    <Typography gutterBottom variant="h2" component="h1" textAlign={"center"} sx={{ lineHeight: "1" }}>
+                        {props.pageDetails.title}
+                    </Typography>
+                    <Divider variant='middle' />
+                    <Typography gutterBottom variant="body1" component="h2" sx={{ margin: "1rem" }}>
+                        <div dangerouslySetInnerHTML={{ __html: props.pageDetails.content }} />
+                    </Typography>
                     <Autocomplete
                         disablePortal
                         id="search-by-station-box"
@@ -44,7 +55,8 @@ const StationSearch = (props: Props): JSX.Element => {
                             else setFilterName(null);
                         }}
                         sx={{
-                            maxWidth: '400'
+                            maxWidth: '400',
+                            margin: '1rem'
                         }}
                         renderInput={(params) => <TextField {...params} label="Search by Station Name" />}
                     />
@@ -79,12 +91,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     const normalStations = await getAllStations();
     const archStations = await getAllArches();
+    const pageDetails = await getStationPage();
 
     return {
         props: {
             navData: cleanSiteData.getSimpleNav(),
             stations: normalStations,
-            arches: archStations
+            arches: archStations,
+            pageDetails
         } as Props,
         revalidate: 120
     };

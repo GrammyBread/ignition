@@ -52,7 +52,7 @@ const CharacterSearch = (props: Props): JSX.Element => {
             {props.pageDetails.title}
           </Typography>
           <Divider variant='middle' />
-          <Typography gutterBottom variant="body1" component="h2" textAlign={"center"} sx={{ margin: "1rem" }}>
+          <Typography gutterBottom variant="body1" component="h2" sx={{ margin: "1rem" }}>
             <div dangerouslySetInnerHTML={{ __html: props.pageDetails.content }} />
           </Typography>
           <Autocomplete
@@ -110,7 +110,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       navData: cleanSiteData.getSimpleNav(),
       characters: characterResults,
-      pageDetails: pageDetails
+      pageDetails
     } as Props,
     revalidate: 120
   };

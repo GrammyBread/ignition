@@ -76,7 +76,7 @@ const Patreon = (props: Props): JSX.Element => {
     const data = props.pageData.metadata;
 
     return (
-        <Layout navData={props.navData}>
+        <Layout navData={props.navData} backgroundImageUrl={data.background.url}>
             <React.Fragment>
                 <Paper elevation={4} className={Styles.patreonPaper}>
                     <Stack
@@ -103,7 +103,6 @@ const Patreon = (props: Props): JSX.Element => {
                         </Button>
                     </Stack>
                 </Paper>
-                <Image className={Styles.backgroundLogo} alt="" src={data.background.url} layout="fill" objectFit='cover' objectPosition='center' />
             </React.Fragment>
         </Layout>);
 }

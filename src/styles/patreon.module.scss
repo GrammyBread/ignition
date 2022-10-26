@@ -13,22 +13,3 @@
 .reasons__icons {
     width: fit-content;
 }
-
-.backgroundLogo, .backgroundLogoPatreon {
-    position: fixed !important;
-    top: 8rem !important;
-}
-
-.backgroundLogo {    
-    z-index: -10;
-    img { 
-        z-index: -10;
-    }
-}
-
-.backgroundLogoPatreon {    
-    z-index: -8;
-    img { 
-        z-index: -8;
-    }
-}
