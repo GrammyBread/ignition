@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 288 288" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,-5862.49,-210)">
+        <g id="Artboard3" transform="matrix(0.865277,0,0,0.947428,5533.01,10.9816)">
+            <rect x="380.788" y="210.062" width="332.841" height="303.981" style="fill:none;"/>
+            <g id="Breva" transform="matrix(0.499262,0,0,0.455971,441.315,89.8042)">
+                <g transform="matrix(0.574114,0,0,0.527956,-136.463,281.551)">
+                    <ellipse cx="607.132" cy="597.63" rx="522.545" ry="568.23" style="fill:none;stroke:white;stroke-width:56.3px;"/>
+                </g>
+                <g transform="matrix(0.820108,0,0,0.823493,-145.973,346.443)">
+                    <ellipse cx="218.139" cy="484.126" rx="78.132" ry="79.117" style="fill:none;stroke:white;stroke-width:37.79px;"/>
+                </g>
+                <g transform="matrix(0.820108,0,0,0.823493,220.181,55.8359)">
+                    <ellipse cx="218.139" cy="484.126" rx="78.132" ry="79.117" style="fill:none;stroke:white;stroke-width:37.79px;"/>
+                </g>
+                <g transform="matrix(1,0,0,1,-172.488,267.673)">
+                    <path d="M168.054,415.924C168.054,415.924 95.162,202.038 137.603,176.217C268.877,96.35 503.019,600.859 585.432,543.444C641.85,504.139 592.813,252.814 589.291,252.819" style="fill:none;stroke:white;stroke-width:31.05px;"/>
+                </g>
+            </g>
+        </g>
+        <g id="Zak">
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,48 @@
+@use "@material/animation";
+
+@keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+      opacity: .5;
+    }
+    100% {
+      transform: rotate(360deg);
+      opacity: 1;
+    }
+  }
+
+.logoButton {
+    height: 3rem;
+    z-index: 1000;
+}
+
+.logoContainer {    
+    height: 3.5rem;
+    width: 3.5rem;
+    position: relative;
+}
+
+.logoCircle {
+    height: fit-content;
+    position: absolute;
+    left: -0.5rem;
+    top: 1rem;
+    padding: 0.75rem 0.25rem;
+}
+
+.navbar {    
+    width: 100%;
+    justify-content: space-around;
+}
+
+.logoButton:hover {
+    animation: rotate 1000ms animation.$sharp-curve-timing-function;
+}
+
+.navbar {
+    padding: .5rem 0;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    background: transparent;
+}
