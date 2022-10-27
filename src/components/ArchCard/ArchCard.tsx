@@ -21,7 +21,7 @@ import Image from 'next/image';
 import { Box } from '@mui/system';
 import { Close } from '@mui/icons-material';
 import { Table } from '../TableOfContents/Table/Table';
-import StationStyles from './StationCard.module.scss';
+import StationStyles from './ArchCard.module.scss';
 
 const style = (color: string) => ({
     position: 'absolute' as 'absolute',
@@ -68,7 +68,7 @@ function GetStationBg(type: string) {
     }
 }
 
-export default function StationCard(props: Station): JSX.Element {
+export default function ArchCard(props: Station): JSX.Element {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {

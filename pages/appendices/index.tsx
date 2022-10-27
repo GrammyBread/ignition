@@ -96,6 +96,6 @@ export const getStaticProps: GetStaticProps = async ( context ) =>
             navData: cleanSiteData.getSimpleNav(),
             homeData: appendixHome
         } as Props,
-        revalidate: 120
+        revalidate: (10*24*60*60)
     };
 };

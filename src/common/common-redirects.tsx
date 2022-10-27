@@ -5,16 +5,7 @@ export function RedirectTo404()
         destination: '/404',
         permanent: false,
       },
-    }
-}
-
-export function RedirectTo500()
-{
-    return {
-      redirect: {
-        destination: '/500',
-        permanent: false,
-      },
+      revalidate: 3600
     }
 }
 
@@ -25,5 +16,6 @@ export function RedirectToPatreon()
         destination: '/patreon',
         permanent: false,
       },
+      revalidate: 3600
     }
 }

@@ -6,7 +6,7 @@ import { GetRequestedResource } from '../../src/lib/api/shared';
 import NotFoundPage from '../../src/components/Error/NotFound';
 import { useRouter } from 'next/router';
 import MapSocialData from '../../src/mappers/socials.mapper';
-import { RedirectTo404, } from '../../src/common/common-redirects';
+import { RedirectTo404 } from '../../src/common/common-redirects';
 import getCleanSiteData from '../../src/lib/api/sitedata/cache-site-data';
 import { getAllAvailableLoreDocs, getLoreDocument } from '../../src/lib/api/client';
 import { AppendixDocument as AppendixDocumentPage } from '../../src/interfaces/appendices/documents.interface';
@@ -72,7 +72,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
             document: data,
             navData: cleanSiteData.getSimpleNav()
         } as Props,
-        revalidate: 120
+        revalidate: (30*24*60*60)
     };
 };
 

@@ -56,6 +56,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
       navData: cleanSiteData.getSimpleNav(),
       parts: cleanSiteData.getPartsForDisplay(partResults)
     } as Props,
-    revalidate: 120
+    revalidate: (10*60*60)
   };
 };

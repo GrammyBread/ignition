@@ -100,6 +100,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
             arches: archStations,
             pageDetails
         } as Props,
-        revalidate: 120
+        revalidate: (30*24*60*60)
     };
 };

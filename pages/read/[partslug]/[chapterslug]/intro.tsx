@@ -71,7 +71,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       } as ScriptProps,
       navData: cleanSiteData.getSimpleNav()
     } as Props,
-    revalidate: 120
+    revalidate: (10*60*60)
   };
 };
 
