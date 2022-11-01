@@ -3,6 +3,7 @@ import { Paper, Stack, styled } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { grey } from '@mui/material/colors';
+import Styles from '../Script.module.scss';
 
 export interface TextBodyProps {
     body: string;
@@ -17,25 +18,20 @@ const BodyPaper = styled(Paper)(({ theme }) => ({
     fontFamily: "arial",
     lineHeight: "1.25rem",
     [theme.breakpoints.between('xs', 'sm')]: {
-        width: '100%',
-        padding: "1vw"
+        maxWidth: `calc(100vw - ${theme.spacing(6)})`
     },
     [theme.breakpoints.between('sm', 'md')]: {
-        width: '100%',
-        padding: "1vw"
+        maxWidth: `calc(100vw - ${theme.spacing(6)})`
     },
     [theme.breakpoints.between('md', 'lg')]: {
         width: '90%',
-        maxWidth: '8.5in',
-        padding: ".5in"
+        maxWidth: '8.5in'
     },
     [theme.breakpoints.between('lg', 'xl')]: {
-        maxWidth: '8.5in',
-        padding: ".5in"
+        maxWidth: '8.5in'
     },
     [theme.breakpoints.up('xl')]: {
-        maxWidth: '8.5in',
-        padding: ".5in"
+        maxWidth: '8.5in'
     },
     '& table': {
         backgroundColor: theme.palette.mode === "dark" ? "white" : grey[200],
@@ -76,7 +72,7 @@ export function ScriptBody(props: TextBodyProps): JSX.Element {
                     {
                         cuts.map((cut, cindex) =>
                             <BodyPaper elevation={1} key={cindex}>
-                                <div dangerouslySetInnerHTML={{ __html: cut }}></div>
+                                <div className={Styles.scriptBody} dangerouslySetInnerHTML={{ __html: cut }}></div>
                             </BodyPaper >)
                     }
                 </Stack>

@@ -91,7 +91,7 @@ export function Navigation(props: NavigationProps) {
                 <NavigationList {...navListProps}>
                 </NavigationList>
                 <ImageContainer drawerWidth={props.drawerWidth}>
-                    <Image src={props.navData.logoUrl} alt="" layout='fill' objectFit='cover' objectPosition={leftDirection ? 'left' : 'right'} />
+                    <Image src={props.navData.logoUrl} alt="" layout='fill' objectFit='cover' objectPosition={leftDirection ? 'top left' : 'top right'} />
                 </ImageContainer>
             </Backdrop>
         </Box >

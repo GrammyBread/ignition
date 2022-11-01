@@ -157,7 +157,9 @@ export default function Layout({
           ></Navigation>
           {backgroundImageUrl &&
             <FadeInImage backgroundImageUrl={backgroundImageUrl} />}
-          <Main open={open} drawerWidth={drawerWidth} >
+          <Main open={open} drawerWidth={drawerWidth} sx={{
+            display: open ? 'none' : 'auto'
+          }} >
             {children}
           </Main>
         </PageRoot>
