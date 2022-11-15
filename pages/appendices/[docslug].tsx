@@ -43,7 +43,7 @@ const AppendixDocumentPage = (props: Props): JSX.Element => {
     const socialData = props.document.metadata.social_details ? MapSocialData(props.document.metadata.social_details, appendixURL) : undefined;
 
     return (
-        <Layout navData={props.navData} backgroundImageUrl={props.document.metadata.background_image.url} socials={socialData}>
+        <Layout navData={props.navData} backgroundImageUrl={props.document.metadata.background_image} socials={socialData}>
             <AppendixDocComponent {...appendixDocProps}></AppendixDocComponent>
         </Layout>
     );

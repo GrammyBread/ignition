@@ -6,7 +6,6 @@ import {
     Slide,
     Modal,
     IconButton,
-    Grid,
     Box,
     Stack,
     Container,
@@ -18,8 +17,8 @@ import { Arch } from '../../interfaces/appendices/stations.interface';
 import { Typography, CardActions, ButtonGroup } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import Image from 'next/image';
-import Styles from './ArchCard.module.scss';
-import { borderTop } from '@mui/system';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 const style = () => ({
     position: 'absolute' as 'absolute',
@@ -41,20 +40,28 @@ const ACard = styled(Card, { shouldForwardProp: (prop) => prop !== 'backgroundIm
     ...theme.mixins.toolbar,
 }));
 
-function MakeStationBox(image: string, name: string) {
+function MakeStationBox(image: string, name: string, isMobile: boolean) {
     return <Box
         sx={{
             width: '100%',
             height: '100%'
         }}
     >
-        <Stack>
-            <div>
-                <Image src={image} alt={"Arch's Image"} width={600} height={600} />
-            </div>
+        <Stack direction={isMobile ? "row" : "column"}>
+            <Box sx={{
+                height: '10vw',
+                width: '10vw',
+                maxHeight: '100px',
+                maxWidth: '100px',
+                position: 'relative',
+                margin: 'auto'
+            }}>
+                <Image src={image} alt={"Arch's Image"} fill sizes={"100px"} />
+            </Box>
             <Typography variant="body1" component="div" textAlign='center' sx={{
-                marginBottom: '1rem',
-                minWidth: '100px'
+                margin: '.5rem 0',
+                minWidth: '100px',
+                fontWeight: '900'
             }}>
                 {name}
             </Typography>
@@ -63,6 +70,8 @@ function MakeStationBox(image: string, name: string) {
 }
 
 export default function ArchCard(props: Arch): JSX.Element {
+    const theme = useTheme();
+    const isTinyScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -83,7 +92,7 @@ export default function ArchCard(props: Arch): JSX.Element {
     const stationName = props.title;
 
     return <>
-        <ACard onClick={handleClickOpen} backgroundImageUrl={props.metadata.card_background.url}>
+        <ACard onClick={handleClickOpen} backgroundImageUrl={props.metadata.card_background.imgix_url}>
             <CardMedia
                 component="img"
                 sx={{
@@ -123,7 +132,9 @@ export default function ArchCard(props: Arch): JSX.Element {
                             <Close htmlColor='white' />
                         </IconButton>
                     </CardActions>
-                    <Stack direction="row">
+                    <Stack direction="row" sx={{
+                        margin: '1rem'
+                    }}>
                         <CardMedia
                             component="img"
                             sx={{
@@ -144,7 +155,9 @@ export default function ArchCard(props: Arch): JSX.Element {
                                 {stationName}
                             </Typography>
                             <Typography variant="body1" component="div" textAlign='center' sx={{
-                                marginBottom: '1rem'
+                                marginBottom: '1rem',
+                                maxHeight: "20vh",
+                                overflow: "auto"
                             }}>
                                 <div dangerouslySetInnerHTML={{ __html: props.metadata.notes }}>
 
@@ -162,11 +175,8 @@ export default function ArchCard(props: Arch): JSX.Element {
                             '&:after': {
                                 borderColor: 'white',
                             }
-                        }]}> <Typography variant="h6" component="p" textAlign='center' sx={{
-                            marginBottom: '1rem'
-                        }}>
-                            {props.metadata.fallen_station_header}
-                        </Typography></Divider>
+                        }]}>
+                        <p>{props.metadata.fallen_station_header}</p></Divider>
                     <CardContent>
                         <Container sx={{
                             display: "flex",
@@ -174,10 +184,10 @@ export default function ArchCard(props: Arch): JSX.Element {
                             alignItems: "center"
                         }}>
 
-                            <ButtonGroup>
+                            <ButtonGroup orientation={isTinyScreen ? 'vertical' : 'horizontal'}>
                                 {props.metadata.stations.map((station) => <Button key={station.id} variant="contained">
                                     <div onClick={() => handleStationClick(station.title)} >
-                                        {MakeStationBox(station.metadata.station_symbol.imgix_url, station.title)}
+                                        {MakeStationBox(station.metadata.station_symbol.imgix_url, station.title, isTinyScreen)}
                                     </div>
                                 </Button>)}
                             </ButtonGroup>

@@ -17,11 +17,12 @@ import { styled } from '@mui/material/styles';
 import { Station } from '../../interfaces/appendices/stations.interface';
 import { Typography, CardActions } from '@mui/material';
 import { purple, grey, cyan, yellow } from '@mui/material/colors';
-import Image from 'next/image';
 import { Box } from '@mui/system';
 import { Close } from '@mui/icons-material';
 import { Table } from '../TableOfContents/Table/Table';
 import StationStyles from './StationCard.module.scss';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 const style = (color: string) => ({
     position: 'absolute' as 'absolute',
@@ -49,7 +50,8 @@ const HeaderCell = styled(TableCell)(({ theme }) => ({
     fontSize: '1rem'
 }));
 const ChildCell = styled(TableCell)(({ theme }) => ({
-    fontSize: '1rem'
+    fontSize: '1rem',
+    padding: '.25rem'
 }));
 
 
@@ -69,6 +71,8 @@ function GetStationBg(type: string) {
 }
 
 export default function StationCard(props: Station): JSX.Element {
+    const theme = useTheme();
+    const isGiantScreen = useMediaQuery(theme.breakpoints.up('lg'));
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -95,7 +99,7 @@ export default function StationCard(props: Station): JSX.Element {
                     padding: '0',
                     margin: '1rem auto auto auto'
                 }}
-                image={props.metadata.station_symbol.url}
+                image={isGiantScreen ? props.metadata.station_symbol.url : props.metadata.station_symbol.imgix_url}
                 alt={`${stationName} symbol`}
             />
             <CardContent sx={{
@@ -136,7 +140,7 @@ export default function StationCard(props: Station): JSX.Element {
                             borderRadius: '50%',
                             margin: 'auto'
                         }}
-                        image={props.metadata.station_symbol.url}
+                        image={isGiantScreen ? props.metadata.station_symbol.url : props.metadata.station_symbol.imgix_url}
                         alt={`${stationName} symbol`}
                     />
                     <CardContent>

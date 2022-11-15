@@ -75,7 +75,7 @@ export function Navigation(props: NavigationProps) {
                             <Box className={Styles.logoContainer}>
                                 <Circle className={Styles.logoCircle} {...{ isPrimary: false }}>
                                     <Button className={Styles.logoButton} onClick={props.openDrawer}>
-                                        <Image priority={true} alt="Site Logo" src='/assets/Only1Logo.svg' fill />
+                                        <Image priority={true} alt="Site Logo" src='/assets/Only1Logo.svg' fill sizes='20vw' />
                                     </Button>
                                 </Circle>
                             </Box>
@@ -91,7 +91,10 @@ export function Navigation(props: NavigationProps) {
                 <NavigationList {...navListProps}>
                 </NavigationList>
                 <ImageContainer drawerWidth={props.drawerWidth}>
-                    <Image src={props.navData.logoUrl} alt="" layout='fill' objectFit='cover' objectPosition={leftDirection ? 'top left' : 'top right'} />
+                    <Image src={props.drawerWidth >= 500 ? props.navData.logoUrl.url : props.navData.logoUrl.imgix_url} alt="" fill style={{
+                        objectFit: 'cover',
+                        objectPosition: leftDirection ? 'top left' : 'top right'
+                    }}  />
                 </ImageContainer>
             </Backdrop>
         </Box >

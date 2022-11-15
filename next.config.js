@@ -3,5 +3,5 @@ module.exports = {
     domains: ['imgix.cosmicjs.com',
       'cdn.cosmicjs.com'
     ],
-  },
+  }
 }

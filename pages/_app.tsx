@@ -1,19 +1,22 @@
-import type { AppProps } from 'next/app';
 import { Oswald } from '@next/font/google'
+import { AppProps } from 'next/app';
 
 // If loading a variable font, you don't need to specify the font weight
 
-const oswald = Oswald();
+const oswald = Oswald({ subsets: ["latin"] });
 
-function MyApp ( { Component, pageProps }: AppProps )
-{
+export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <main style={{
-      fontFamily: oswald.className
-    }}>
-      <Component { ...pageProps } />;
-    </main> 
-  );
+    <>
+      <style jsx global>{`
+        html {
+          font-family: ${oswald.style.fontFamily};
+        }
+          :root {
+            --oswald-font: ${oswald.style.fontFamily};
+          }
+      `}</style>
+      <Component {...pageProps} />
+    </>
+  )
 }
-
-export default MyApp;

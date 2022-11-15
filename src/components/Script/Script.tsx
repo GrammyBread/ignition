@@ -1,12 +1,8 @@
 import * as React from 'react';
 import { Script } from '../../interfaces/read/read-metadata.interfaces';
-import Image from 'next/image';
 import { ScriptHeader, ScriptHeaderProps } from './Parts/ScriptHeader';
 import { ScriptBody, TextBodyProps } from './Parts/ScriptBody';
-import Styles from '../../styles/shared.module.scss';
-import ScriptStyles from './Script.module.scss';
 import { Stack } from '@mui/material';
-import { Box, Container } from '@mui/system';
 
 export interface ScriptProps {
     script: Script;
@@ -17,7 +13,7 @@ export interface ScriptProps {
 export default function ScriptComponent(props: ScriptProps) {
     const data = props.script.metadata;
     const headerProps = {
-        headerUrl: data.header_image.url,
+        headerImage: data.header_image,
         title: data.title
     } as ScriptHeaderProps
 

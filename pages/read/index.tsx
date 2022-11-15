@@ -8,6 +8,7 @@ import { PartCardProps } from '../../src/components/PartCard/PartCard';
 import NotFoundPage from '../../src/components/Error/NotFound';
 import { Grid } from '@mui/material';
 import getCleanSiteData from '../../src/lib/api/sitedata/cache-site-data';
+import { PublicBackground } from '../../public/backgroundImage';
 
 interface Props {
   navData: CleanedNavigation;
@@ -30,7 +31,7 @@ const Parts = (props: Props): JSX.Element => {
   const partCards = MakePartCards(props.parts);
 
   return (
-    <Layout navData={props.navData} backgroundImageUrl={"/assets/SiteBack.svg"}>
+    <Layout navData={props.navData} backgroundImageUrl={PublicBackground}>
       <Grid container
         spacing={8}
         direction="row"

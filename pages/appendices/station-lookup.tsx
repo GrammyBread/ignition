@@ -22,6 +22,8 @@ import ArchCard from '../../src/components/ArchCard/ArchCard';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { Container } from '@mui/system';
+import { Resource } from '../../src/interfaces/read/read-metadata.interfaces';
+import { PublicBackground } from '../../public/backgroundImage';
 
 interface Props {
     navData: CleanedNavigation;
@@ -49,7 +51,7 @@ const StationSearch = (props: Props): JSX.Element => {
     }
 
     return (
-        <Layout navData={props.navData} backgroundImageUrl={"/assets/SiteBack.svg"}>
+        <Layout navData={props.navData} backgroundImageUrl={PublicBackground}>
             <Stack spacing={2}>
                 <Card>
                     <CardHeader sx={{

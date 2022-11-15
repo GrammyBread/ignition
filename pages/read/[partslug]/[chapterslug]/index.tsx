@@ -5,7 +5,7 @@ import { TableOfContentsProps } from '../../../../src/components/TableOfContents
 import TableOfContents from '../../../../src/components/TableOfContents/Table/Table';
 import Layout from '../../../../src/components/Main/Layout';
 import { CleanedNavigation } from '../../../../src/interfaces/read/cleaned-types.interface';
-import { CosmicChapter } from '../../../../src/interfaces/read/read-metadata.interfaces';
+import { CosmicChapter, Resource } from '../../../../src/interfaces/read/read-metadata.interfaces';
 import { Chapter, Part } from '../../../../src/interfaces/read/view-data.interfaces';
 import { ChapterProps } from '../../../../src/components/TableOfContents/Chapter/TOCChapter';
 import { GetRequestedResource } from '../../../../src/lib/api/shared';
@@ -13,6 +13,7 @@ import NotFoundPage from '../../../../src/components/Error/NotFound';
 import { ItemStatus } from '../../../../src/mappers/availability/state.mappers';
 import getCleanSiteData from '../../../../src/lib/api/sitedata/cache-site-data';
 import { RedirectTo404, RedirectToPatreon } from '../../../../src/common/common-redirects';
+import { PublicBackground } from '../../../../public/backgroundImage';
 
 interface ChapterPath {
   params: {
@@ -24,7 +25,7 @@ interface ChapterPath {
 interface Props {
   relatedChapter: Chapter;
   navData: CleanedNavigation;
-  chapterImageURL: string;
+  chapterImage: Resource;
 }
 
 const Chapter = (props: Props): JSX.Element => {
@@ -45,7 +46,7 @@ const Chapter = (props: Props): JSX.Element => {
   let table = <TableOfContents {...tocProps}></TableOfContents>;
 
   return (
-    <Layout navData={props.navData} backgroundImageUrl={props.chapterImageURL}>
+    <Layout navData={props.navData} backgroundImageUrl={props.chapterImage}>
       {table}
     </Layout>
   );
@@ -79,7 +80,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      chapterImageURL: data.metadata?.chapter_image?.url ?? "/assets/SiteBack.svg",
+      chapterImage: data.metadata?.chapter_image ?? PublicBackground,
       relatedChapter,
       navData: cleanSiteData.getSimpleNav()
     } as Props,

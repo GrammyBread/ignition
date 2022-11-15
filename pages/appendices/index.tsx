@@ -10,6 +10,8 @@ import { getAppendicesHome } from '../../src/lib/api/client';
 import { AppendixHome } from '../../src/interfaces/appendices/home.interface';
 import { useState } from 'react';
 import AppendixList, { AppendixListProps } from '../../src/components/Appendix/AppendixList';
+import { Resource } from '../../src/interfaces/read/read-metadata.interfaces';
+import { PublicBackground } from '../../public/backgroundImage';
 
 interface Props
 {
@@ -22,20 +24,21 @@ const delay = ( ms: number ) => new Promise( res => setTimeout( res, ms ) );
 
 const AppendicesHome = ( props: Props ): JSX.Element =>
 {
-    const [ background, setBackground ] = useState( '/assets/SiteBack.svg' );
+
+    const [ background, setBackground ] = useState(PublicBackground);
 
     if ( props == undefined || props.homeData == undefined )
     {
         return <NotFoundPage requestedItem={ `Appendices` } />;
     }
 
-    const functionSetBackground = (newImage?: string) => {
+    const functionSetBackground = (newImage?: Resource) => {
         if(newImage)
         {
             setBackground(newImage);
         }
         else {
-            setBackground('/assets/SiteBack.svg');
+            setBackground(PublicBackground);
         }
     }
 
@@ -51,6 +54,8 @@ const AppendicesHome = ( props: Props ): JSX.Element =>
         Documents: props.homeData.metadata.appendix_items,
         changeBackground: functionSetBackground
     } as AppendixListProps;
+
+    
 
     return (
         <Layout navData={ props.navData } backgroundImageUrl={ background }>

@@ -3,6 +3,7 @@ import {
     BasicReadObject, 
     ChapterMetadata, 
     PartMetadata, 
+    Resource, 
     SectionMetadata } from "./read-metadata.interfaces";
 
 export interface CleanedCosmicPart extends PartMetadata, BasicReadObject {
@@ -18,6 +19,6 @@ export interface CleanedCosmicSection extends SectionMetadata, BasicReadObject {
 
 export interface CleanedNavigation {
     data: NavPart[];
-    logoUrl: string;
+    logoUrl: Resource;
     domain: string;
 }
