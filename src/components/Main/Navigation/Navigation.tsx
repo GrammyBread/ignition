@@ -75,7 +75,7 @@ export function Navigation(props: NavigationProps) {
                             <Box className={Styles.logoContainer}>
                                 <Circle className={Styles.logoCircle} {...{ isPrimary: false }}>
                                     <Button className={Styles.logoButton} onClick={props.openDrawer}>
-                                        <Image priority={true} alt="Site Logo" src='/assets/Only1Logo.svg' layout='fill' />
+                                        <Image priority={true} alt="Site Logo" src='/assets/Only1Logo.svg' fill />
                                     </Button>
                                 </Circle>
                             </Box>

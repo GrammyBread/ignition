@@ -27,7 +27,10 @@ export function CustomErrorPage({ message , isHTML}: ErrorPageProps): JSX.Elemen
                 </Paper>
                 <Button className={Styles.errorReturnButton} color="warning" variant="contained">Take Me To Safety</Button>
             </div>
-            <Image className={Styles.backgroundImageError} alt="" priority={true} src={errorImage} layout='fill' objectFit='cover' objectPosition='center' />
+            <Image className={Styles.backgroundImageError} alt="" priority={true} src={errorImage} fill style={{
+                objectFit: "cover",
+                objectPosition: "center"
+            }} />
         </>
     );
 }

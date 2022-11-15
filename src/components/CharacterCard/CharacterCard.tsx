@@ -127,7 +127,7 @@ export default function CharacterCard({ info, baseURL }: CardProps): JSX.Element
                                         <Image
                                             src={info.metadata.name.station_image.url}
                                             alt={`${info.metadata.name.first_name} ${info.metadata.name.additional_names} character station image`}
-                                            layout="fill" />
+                                            fill />
                                     </Box>
                                 }
                             </Typography>

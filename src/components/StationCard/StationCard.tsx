@@ -85,7 +85,7 @@ export default function StationCard(props: Station): JSX.Element {
     const stationColor = GetStationBg(props.metadata.station_type.key);
 
     return <>
-        <SCard stationColor={stationColor} onClick={handleClickOpen}>
+        <SCard stationColor={stationColor} id={`${stationName}-card`} onClick={handleClickOpen}>
             <CardMedia
                 component="img"
                 sx={{

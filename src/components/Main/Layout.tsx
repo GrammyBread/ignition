@@ -74,8 +74,10 @@ const FadeInImage = ({ backgroundImageUrl }: ImageProps) => {
         src={backgroundImageUrl}
         key={backgroundImageUrl}
         blurDataURL='/assets/SiteBack.svg'
-        layout="fill"
-        objectFit="cover"
+        fill
+        style={{
+          objectFit: "cover"
+        }}
         quality={100}
       />
     </motion.div>

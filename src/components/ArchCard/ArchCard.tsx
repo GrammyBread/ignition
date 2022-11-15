@@ -6,69 +6,63 @@ import {
     Slide,
     Modal,
     IconButton,
-    TableContainer,
-    TableBody,
-    TableRow,
-    TableCell,
-    Paper,
-    TableHead
+    Grid,
+    Box,
+    Stack,
+    Container,
+    Button,
+    Divider
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Station } from '../../interfaces/appendices/stations.interface';
-import { Typography, CardActions } from '@mui/material';
-import { purple, grey, cyan, yellow } from '@mui/material/colors';
-import Image from 'next/image';
-import { Box } from '@mui/system';
+import { Arch } from '../../interfaces/appendices/stations.interface';
+import { Typography, CardActions, ButtonGroup } from '@mui/material';
 import { Close } from '@mui/icons-material';
-import { Table } from '../TableOfContents/Table/Table';
-import StationStyles from './ArchCard.module.scss';
+import Image from 'next/image';
+import Styles from './ArchCard.module.scss';
+import { borderTop } from '@mui/system';
 
-const style = (color: string) => ({
+const style = () => ({
     position: 'absolute' as 'absolute',
     top: '10%',
     left: '0',
     transform: 'translate(-50%, -50%)',
     width: 'calc(100% - 2rem)',
     margin: '1rem',
-    bgcolor: color,
-    color: 'black',
+    color: 'white',
+    background: 'black',
     borderRadius: '.5rem'
 });
 
-const SCard = styled(Card, {
-    shouldForwardProp: (prop) => prop !== 'stationColor',
-})<{ stationColor: string }>(({ theme, stationColor }) => ({
-    backgroundColor: 'transparent',
+const ACard = styled(Card, { shouldForwardProp: (prop) => prop !== 'backgroundImageUrl' })<{
+    backgroundImageUrl?: string;
+}>(({ theme, backgroundImageUrl }) => ({
+    background: `url(${backgroundImageUrl})`,
     fontColor: theme.palette.mode == 'dark' ? 'black' : 'white',
-
     ...theme.mixins.toolbar,
 }));
 
-const HeaderCell = styled(TableCell)(({ theme }) => ({
-    borderRight: theme.palette.mode == 'dark' ? '1px solid rgb(81,81,81)' : '1px solid rgb(81,81,81)',
-    fontSize: '1rem'
-}));
-const ChildCell = styled(TableCell)(({ theme }) => ({
-    fontSize: '1rem'
-}));
-
-
-function GetStationBg(type: string) {
-    if (type.toLocaleLowerCase() === "ma") {
-        return yellow['A200']
-    }
-    else if (type.toLocaleLowerCase() === "s") {
-        return cyan['A200']
-    }
-    else if (type.toLocaleLowerCase() === "c") {
-        return purple['A100'];
-    }
-    else {
-        return grey['A400']
-    }
+function MakeStationBox(image: string, name: string) {
+    return <Box
+        sx={{
+            width: '100%',
+            height: '100%'
+        }}
+    >
+        <Stack>
+            <div>
+                <Image src={image} width={600} height={600} />
+            </div>
+            <Typography variant="body1" component="div" textAlign='center' sx={{
+                marginBottom: '1rem',
+                minWidth: '100px'
+            }}>
+                {name}
+            </Typography>
+        </Stack>
+    </Box>;
 }
 
-export default function ArchCard(props: Station): JSX.Element {
+export default function ArchCard(props: Arch): JSX.Element {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -78,39 +72,41 @@ export default function ArchCard(props: Station): JSX.Element {
         setOpen(false);
     };
 
+    const handleStationClick = (stationName: string) => {
+        const relatedCard = document.getElementById(`${stationName}-card`);
+        if (relatedCard) {
+            setOpen(false);
+            relatedCard.click();
+        }
+    }
+
     const stationName = props.title;
-    const stationNotes = props.metadata.notes;
-    const stationType = props.metadata.station_type.value;
-    const stationPlanet = props.metadata.orbiting_planet;
-    const stationColor = GetStationBg(props.metadata.station_type.key);
 
     return <>
-        <SCard stationColor={stationColor} onClick={handleClickOpen}>
+        <ACard onClick={handleClickOpen} backgroundImageUrl={props.metadata.card_background.url}>
             <CardMedia
                 component="img"
                 sx={{
                     maxWidth: 'calc(100% - 2rem)',
-                    backgroundColor: stationColor,
-                    borderRadius: '50%',
                     padding: '0',
                     margin: '1rem auto auto auto'
                 }}
-                image={props.metadata.station_symbol.url}
+                image={props.metadata.arch_symbol.url}
                 alt={`${stationName} symbol`}
             />
             <CardContent sx={{
                 marginTop: '.5rem',
                 padding: '.5rem !important'
             }}>
-                <Typography gutterBottom variant="h5" textAlign='center' component="div" sx={{                    
-                    background: 'white',
-                    color: 'black',
+                <Typography gutterBottom variant="h5" textAlign='center' component="div" sx={{
+                    background: 'black',
+                    color: 'white',
                     borderRadius: '.5rem'
                 }}>
                     {stationName}
                 </Typography>
             </CardContent>
-        </SCard>
+        </ACard>
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -119,84 +115,73 @@ export default function ArchCard(props: Station): JSX.Element {
             closeAfterTransition
         >
             <Slide in={open}>
-                <Card sx={style(stationColor)}>
+                <Card sx={style()}>
                     <CardActions sx={{
                         justifyContent: 'end'
                     }}>
                         <IconButton onClick={handleClose}>
-                            <Close htmlColor='black' />
+                            <Close htmlColor='white' />
                         </IconButton>
                     </CardActions>
-                    <CardMedia
-                        component="img"
-                        sx={{
-                            maxWidth: 'min(30vw, 30vh)',
-                            background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,.5) 40%, rgba(255,255,255,1) 70%)',
-                            border: 'solid white 2px',
-                            borderRadius: '50%',
-                            margin: 'auto'
-                        }}
-                        image={props.metadata.station_symbol.url}
-                        alt={`${stationName} symbol`}
-                    />
-                    <CardContent>
-                        <Typography variant="h5" component="div" textAlign='center' sx={{
-                            textDecoration: 'underline',
+                    <Stack direction="row">
+                        <CardMedia
+                            component="img"
+                            sx={{
+                                maxWidth: 'min(30vw, 30vh)',
+                                background: `url(${props.metadata.card_background.url})`,
+                                border: 'solid transparent 2px',
+                                borderRadius: '10%',
+                                margin: 'auto'
+                            }}
+                            image={props.metadata.arch_symbol.url}
+                            alt={`${stationName} symbol`}
+                        />
+                        <Container>
+                            <Typography variant="h5" component="div" textAlign='center' sx={{
+                                textDecoration: 'underline',
+                                marginBottom: '1rem'
+                            }}>
+                                {stationName}
+                            </Typography>
+                            <Typography variant="body1" component="div" textAlign='center' sx={{
+                                marginBottom: '1rem'
+                            }}>
+                                <div dangerouslySetInnerHTML={{ __html: props.metadata.notes }}>
+
+                                </div>
+                            </Typography>
+                        </Container>
+                    </Stack>
+                    <Divider variant='middle' role="presentation" sx={[
+                        { marginTop: '1rem' },
+                        {
+                            '&:before': {
+                                borderColor: 'white',
+                            },
+                        }, {
+                            '&:after': {
+                                borderColor: 'white',
+                            }
+                        }]}> <Typography variant="h6" component="p" textAlign='center' sx={{
                             marginBottom: '1rem'
                         }}>
-                            {stationName}
-                        </Typography>
-                        <Box className={StationStyles.stationDetails}>
-                            <TableContainer component={Paper}>
-                                <Table aria-label="station details table" sx={{
-                                    width: '100% !important'
-                                }}>
-                                    <table className={StationStyles.detailsTables}>
-                                        <TableHead></TableHead>
-                                        <TableBody sx={{
-                                            width: '100%'
-                                        }}>
-                                            <TableRow>
-                                                <HeaderCell scope="row">
-                                                    <strong>Orbiting Planet</strong>
-                                                </HeaderCell>
-                                                <ChildCell align="left">
-                                                    {stationPlanet}
-                                                </ChildCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <HeaderCell scope="row">
-                                                    <strong>Station Type</strong>
-                                                </HeaderCell>
-                                                <ChildCell align="left">
-                                                    {stationType}
-                                                </ChildCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <HeaderCell scope="row">
-                                                    <strong>Related Stations</strong>
-                                                </HeaderCell>
-                                                <ChildCell align="left">
-                                                    <div dangerouslySetInnerHTML={{ __html: props.metadata.relations }} />
-                                                </ChildCell>
-                                            </TableRow>
-                                            {
-                                                stationNotes &&
-                                                <TableRow>
-                                                    <HeaderCell scope="row">
-                                                        <strong>Notes</strong>
-                                                    </HeaderCell>
-                                                    <ChildCell align="left" >
-                                                        <div dangerouslySetInnerHTML={{ __html: stationNotes }} />
-                                                    </ChildCell>
-                                                </TableRow>
-                                            }
-                                        </TableBody>
-                                    </table>
-                                </Table>
-                            </TableContainer>
-                        </Box>
+                            {props.metadata.fallen_station_header}
+                        </Typography></Divider>
+                    <CardContent>
+                        <Container sx={{
+                            display: "flex",
+                            flexFlow: "column",
+                            alignItems: "center"
+                        }}>
 
+                            <ButtonGroup>
+                                {props.metadata.stations.map((station) => <Button key={station.id} variant="contained">
+                                    <div onClick={() => handleStationClick(station.title)} >
+                                        {MakeStationBox(station.metadata.station_symbol.imgix_url, station.title)}
+                                    </div>
+                                </Button>)}
+                            </ButtonGroup>
+                        </Container>
                     </CardContent>
                 </Card>
             </Slide>
