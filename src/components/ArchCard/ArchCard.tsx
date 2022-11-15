@@ -50,7 +50,7 @@ function MakeStationBox(image: string, name: string) {
     >
         <Stack>
             <div>
-                <Image src={image} width={600} height={600} />
+                <Image src={image} alt={"Arch's Image"} width={600} height={600} />
             </div>
             <Typography variant="body1" component="div" textAlign='center' sx={{
                 marginBottom: '1rem',

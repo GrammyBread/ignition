@@ -32,16 +32,15 @@ interface Props {
 
 const StationSearch = (props: Props): JSX.Element => {
     const [filterName, setFilterName] = React.useState<string | null>('');
-
-    if (props == undefined || props.arches == undefined || props.stations == undefined) {
-        return <NotFoundPage requestedItem={`Character Page`} />
-    }
-
     const theme = useTheme();
     const isMidSized = useMediaQuery(theme.breakpoints.only('md'));
     const isSmallSized = useMediaQuery(theme.breakpoints.only('sm'));
     const isTinyScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const isLargerScreen = useMediaQuery(theme.breakpoints.up('sm'));
+
+    if (props == undefined || props.arches == undefined || props.stations == undefined) {
+        return <NotFoundPage requestedItem={`Character Page`} />
+    }
 
     props.stations.sort((a, b) => (a.title < b.title) ? -1 : 1);
     let stationNames = props.stations.map((station) => station.title);
