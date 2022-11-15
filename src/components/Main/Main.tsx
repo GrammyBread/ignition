@@ -5,6 +5,7 @@ export const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open
     drawerWidth?: number;
 }>(({ theme, open, drawerWidth }) => ({
     flexGrow: 1,
+    display: open ? 'none' : 'auto',
     marginTop: `5rem`,
     padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
