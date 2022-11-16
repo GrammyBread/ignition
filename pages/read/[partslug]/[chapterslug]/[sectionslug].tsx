@@ -52,7 +52,7 @@ const Section = (props: Props): JSX.Element => {
   } as ScriptProps
 
   return (
-    <Layout navData={props.navData} backgroundImageUrl={scriptProps.script.metadata.script_image.url} socials={socialData}>
+    <Layout navData={props.navData} backgroundImageUrl={scriptProps.script.metadata.script_image} socials={socialData}>
       <ScriptComponent {...scriptProps}/>
     </Layout>
   );

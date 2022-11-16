@@ -31,7 +31,7 @@ const ChapterIntro = (props: Props): JSX.Element => {
   }
 
   return (
-    <Layout navData={props.navData} backgroundImageUrl={props.scriptDetails.script.metadata.script_image.url}>
+    <Layout navData={props.navData} backgroundImageUrl={props.scriptDetails.script.metadata.script_image}>
       <ScriptComponent {...props.scriptDetails}></ScriptComponent>
     </Layout>
   );

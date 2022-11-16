@@ -18,6 +18,7 @@ import CharacterCard from '../../src/components/CharacterCard/CharacterCard';
 import getCleanSiteData from '../../src/lib/api/sitedata/cache-site-data';
 import { AppendixPage } from '../../src/interfaces/appendices/documents.interface';
 import { useRouter } from 'next/router';
+import { PublicBackground } from '../../public/backgroundImage';
 
 interface Props {
   navData: CleanedNavigation;
@@ -34,6 +35,7 @@ const CharacterSearch = (props: Props): JSX.Element => {
     return <NotFoundPage requestedItem={`Character Page`} />
   }
 
+
   const baseURL = router.asPath ?
     `${props.navData.domain}${router.asPath}` :
     props.navData.domain;
@@ -45,7 +47,7 @@ const CharacterSearch = (props: Props): JSX.Element => {
   });
 
   return (
-    <Layout navData={props.navData} backgroundImageUrl={"/assets/SiteBack.svg"}>
+    <Layout navData={props.navData} backgroundImageUrl={PublicBackground}>
       <Stack spacing={2}>
         <Paper>
           <Typography gutterBottom variant="h2" component="h1" textAlign={"center"} sx={{ lineHeight: "1" }}>
@@ -112,6 +114,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
       characters: characterResults,
       pageDetails
     } as Props,
-    revalidate: (30*24*60*60)
+    revalidate: (30 * 24 * 60 * 60)
   };
 };

@@ -7,6 +7,7 @@ import DocItemComponent from './HomeItems/DocItems';
 import { AppendixItem } from '../../interfaces/appendices/home.interface';
 import { useScroll } from 'framer-motion';
 import { useState } from 'react';
+import { Resource } from '../../interfaces/read/read-metadata.interfaces';
 
 const AppendixListContainer = styled('ul')(({ theme }) => ({
     display: 'flex',
@@ -51,7 +52,7 @@ export interface AppendixListProps {
     CharacterProps: SpecialItemProps;
     StationProps: SpecialItemProps;
     Documents: AppendixItem[];
-    changeBackground: (newImage?: string) => {};
+    changeBackground: (newImage?: Resource) => {};
 }
 
 interface specialLIProps {
@@ -77,7 +78,7 @@ const SpecialLi = ({ setInside, children, id }: specialLIProps) => {
                 setIsInside(areWeInside)
             }
         });
-    }, [scrollYProgress, setInside, isInside])
+    }, [scrollYProgress, id, setInside, isInside])
 
     return <li ref={ref}>
         {children}
@@ -88,24 +89,26 @@ export default function AppendixList(props: AppendixListProps): JSX.Element {
     const theme = useTheme();
     const isTinyScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-    let imageStates = props.Documents.map((doc) => ({ id: doc.document.slug, image: doc.image.url, state: false }));
-    imageStates.push(({ id: 'c', image: props.CharacterProps.item.image.url, state: false }));
-    imageStates.push(({ id: 's', image: props.StationProps.item.image.url, state: false }));
+    let imageStates = props.Documents.map((doc) => ({ id: doc.document.slug, image: doc.image, state: false }));
+    imageStates.push(({ id: 'c', image: props.CharacterProps.item.image, state: false }));
+    imageStates.push(({ id: 's', image: props.StationProps.item.image, state: false }));
 
     const [childStates, setChildStates] = useState(imageStates)
+
+    const changeBackground = props.changeBackground;
 
     // The scroll listener
     React.useEffect(() => {
         if (isTinyScreen) {
             const insideOfChild = childStates.find((child) => child.state == true)
             if (insideOfChild) {
-                props.changeBackground(insideOfChild.image);
+                changeBackground(insideOfChild.image);
             }
         }
         else {
-            props.changeBackground();
+            changeBackground();
         }
-    }, [childStates, isTinyScreen]);
+    }, [childStates, isTinyScreen, changeBackground]);
 
     const changeChildState = (state: boolean, id: string) => {
         let hasChangeHappened = false;

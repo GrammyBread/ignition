@@ -7,7 +7,8 @@ import {
     ChevronLeft,
     ExpandLess,
     HomeOutlined,
-    MenuBook
+    MenuBook,
+    NoEncryption
 } from '@mui/icons-material';
 import {
     Collapse,
@@ -24,6 +25,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NavPart } from '../../../../interfaces/read/nav-data.interfaces';
 import { ExpandMore } from '@mui/icons-material';
+import Styles from "../Navigation.module.scss";
 
 export interface NavigationListProps {
     drawerWidth: number;
@@ -72,6 +74,10 @@ export default function NavigationList(props: NavigationListProps) {
                     width: props.drawerWidth,
                     boxSizing: 'border-box',
                 },
+                '& a': {
+                    textDecoration: 'none',
+                    color: 'text.primary'
+                }
             }}
             variant="persistent"
             anchor="left"
@@ -101,26 +107,28 @@ export default function NavigationList(props: NavigationListProps) {
             </DrawerSection>
             <Divider />
             <DrawerSection>
-                <ListItem key={'Home'} disablePadding>
-                    <Link href="/home">
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <HomeOutlined></HomeOutlined>
-                            </ListItemIcon>
-                            <ListItemText primary='Home' />
-                        </ListItemButton>
-                    </Link>
-                </ListItem>
-                <ListItem key={'Lore'} disablePadding>
-                    <Link href="/appendices">
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <MenuBook></MenuBook>
-                            </ListItemIcon>
-                            <ListItemText primary='Lore' />
-                        </ListItemButton>
-                    </Link>
-                </ListItem>
+                <List>
+                    <ListItem key={'Home'} disablePadding>
+                        <Link href="/">
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <HomeOutlined></HomeOutlined>
+                                </ListItemIcon>
+                                <ListItemText primary='Home' />
+                            </ListItemButton>
+                        </Link>
+                    </ListItem>
+                    <ListItem key={'Lore'} disablePadding>
+                        <Link href="/appendices">
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <MenuBook></MenuBook>
+                                </ListItemIcon>
+                                <ListItemText primary='Lore' />
+                            </ListItemButton>
+                        </Link>
+                    </ListItem>
+                </List>
             </DrawerSection>
         </Drawer>
     );

@@ -83,7 +83,7 @@ export class CleanSiteData {
 
         return {
             data: publishedParts,
-            logoUrl: this._siteLogo.url,
+            logoUrl: this._siteLogo,
             domain: this._siteDomain
         } as CleanedNavigation
     }

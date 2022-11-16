@@ -21,7 +21,7 @@
       "console": "integratedTerminal",
       "serverReadyAction": {
         "pattern": "started server on .+, url: (https?://.+)",
-        "uriFormat": "%s/appendices",
+        "uriFormat": "%s/appendices/station-lookup",
         "action": "debugWithChrome"
       }
     }

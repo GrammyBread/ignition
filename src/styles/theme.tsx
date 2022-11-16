@@ -32,7 +32,7 @@ export const ignitionThemeDark = createTheme({
         }
     },
     typography: {
-        fontFamily: 'Oswald',
+        fontFamily: 'var(--oswald-font)',
         fontWeightLight: 100,
         fontWeightMedium: 500,
         fontWeightRegular: 400,
