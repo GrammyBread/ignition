@@ -8,16 +8,20 @@ import { Character } from '../../src/interfaces/appendices/character.interface';
 import {
   Autocomplete,
   TextField,
-  Paper,
   Stack,
   Grid,
   Typography,
-  Divider
+  CardHeader,
+  Card
 } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 import CharacterCard from '../../src/components/CharacterCard/CharacterCard';
 import getCleanSiteData from '../../src/lib/api/sitedata/cache-site-data';
 import { AppendixPage } from '../../src/interfaces/appendices/documents.interface';
 import { useRouter } from 'next/router';
+import { PublicBackground } from '../../public/backgroundImage';
+import { CharacterSearchHeader } from '../../src/components/Appendix/CharacterSearchHeader/CharacterSearchHeader';
 
 interface Props {
   navData: CleanedNavigation;
@@ -27,7 +31,10 @@ interface Props {
 
 const CharacterSearch = (props: Props): JSX.Element => {
   const router = useRouter();
+  const theme = useTheme();
   const [filterName, setFilterName] = React.useState<string | null>('');
+  const isGiantScreen = useMediaQuery(theme.breakpoints.up('lg'));
+  const isLargerScreen = useMediaQuery('(min-width:760px)', { noSsr: true });
   const STATION = "STATION";
 
   if (props == undefined || props.navData == undefined || props.characters == undefined) {
@@ -47,14 +54,20 @@ const CharacterSearch = (props: Props): JSX.Element => {
   return (
     <Layout navData={props.navData} backgroundImageUrl={"/assets/SiteBack.svg"}>
       <Stack spacing={2}>
-        <Paper>
-          <Typography gutterBottom variant="h2" component="h1" textAlign={"center"} sx={{ lineHeight: "1" }}>
-            {props.pageDetails.title}
-          </Typography>
-          <Divider variant='middle' />
-          <Typography gutterBottom variant="body1" component="h2" sx={{ margin: "1rem" }}>
-            <div dangerouslySetInnerHTML={{ __html: props.pageDetails.content }} />
-          </Typography>
+        <Card>
+          <CardHeader sx={{
+            background: "black"
+          }}
+            title={<Typography gutterBottom variant="h2" component="h1" textAlign={"center"} sx={{ lineHeight: "1" }}>
+              {props.pageDetails.title}
+            </Typography>}
+          />
+          <CharacterSearchHeader
+            isGiantScreen={isGiantScreen}
+            isLargerScreen={isLargerScreen}
+            aboutTitle="About This Appendix Item"
+            aboutHTML={props.pageDetails.content}
+          />
           <Autocomplete
             disablePortal
             id="combo-box-demo"
@@ -74,7 +87,7 @@ const CharacterSearch = (props: Props): JSX.Element => {
             }}
             renderInput={(params) => <TextField {...params} label="Search by Name" />}
           />
-        </Paper>
+        </Card>
         <Grid container spacing={2} sx={{
           paddingRight: '2rem'
         }}>

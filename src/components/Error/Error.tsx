@@ -1,11 +1,6 @@
 import Image from "next/image";
-import { FallbackProps } from 'react-error-boundary';
 import { Paper, Button } from '@mui/material';
 import Styles from '../../styles/shared.module.scss';
-
-export function ErrorFallback({ error, resetErrorBoundary }: FallbackProps): JSX.Element {
-    return <CustomErrorPage message="We're having trouble getting what you requested" />;
-}
 
 interface ErrorPageProps {
     message: string;

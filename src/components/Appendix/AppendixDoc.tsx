@@ -6,10 +6,12 @@ import { Stack } from '@mui/material';
 import { TextBodyProps } from '../Script/Parts/ScriptBody';
 import {AppendixDocument} from '../../interfaces/appendices/documents.interface';
 import { AppendixBody } from './Parts/AppendixBody';
+import { Resource } from '../../interfaces/read/read-metadata.interfaces';
 
 export interface AppendixDocProps {
     doc: AppendixDocument;
     fullURL: string;
+    isTest: boolean;
 }
 
 export default function AppendixDocComponent(props: AppendixDocProps) {
@@ -18,11 +20,16 @@ export default function AppendixDocComponent(props: AppendixDocProps) {
         title: props.doc.title,
         url: props.fullURL
     } as AppendixHeaderProps
+    
+    const testSmallPDF = {
+        url: "/exampleDocs/SmallExample.pdf",
+        imgix_url: ""
+    } as Resource;
 
-    const bodyProps = {
-        body: props.doc.metadata.large_html,
-        smallScript: props.doc.metadata.small_html
-    } as TextBodyProps
+    const testLargePDF = {
+        url: "/exampleDocs/SmallExample.pdf",
+        imgix_url: ""
+    } as Resource;
 
     return <React.Fragment>
         <Stack
@@ -34,7 +41,10 @@ export default function AppendixDocComponent(props: AppendixDocProps) {
                 fontSize:"1rem"
             }}>
             <AppendixHeader {...headerProps} ></AppendixHeader>
-            <AppendixBody {...bodyProps}></AppendixBody>
+            <AppendixBody 
+                largePdf={props.isTest ? testLargePDF : props.doc.metadata.large_pdf}
+                smallPdf={props.isTest ? testSmallPDF : props.doc.metadata.small_pdf}
+            ></AppendixBody>
         </Stack>
     </React.Fragment>
 

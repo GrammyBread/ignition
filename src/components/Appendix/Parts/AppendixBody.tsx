@@ -1,9 +1,13 @@
 import * as React from 'react';
+import dynamic from "next/dynamic";
 import { Paper, Stack, styled } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { grey } from '@mui/material/colors';
-import { TextBodyProps } from '../../Script/Parts/ScriptBody';
+import { Resource } from '../../../interfaces/read/read-metadata.interfaces';
+const PDFViewer = dynamic(() => import("../../CustomPdfReader/CustomPdfReader"), {
+    ssr: false
+});
 
 const BodyPaper = styled(Paper)(({ theme }) => ({
     margin: 'auto',
@@ -51,31 +55,22 @@ const BodyPaper = styled(Paper)(({ theme }) => ({
     }
 }));
 
-export function AppendixBody(props: TextBodyProps): JSX.Element {
-    const [scriptBody, setScriptBody] = React.useState(props.body);
+interface AppendixBodyProps {
+    smallPdf: Resource;
+    largePdf: Resource;
+}
+
+export function AppendixBody({smallPdf, largePdf }: AppendixBodyProps): JSX.Element {
+    const [scriptPdf, setScriptPdf] = React.useState(smallPdf);
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
     React.useEffect(() => {
-        setScriptBody(isSmallScreen ? props.smallScript : props.body);
-    }, [isSmallScreen, props.smallScript, props.body]);
+            setScriptPdf(isSmallScreen ? smallPdf : largePdf);
+    }, [isSmallScreen, smallPdf, largePdf]);
 
-    const fades = scriptBody.split('[insrtPB]');
 
-    return <Stack spacing={10}>
-        {
-            fades.map((script, index) => {
-                const cuts = scriptBody.split('[insrtLB]');
-                return <Stack spacing={5} key={index}>
-                    {
-                        cuts.map((cut, cindex) =>
-                            <BodyPaper elevation={1} key={cindex}>
-                                <div dangerouslySetInnerHTML={{ __html: cut }}></div>
-                            </BodyPaper >)
-                    }
-                </Stack>
-            }
-            )
-        }
-    </Stack>
+    return <PDFViewer
+        pdfFile={scriptPdf}
+    />
 }

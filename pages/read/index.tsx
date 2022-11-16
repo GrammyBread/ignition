@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next';
-import { getParts, getSiteData } from '../../src/lib/api/client';
+import { getParts } from '../../src/lib/api/client';
 import * as React from 'react';
 import PartCard from '../../src/components/PartCard/PartCard';
 import Layout from '../../src/components/Main/Layout';
