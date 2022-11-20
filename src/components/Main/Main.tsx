@@ -1,12 +1,20 @@
 import { styled } from '@mui/material/styles';
 
-export const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' && prop !== 'drawerWidth' })<{
+export const Main = styled('main', { 
+    shouldForwardProp: (prop) => prop !== 'open' && 
+    prop !== 'drawerWidth' && 
+    prop !== 'isReadingView' })<{
     open?: boolean;
     drawerWidth?: number;
-}>(({ theme, open, drawerWidth }) => ({
+    isReadingView?: boolean;
+}>(({ theme, open, drawerWidth, isReadingView }) => ({
     flexGrow: 1,
     marginTop: `5rem`,
-    padding: theme.spacing(3),
+    padding: isReadingView ? 
+    `0` :
+    theme.spacing(3),
+    maxHeight: '100%',
+    maxWidth: '100%',
     transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,

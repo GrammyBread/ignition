@@ -7,7 +7,7 @@ interface ErrorPageProps {
     isHTML?: boolean;
 }
 
-export function CustomErrorPage({ message , isHTML}: ErrorPageProps): JSX.Element {
+export function CustomErrorPage({ message, isHTML }: ErrorPageProps): JSX.Element {
     let randomErrorImageNum = Math.floor(Math.random() * 4) + 1;
     let errorImage = `/assets/error/Error${randomErrorImageNum}.svg`;
     return (
@@ -22,7 +22,10 @@ export function CustomErrorPage({ message , isHTML}: ErrorPageProps): JSX.Elemen
                 </Paper>
                 <Button className={Styles.errorReturnButton} color="warning" variant="contained">Take Me To Safety</Button>
             </div>
-            <Image className={Styles.backgroundImageError} alt="" priority={true} src={errorImage} layout='fill' objectFit='cover' objectPosition='center' />
+            <Image className={Styles.backgroundImageError} alt="" priority={true} src={errorImage} fill style={{
+                objectFit: 'cover',
+                objectPosition: 'center'
+            }} />
         </>
     );
 }

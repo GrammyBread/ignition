@@ -5,9 +5,9 @@ import { ParsedUrlQuery } from 'querystring';
 import { NORMAL_SECTION_PATH } from '../../mappers/pathname.mapper';
 
 export const Circle = styled('div', {
-    shouldForwardProp: (prop) => prop !== 'isPrimary',
-})<{ isPrimary?: boolean }>(({ theme, isPrimary }) => ({
-    backgroundColor: isPrimary ? theme.palette.primary.main : theme.palette.error.main,
+    shouldForwardProp: (prop) => prop !== 'backingColor',
+})<{ backingColor?: string }>(({ theme, backingColor }) => ({
+    backgroundColor: backingColor || theme.palette.primary.main,
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',

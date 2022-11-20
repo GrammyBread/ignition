@@ -21,6 +21,7 @@ interface AppendixDocPath {
 interface Props {
     document: AppendixDocumentPage
     navData: CleanedNavigation;
+    isTest: boolean;
 }
 
 const AppendixDocumentPage = (props: Props): JSX.Element => {
@@ -37,13 +38,14 @@ const AppendixDocumentPage = (props: Props): JSX.Element => {
 
     const appendixDocProps = {
         doc: props.document,
-        fullURL: appendixURL
+        fullURL: appendixURL,
+        isTestEnvironment: props.isTest
     } as AppendixDocProps;
 
     const socialData = props.document.metadata.social_details ? MapSocialData(props.document.metadata.social_details, appendixURL) : undefined;
 
     return (
-        <Layout navData={props.navData} backgroundImageUrl={props.document.metadata.background_image.url} socials={socialData}>
+        <Layout navData={props.navData} backgroundImageUrl={props.document.metadata.background_image.url} socials={socialData} isReadingView={true}>
             <AppendixDocComponent {...appendixDocProps}></AppendixDocComponent>
         </Layout>
     );
@@ -70,7 +72,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return {
         props: {
             document: data,
-            navData: cleanSiteData.getSimpleNav()
+            navData: cleanSiteData.getSimpleNav(),
+            isTest: process.env.environment === "local"
         } as Props,
         revalidate: (30*24*60*60)
     };

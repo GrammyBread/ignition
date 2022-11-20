@@ -21,6 +21,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { AppBar, ImageContainer } from './NavigationHelper';
 import { NavigationLeft } from './NavigationLeft';
 import { NavigationRight } from './NavigationRight';
+import { useTheme } from '@mui/material';
 
 export interface RelatedScript {
     params: ParsedUrlQuery;
@@ -40,6 +41,7 @@ export interface NavigationProps {
 export function Navigation(props: NavigationProps) {
     const [leftDirection, setDirection] = React.useState(false);
     const containerRef = React.useRef(null);
+    const theme = useTheme();
 
     React.useEffect(() => {
         setDirection(Math.floor(Math.random() * 2) + 1 == 2 ? true : false);
@@ -53,6 +55,8 @@ export function Navigation(props: NavigationProps) {
         navlistItems: props.navData.data
     } as NavigationListProps;
 
+    const navigationBackground = theme.palette.mode === 'dark' ? "#424242" : "#424242";
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -61,10 +65,10 @@ export function Navigation(props: NavigationProps) {
                 open={props.open}
                 drawerWidth={props.drawerWidth}
                 sx={{
-                    backgroundColor: 'error.main'
+                    backgroundColor: navigationBackground
                 }}>
                 <Toolbar ref={containerRef} sx={{
-                    backgroundColor: 'error.main',
+                    backgroundColor: navigationBackground,
                     borderBottom: '.5rem solid',
                     borderColor: 'background.paper',
                     width: '100%'
@@ -73,9 +77,9 @@ export function Navigation(props: NavigationProps) {
                         <Box className={Styles.navbar}>
                             <NavigationLeft script={props.previousScript} />
                             <Box className={Styles.logoContainer}>
-                                <Circle className={Styles.logoCircle} {...{ isPrimary: false }}>
+                                <Circle className={Styles.logoCircle} {...{ backingColor: navigationBackground }}>
                                     <Button className={Styles.logoButton} onClick={props.openDrawer}>
-                                        <Image priority={true} alt="Site Logo" src='/assets/Only1Logo.svg' layout='fill' />
+                                        <Image priority={true} alt="Site Logo" src='/assets/Only1Logo.svg' fill />
                                     </Button>
                                 </Circle>
                             </Box>
@@ -91,7 +95,10 @@ export function Navigation(props: NavigationProps) {
                 <NavigationList {...navListProps}>
                 </NavigationList>
                 <ImageContainer drawerWidth={props.drawerWidth}>
-                    <Image src={props.navData.logoUrl} alt="" layout='fill' objectFit='cover' objectPosition={leftDirection ? 'left' : 'right'} />
+                    <Image src={props.navData.logoUrl} alt="" fill style={{
+                        objectFit: 'cover',
+                        objectPosition: leftDirection ? 'left' : 'right'
+                    }}/>
                 </ImageContainer>
             </Backdrop>
         </Box >

@@ -15,6 +15,6 @@
       "jsx": "preserve",
       "incremental": true
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.js"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.js", "src/components/CustomReader/reader-styles.js", "src/components/CustomReader/ReactReader.js"],
     "exclude": ["node_modules"]
   }  

@@ -11,7 +11,6 @@ import { CleanedNavigation } from '../../interfaces/read/cleaned-types.interface
 import { Section } from '../../interfaces/read/view-data.interfaces';
 import Image from 'next/image';
 import Head from 'next/head';
-import { useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
 export interface LayoutProps {
@@ -22,6 +21,7 @@ export interface LayoutProps {
   fadeInTrigger?: boolean;
   backgroundImageUrl?: string;
   socials?: Socials;
+  isReadingView?: boolean;
 }
 
 export interface Socials {
@@ -74,8 +74,10 @@ const FadeInImage = ({ backgroundImageUrl }: ImageProps) => {
         src={backgroundImageUrl}
         key={backgroundImageUrl}
         blurDataURL='/assets/SiteBack.svg'
-        layout="fill"
-        objectFit="cover"
+        fill
+        style={{
+          objectFit: 'cover'
+        }}
         quality={100}
       />
     </motion.div>
@@ -88,7 +90,8 @@ export default function Layout({
   previousSection,
   nextSection,
   backgroundImageUrl,
-  socials }: LayoutProps) {
+  socials,
+  isReadingView}: LayoutProps) {
   const [open, setOpen] = React.useState(false);
   const [drawerWidth, setDrawerWidth] = React.useState(ScreenSize.Tiny);
 
@@ -157,7 +160,7 @@ export default function Layout({
           ></Navigation>
           {backgroundImageUrl &&
             <FadeInImage backgroundImageUrl={backgroundImageUrl} />}
-          <Main open={open} drawerWidth={drawerWidth} >
+          <Main open={open} drawerWidth={drawerWidth} isReadingView={isReadingView} >
             {children}
           </Main>
         </PageRoot>
