@@ -45,7 +45,6 @@ export default function CustomReader({ EpubDoc, title }: CustomReaderProps) {
             flex: '1',
             overflowY: 'scroll'
         }
-
     } as EpubViewerStyles;
 
     const initConfig = {

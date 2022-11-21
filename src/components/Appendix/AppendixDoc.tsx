@@ -13,12 +13,16 @@ export interface AppendixDocProps {
     isTestEnvironment?: boolean;
 }
 
-const ReadingArea = styled(Box)(({ theme }) => ({
-    width: `min(calc(5.5in + 20vw), 120vw)`
+const ReadingArea = styled(Box, {
+    shouldForwardProp: (prop) => prop !== 'width',
+})<{width?: string}>(({ theme, width }) => ({
+    width: width || `min(calc(5.5in + 20vw), 120vw)`
 }));
 
-const CoverArea = styled(Box)(({ theme }) => ({
-    width: `calc(80vw - ${theme.spacing(3)})`,
+const CoverArea = styled(Box, {
+    shouldForwardProp: (prop) => prop !== 'width',
+})<{width?: string}>(({ theme, width }) => ({
+    width: width || `calc(80vw - ${theme.spacing(3)})`,
     margin: `0 ${theme.spacing(3)}`
 }));
 
@@ -44,13 +48,17 @@ export default function AppendixDocComponent({
 
     const [script, setScriptPdf] = React.useState(testSmallScript);
     const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.not('xl'));
+    const isLargerScreen = useMediaQuery("(min-width: 10in)");
+    const isSmallerScreen = useMediaQuery("(min-width: 6in) and (max-width: 10in)");
+    const isMobilePortrait = useMediaQuery("(max-width: 6in)");
+
+    const useSmallScript = isSmallerScreen || isMobilePortrait;
 
     React.useEffect(() => {
         const small = isTest ? testSmallScript : smallScript;
         const large = isTest ? testLargeScript : largeScript;
-        setScriptPdf(isSmallScreen ? small : large);
-    }, [isSmallScreen, isTest]);
+        setScriptPdf(useSmallScript ? small : large);
+    }, [useSmallScript, isTest]);
 
     const headerProps = {
         content: doc.metadata.description,

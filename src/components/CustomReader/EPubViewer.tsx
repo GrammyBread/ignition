@@ -6,6 +6,7 @@ import { NavItem } from 'epubjs/types/navigation';
 import { styled } from '@mui/material/styles';
 import TableOfContents from '../TableOfContents/Table/Table';
 import { ViewerFailed } from './ViewerError';
+import { Orientiation } from './CustomerReader';
 
 export interface EpubViewerProps {
     url: string | ArrayBuffer;
@@ -13,6 +14,7 @@ export interface EpubViewerProps {
     epubInitOptions: BookOptions;
     bookTitle: string;
     styles: EpubViewerStyles;
+    orientation: Orientiation;
     location?: DisplayedLocation;
     locationChanged?: (newLocation: DisplayedLocation) => void;
     tocChanged?: (newTableOfContents: NavItem[]) => void;
@@ -100,6 +102,9 @@ export class EpubViewer extends React.Component<EpubViewerProps, EpubViewerState
         }
         if (prevProps.url !== this.props.url) {
             this.initBook();
+        }
+        if(prevProps.orientation !== this.props.orientation) {
+            this.initReader();
         }
     }
 
