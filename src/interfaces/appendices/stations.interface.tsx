@@ -30,4 +30,6 @@ export interface ArchMetadata {
 	arch_symbol: Resource;
 	stations: Station[];
 	notes: string;
+	card_background: Resource;
+	fallen_station_header: string;
 }

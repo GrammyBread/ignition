@@ -1,5 +1,5 @@
 import { GetStaticProps, GetStaticPaths } from "next";
-import { CosmicPart } from "../../../src/interfaces/read/read-metadata.interfaces";
+import { CosmicPart, Resource } from "../../../src/interfaces/read/read-metadata.interfaces";
 import { getPart } from "../../../src/lib/api/client";
 import * as React from "react";
 import { TableOfContentsProps } from "../../../src/components/TableOfContents/Table/Table";
@@ -15,9 +15,10 @@ import {
   RedirectTo404,
   RedirectToPatreon,
 } from "../../../src/common/common-redirects";
+import { PublicBackground } from "../../../public/backgroundImage";
 
 interface Props {
-  partImageUrl: string;
+  partImageUrl: Resource;
   relatedPart: Part;
   navData: CleanedNavigation;
 }
@@ -78,7 +79,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      partImageUrl: data.metadata?.table_of_contents_image.url ?? "/assets/SiteBack.svg",
+      partImageUrl: data.metadata?.table_of_contents_image ?? PublicBackground,
       navData: cleanSiteData.getSimpleNav(),
       relatedPart,
     } as Props,

@@ -9,6 +9,7 @@ export const Main = styled('main', {
     isReadingView?: boolean;
 }>(({ theme, open, drawerWidth, isReadingView }) => ({
     flexGrow: 1,
+    display: open ? 'none' : 'auto',
     marginTop: `5rem`,
     padding: isReadingView ? 
     `0` :

@@ -41,6 +41,7 @@ const CharacterSearch = (props: Props): JSX.Element => {
     return <NotFoundPage requestedItem={`Character Page`} />
   }
 
+
   const baseURL = router.asPath ?
     `${props.navData.domain}${router.asPath}` :
     props.navData.domain;
@@ -52,7 +53,7 @@ const CharacterSearch = (props: Props): JSX.Element => {
   });
 
   return (
-    <Layout navData={props.navData} backgroundImageUrl={"/assets/SiteBack.svg"}>
+    <Layout navData={props.navData} backgroundImageUrl={PublicBackground}>
       <Stack spacing={2}>
         <Card>
           <CardHeader sx={{
@@ -125,6 +126,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
       characters: characterResults,
       pageDetails
     } as Props,
-    revalidate: (30*24*60*60)
+    revalidate: (30 * 24 * 60 * 60)
   };
 };

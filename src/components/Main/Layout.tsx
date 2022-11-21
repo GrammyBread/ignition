@@ -12,6 +12,7 @@ import { Section } from '../../interfaces/read/view-data.interfaces';
 import Image from 'next/image';
 import Head from 'next/head';
 import { motion, useAnimation } from 'framer-motion';
+import { Resource } from '../../interfaces/read/read-metadata.interfaces';
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ export interface LayoutProps {
   previousSection?: Section;
   nextSection?: Section;
   fadeInTrigger?: boolean;
-  backgroundImageUrl?: string;
+  backgroundImageUrl?: Resource;
   socials?: Socials;
   isReadingView?: boolean;
 }
@@ -76,7 +77,7 @@ const FadeInImage = ({ backgroundImageUrl }: ImageProps) => {
         blurDataURL='/assets/SiteBack.svg'
         fill
         style={{
-          objectFit: 'cover'
+          objectFit: "cover"
         }}
         quality={100}
       />
@@ -141,25 +142,37 @@ export default function Layout({
 
   return (
     <React.Fragment>
-      {
-        socials &&
-        <Head>
-          <meta property="og:url" content={socials.url} />
-          <meta property="og:type" content="website" />
-          <meta property="og:title" content={socials.title} />
-          <meta property="og:description" content={socials.description} />
-          <meta property="og:image" content={socials.imageUrl} />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:creator" content="@TheGrammyBread" />
-        </Head>
-      }
+      <Head>
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+        <link rel="manifest" href="/favicon/site.webmanifest" />
+        <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+        <meta name="apple-mobile-web-app-title" content="Only One Way To Burn It Down" />
+        <meta name="application-name" content="Only One Way To Burn It Down" />
+        <meta name="msapplication-TileColor" content="#830303" />
+        <meta name="theme-color" content="#ffffff" />
+        {
+          socials &&
+          <>
+            <meta property="og:url" content={socials.url} />
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content={socials.title} />
+            <meta property="og:description" content={socials.description} />
+            <meta property="og:image" content={socials.imageUrl} />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:creator" content="@TheGrammyBread" />
+          </>
+        }
+      </Head>
+
       <ThemeProvider theme={ignitionThemeDark}>
         <PageRoot className={Styles.root}>
           <CssBaseline />
           <Navigation {...navigationProps}
           ></Navigation>
           {backgroundImageUrl &&
-            <FadeInImage backgroundImageUrl={backgroundImageUrl} />}
+            <FadeInImage backgroundImageUrl={isLargeScreen || isGiantScreen ? backgroundImageUrl.url : backgroundImageUrl.imgix_url} />}
           <Main open={open} drawerWidth={drawerWidth} isReadingView={isReadingView} >
             {children}
           </Main>

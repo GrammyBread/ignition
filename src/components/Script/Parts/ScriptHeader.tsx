@@ -9,20 +9,29 @@ import {
     ButtonGroup,
     Fab
 } from '@mui/material';
-import { Facebook, Instagram, Reddit, Twitter } from '@mui/icons-material';
+import { Facebook, Reddit, Twitter } from '@mui/icons-material';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import { Resource } from '../../../interfaces/read/read-metadata.interfaces';
 
 export interface ScriptHeaderProps {
-    headerUrl: string;
+    headerImage: Resource;
     title: string;
     url: string;
 }
 
 export function ScriptHeader(props: ScriptHeaderProps): JSX.Element {
+    const theme = useTheme();
+    const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
+
     return (
         <Card>
             <CardMedia
                 component="img"
-                image={props.headerUrl}
+                image={isLargeScreen ? props.headerImage.url : props.headerImage.imgix_url}
+                sx={{
+                    maxHeight: 'calc(88vh - 5rem)'
+                }}
                 alt={props.title}
             />
             <CardActions>
