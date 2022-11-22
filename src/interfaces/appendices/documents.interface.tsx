@@ -13,8 +13,8 @@ export interface AppendixDocumentMetadata {
 	social_details: SocialDetail;
 	background_image: Resource;
 	description: string;
-	small_pdf: Resource;
-	large_pdf: Resource;
+	small_epub: Resource;
+	large_epub: Resource;
 }
 
 export interface AppendixPage {

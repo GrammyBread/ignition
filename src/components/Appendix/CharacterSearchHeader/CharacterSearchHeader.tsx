@@ -3,13 +3,9 @@ import {
     Typography,
     Accordion,
     AccordionDetails,
-    AccordionSummary,
-    Divider,
-    Container
+    AccordionSummary
 } from "@mui/material";
-import { Arch } from "../../../interfaces/appendices/stations.interface";
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import ArchCard from "../../ArchCard/ArchCard";
 
 export interface CharacterSearchHeaderProps {
     isLargerScreen: boolean;

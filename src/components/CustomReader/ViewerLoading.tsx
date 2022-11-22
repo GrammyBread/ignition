@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { Skeleton } from "@mui/material";
 
 export function ViewerLoading(): JSX.Element {

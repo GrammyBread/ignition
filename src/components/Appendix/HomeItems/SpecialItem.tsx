@@ -10,12 +10,15 @@ export interface SpecialItemProps {
 
 export default function SpecialItem(props: SpecialItemProps): JSX.Element {
     return <Link href={props.url}>
-        <Card>
+        <Card sx={{
+            height: '100%',
+            maxHeight: '100%'
+        }}>
             <CardMedia
                 component="img"
                 sx={{
-                    maxWidth: '100%',
-                    margin: 'auto'
+                    margin: 'auto',
+                    height: '75%'
                 }}
                 image={props.item.image.url}
                 alt={`${props.item.header} cover image`}
@@ -25,7 +28,9 @@ export default function SpecialItem(props: SpecialItemProps): JSX.Element {
                 variant="h4"
                 component="h3"
                 textAlign="center"
-                sx={{ margin: "1rem 0" }}>
+                sx={{
+                    margin: "1rem 0"
+                }}>
                 {props.item.header}
             </Typography>
         </Card>

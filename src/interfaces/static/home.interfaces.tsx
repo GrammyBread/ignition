@@ -23,3 +23,7 @@ export interface HomePage {
 	content: string;
 	metadata: HomeMetadata;
 }
+
+export interface PingPage {
+	title: string;
+}

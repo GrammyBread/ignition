@@ -10,8 +10,9 @@ import Styles from './CustomReader.module.scss';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface CustomReaderProps {
-    EpubDoc: Resource;
+    resourceUrl: string;
     title: string;
+    width: string;
 }
 
 export enum Orientiation {
@@ -19,7 +20,7 @@ export enum Orientiation {
     portrait
 }
 
-export default function CustomReader({ EpubDoc, title }: CustomReaderProps) {
+export default function CustomReader({ resourceUrl, title, width }: CustomReaderProps) {
     const isLandscapeMode = useMediaQuery('(orientation: landscape)');
     const isPortraitMode = useMediaQuery('(orientation: portrait)');
     // And your own state logic to persist state
@@ -61,18 +62,19 @@ export default function CustomReader({ EpubDoc, title }: CustomReaderProps) {
     }}>
         <div className={Styles.holder}>
             <div className={Styles.tocToggle}>
+                {title}
             </div>
             <div className={Styles.reader} style={{
                 background: theme.palette.mode === 'dark' ? "#424242" : "#424242"
             }}>
                 <EpubViewer
-                    url={EpubDoc.url}
+                    url={resourceUrl}
                     bookTitle="testDocument"
                     styles={styles}
                     orientation={orientation}
                     loadingView={loadingView}
                     epubInitOptions={initConfig}
-                    renditionWidth={"min(5.5in, 100vw)"}
+                    renditionWidth={width}
                     locationChanged={epubcifi => console.log(epubcifi)}
                 />
             </div>

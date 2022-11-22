@@ -7,8 +7,8 @@ module.exports = {
   async rewrites() {
     return [
       {
-        source: '/docs/:path*',
-        destination: 'http://localhost:3000/:path*' // Proxy to Backend
+        source: '/docs/epubs/:path*',
+        destination: 'https://cdn.cosmicjs.com/:path*' // Proxy to Backend
       }
     ]
   }
