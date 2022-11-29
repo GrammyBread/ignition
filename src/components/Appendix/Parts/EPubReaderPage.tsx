@@ -4,6 +4,8 @@ import Styles from "./EPubReader.module.scss";
 import { styled, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
 import { EpubDetails, EpubHeader } from '../../../interfaces/epub/epub-reader.interface';
+import { ReaderType } from "../../CustomReader/CustomerReader";
+import classNames from 'classnames';
 
 const ReadingArea = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.primary.main
@@ -20,10 +22,9 @@ const AppendixHeader = dynamic(() => import("./EpubCover"), {
     ssr: false
 });
 
-interface ReaderSizing {
-    readingAreaClass: string;
-    coverAreaClass: string;
-    customReaderWidth: string;
+interface PageStylingType {
+    pageStyle: string;
+    readerType: ReaderType;
 }
 
 export default function EPubReaderPage(props: EpubDetails) {
@@ -32,41 +33,36 @@ export default function EPubReaderPage(props: EpubDetails) {
     const isMobilePortrait = useMediaQuery("(max-width: 6in)");
 
     const basicReaderWidth = {
-        readingAreaClass: Styles.ReaderHolderMobile,
-        coverAreaClass: Styles.CoverHolderMobile,
-        customReaderWidth: "min(5.5in, 100%)"
-    }   as ReaderSizing;
+        pageStyle: Styles.mobilePage,
+        readerType: ReaderType.mobile
+    } as PageStylingType;
 
     const [script, setScriptPdf] = React.useState(props.smallEpub);
-    const [readerWidths, setReaderWidths] = React.useState(basicReaderWidth);
+    const [pageStyling, setPageStyling] = React.useState(basicReaderWidth);
 
-    const useSmallScript = isSmallerScreen || isMobilePortrait;
     const smallEpubUrl = props.smallEpub;
     const largeEpubUrl = props.largeEpub;
-
-    React.useEffect(() => {
-        setScriptPdf(useSmallScript ? smallEpubUrl : largeEpubUrl);
-    }, [useSmallScript, smallEpubUrl, largeEpubUrl]);
     
     React.useEffect(() => {
-        if(isMobilePortrait) {
-            setReaderWidths(basicReaderWidth)
+        let useSmallScript = isSmallerScreen || isMobilePortrait;
+        setScriptPdf(useSmallScript ? smallEpubUrl : largeEpubUrl);
+
+        if (isMobilePortrait) {
+            setPageStyling(basicReaderWidth)
         }
-        else if(isSmallerScreen) {
-            setReaderWidths({
-                readingAreaClass: Styles.ReaderHolderMid,
-                coverAreaClass: Styles.CoverHolderMid,
-                customReaderWidth: "min(5.5in, 100%)"
-            }   as ReaderSizing)
+        else if (isSmallerScreen) {
+            setPageStyling({
+                pageStyle: Styles.smallPage,
+                readerType: ReaderType.small
+            } as PageStylingType)
         }
-        else if(isLargerScreen) {
-            setReaderWidths({
-                readingAreaClass: Styles.ReaderHolderLarge,
-                coverAreaClass: Styles.CoverHolderLarge,
-                customReaderWidth: "8.5in"
-            }   as ReaderSizing)
+        else if (isLargerScreen) {
+            setPageStyling({
+                pageStyle: Styles.largePage,
+                readerType: ReaderType.large
+            } as PageStylingType)
         }
-    }, [isLargerScreen, isSmallerScreen, isMobilePortrait, setReaderWidths]);
+    }, [isLargerScreen, isSmallerScreen, isMobilePortrait, setPageStyling, smallEpubUrl, largeEpubUrl]);
 
 
     const headerProps = {
@@ -74,20 +70,16 @@ export default function EPubReaderPage(props: EpubDetails) {
     } as EpubHeader;
 
     return <Box className={Styles.ReaderBody}>
-        <style>
-            {`
-            `}
-        </style>
         <div className={Styles.SlidesHolder}>
             <div className={Styles.ReaderSlides}>
-                <CoverArea className={readerWidths.coverAreaClass}>
+                <CoverArea className={classNames(pageStyling.pageStyle, Styles.coverArea)}>
                     <AppendixHeader {...headerProps} ></AppendixHeader>
                 </CoverArea>
-                <ReadingArea className={readerWidths.readingAreaClass}>
+                <ReadingArea className={classNames(pageStyling.pageStyle, Styles.readerArea)}>
                     <CustomReader
                         title={props.title}
                         resourceUrl={script}
-                        width={readerWidths.customReaderWidth}
+                        readerType={pageStyling.readerType}
                     />
                 </ReadingArea>
             </div>

@@ -16,35 +16,40 @@
         .ReaderSlides {
             display: flex;
             flex-flow: row;
-            align-items: center;
-            justify-content: center;
+            align-items: stretch;
+            justify-content: space-between;
         }
     }
 
-    .ReaderHolderMobile {
-        width: min(calc(5.5in + 20vw), 120vw);
+    .readerArea {
+
+        &.mobilePage {
+            width: min(calc(5.5in + 20vw), 120vw);
+        }
+
+        &.smallPage {
+            width: min(calc(5.5in + 20vw), 120vw);
+        }
+
+        &.largePage {
+            width: 8.5in;
+        }
     }
 
-    .ReaderHolderMid {
-        width: min(calc(5.5in + 20vw), 120vw);
+    .coverArea {
+
+        &.mobilePage {
+            width: calc(80vw - var(--theme-spacing-three));
+            margin: var(--theme-spacing-three)
+        }
+
+        &.smallPage {
+            width: calc(80vw - var(--theme-spacing-three));
+        }
+
+        &.largePage {
+            flex: 1;
+            margin: var(--theme-spacing-three);
+        }
     }
-
-    .ReaderHolderLarge {
-        width: 9in;
-    }
-
-    .CoverHolderMobile {
-        width: calc(80vw - var(--theme-spacing-three));
-        margin: var(--theme-spacing-three)
-    }
-
-    .CoverHolderMid {
-        width: calc(80vw - var(--theme-spacing-three));
-    }
-
-    .CoverHolderLarge {
-        width: 20vw;
-    }
-
-
 }

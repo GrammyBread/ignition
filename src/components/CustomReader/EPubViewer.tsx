@@ -147,20 +147,21 @@ export class EpubViewer extends React.Component<EpubViewerProps, EpubViewerState
         }
     }
 
-    initReader() {
+    async initReader() {
         const { tableOfContents } = this.state;
-        const { location, renditionOptions, renditionChanged, renditionHeight, renditionWidth } = this.props;
+        const { location, renditionOptions, renditionChanged } = this.props;
         const node = this.viewerRef.current;
         const options = {
             flow: 'scrolled-doc',
-            width: renditionWidth || 'auto',
-            height: renditionHeight || 'auto',
+            width: '100%',
             ...renditionOptions
         } as RenditionOptions
 
         try {
             if (node && this.book) {
-                this.rendition = this.book.renderTo(node, options);
+
+                const renderRendition: (element: Element, options?: RenditionOptions) => Rendition = this.book.renderTo.bind(this.book);
+                this.rendition  = await debounce(renderRendition, 30000)(node, options);
 
                 if (this.rendition) {
                     this.prevPage = () => {
@@ -237,3 +238,16 @@ export class EpubViewer extends React.Component<EpubViewerProps, EpubViewerState
         );
     }
 }
+
+
+export const debounce = <F extends (...args: any) => any>(func: F, waitFor: number) => {
+    let timeout: NodeJS.Timeout | null;  
+    return (...args: Parameters<F>): Promise<ReturnType<F>> =>
+      new Promise(resolve => {
+        if (timeout) {
+          clearTimeout(timeout)
+        }
+  
+        timeout = setTimeout(() => resolve(func(...args)), waitFor)
+      })
+  }
