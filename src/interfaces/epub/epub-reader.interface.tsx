@@ -11,4 +11,5 @@ export interface EpubHeader {
     facebookShare: string;
     redditShare: string;
     tumblrShare: string;
+    verticalButtons: boolean;
 }

@@ -21,6 +21,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           font-family: ${oswald.style.fontFamily};
           --theme-spacing-three: ${theme.spacing(3)};
           --theme-spacing-six: ${theme.spacing(6)};
+          scroll-behavior: smooth;
         }
           :root {
             --oswald-font: ${oswald.style.fontFamily};

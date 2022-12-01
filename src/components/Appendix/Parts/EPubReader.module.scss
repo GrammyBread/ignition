@@ -10,8 +10,28 @@
     overflow-x: scroll;
 
     .SlidesHolder {
-        width: fit-content;
         max-height: 100%;
+        position: relative;
+        max-width: 100%;
+
+        &.mobile { 
+            display: grid;
+            grid-template-columns: calc(100% - 0.5in) auto;
+        }
+
+        &.small {
+            display: flex;
+            flex-flow: row;
+            align-items: stretch;
+            justify-content: space-between;
+        }
+
+        &.large {
+            display: flex;
+            flex-flow: row;
+            align-items: stretch;
+            justify-content: space-between;
+        }
 
         .ReaderSlides {
             display: flex;
@@ -23,31 +43,34 @@
 
     .readerArea {
 
-        &.mobilePage {
-            width: min(calc(5.5in + 20vw), 120vw);
+        &.mobile {
+            width: min(5.5in + .5in, 100vw + .5in + 10px)
         }
 
-        &.smallPage {
-            width: min(calc(5.5in + 20vw), 120vw);
+        &.small {
+            width: 100vw;
         }
 
-        &.largePage {
-            width: 8.5in;
+        &.large {
+            border-left: 0px !important;
+            width: 9.5in;
         }
     }
 
-    .coverArea {
+    .coverArea {       
 
-        &.mobilePage {
-            width: calc(80vw - var(--theme-spacing-three));
+        &.mobile {
+            grid-column: 1;
             margin: var(--theme-spacing-three)
         }
 
-        &.smallPage {
-            width: calc(80vw - var(--theme-spacing-three));
+        &.small {
+            flex: 1;
+            margin: var(--theme-spacing-three);
         }
 
-        &.largePage {
+        &.large {
+            max-width: calc(100vw - 10in);
             flex: 1;
             margin: var(--theme-spacing-three);
         }

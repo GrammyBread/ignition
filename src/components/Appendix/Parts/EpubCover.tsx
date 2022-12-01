@@ -6,7 +6,6 @@ import {
     ButtonGroup,
     CardMedia
 } from '@mui/material';
-import { Facebook, Reddit, Twitter } from '@mui/icons-material';
 import { EpubHeader } from '../../../interfaces/epub/epub-reader.interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faRedditAlien, faTumblr, faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -17,18 +16,19 @@ export default function EPubCover(props: EpubHeader): JSX.Element {
         <CardMedia
             component="img"
             sx={{
-                maxWidth: 'calc(100% - 2rem)',
-                paddingTop: '1rem',
+                maxWidth: '100%',
                 margin: 'auto'
             }}
             image={props.coverUrl}
             alt={`${props.title} cover image`}
         />
             <CardActions>
-                <ButtonGroup sx={{ 
+                <ButtonGroup 
+                orientation={props.verticalButtons ? "vertical" : "horizontal"}
+                sx={{ 
                     margin: 'auto',
                     'svg': {
-                        height: '1.25rem'
+                        height: props.verticalButtons ? '2rem' : '1.25rem'
                     }
                  }}
                     disableElevation
