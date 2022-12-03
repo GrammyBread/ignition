@@ -19,6 +19,7 @@ export default function CreateEPubReader(
         title: cosmicDoc.title,
         socialUrl: fullUrl,
         coverUrl: photoURL,
+        description: socialPostBody,
         largeEpub: FixEpubUrl(cosmicDoc.metadata.large_epub.url),
         smallEpub: FixEpubUrl(cosmicDoc.metadata.small_epub.url),
         twitterShare: twitterShareLink,

@@ -4,7 +4,9 @@ import {
     Card,
     CardActions,
     ButtonGroup,
-    CardMedia
+    CardMedia,
+    CardContent,
+    Typography
 } from '@mui/material';
 import { EpubHeader } from '../../../interfaces/epub/epub-reader.interface';
 import Styles from "./ReaderPage.module.scss";
@@ -20,6 +22,9 @@ export default function EPubCover(props: EpubHeader): JSX.Element {
             image={props.coverUrl}
             alt={`${props.title} cover image`}
         />
+        <CardContent>
+            <Typography variant="body1" component="h3" textAlign={"center"}>{props.description}</Typography>
+        </CardContent>
             <CardActions>
                 <ButtonGroup 
                 orientation={props.verticalButtons ? "vertical" : "horizontal"}

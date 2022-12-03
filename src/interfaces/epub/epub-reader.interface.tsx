@@ -7,6 +7,7 @@ export interface EpubHeader {
     title: string;
     socialUrl: string;    
     coverUrl: string;
+    description: string;
     twitterShare: string;
     facebookShare: string;
     redditShare: string;
