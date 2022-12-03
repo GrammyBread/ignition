@@ -1,6 +1,6 @@
 import * as React from "react";
 import dynamic from "next/dynamic";
-import Styles from "./EPubReader.module.scss";
+import Styles from "./ReaderPage.module.scss";
 import { styled, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
 import { EpubDetails, EpubHeader } from '../../../interfaces/epub/epub-reader.interface';
@@ -20,7 +20,7 @@ const CoverArea = styled(Box)(({ theme }) => ({
 const CustomReader = dynamic(() => import("../../CustomReader/CustomerReader"), {
     ssr: false
 });
-const TitleCover = dynamic(() => import("./EpubCover"), {
+const TitleCover = dynamic(() => import("./ReaderTitleCover"), {
     ssr: false
 });
 
@@ -32,6 +32,7 @@ interface PageStylingType {
 
 export default function EPubReaderPage(props: EpubDetails) {
     const isLargerScreen = useMediaQuery("(min-width: 10in)");     
+    const isMobileSmall = useMediaQuery("(max-width: 400px)");   
     const isMediumCross = useMediaQuery("(max-width: 1260px)");
     const isMediumTab = useMediaQuery("(max-width: 1160px)");
     const isSmallerScreen = useMediaQuery("(min-width: 6in) and (max-width: 10in)");
@@ -54,7 +55,11 @@ export default function EPubReaderPage(props: EpubDetails) {
         setScriptPdf(useSmallScript ? smallEpubUrl : largeEpubUrl);
 
         if (isMobilePortrait) {
-            setPageStyling(basicReaderWidth)
+            setPageStyling({
+                pageStyle: Styles.mobile,
+                readerType: ReaderType.mobile,
+                verticalShare: isMobileSmall
+            } as PageStylingType)
         }
         else if (isSmallerScreen) {
             setPageStyling({
@@ -70,7 +75,7 @@ export default function EPubReaderPage(props: EpubDetails) {
                 verticalShare: isMediumCross && !isMediumTab
             } as PageStylingType)
         }
-    }, [isLargerScreen, isMediumCross,isMediumTab, isSmallerScreen, isMobilePortrait, setPageStyling, smallEpubUrl, largeEpubUrl]);
+    }, [isLargerScreen, isMobileSmall, isMediumCross, isMediumTab, isSmallerScreen, isMobilePortrait, setPageStyling, smallEpubUrl, largeEpubUrl]);
 
     const isFullDisplay = isLargerScreen && !isMediumTab;
 
@@ -92,8 +97,7 @@ export default function EPubReaderPage(props: EpubDetails) {
                         title={props.title}
                         resourceUrl={script}
                         readerType={pageStyling.readerType}
-                        showPullTab={!isFullDisplay}
-                    />
+                        showPullTab={!isFullDisplay} />
                 </ReadingArea>
             </div>
             { isFullDisplay &&

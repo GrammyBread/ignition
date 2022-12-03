@@ -52,10 +52,10 @@ export function Navigation(props: NavigationProps) {
         drawerWidth: props.drawerWidth,
         open: props.open,
         closeDrawer: props.closeDrawer,
-        navlistItems: props.navData.data
+        navlistItems: props.navData.data,
     } as NavigationListProps;
 
-    const navigationBackground = theme.palette.mode === 'dark' ? "#424242" : "#424242";
+    const navigationBackground = theme.palette.mode === 'dark' ? "#424242" : "#EEEEEE";
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -70,7 +70,7 @@ export function Navigation(props: NavigationProps) {
                 <Toolbar ref={containerRef} sx={{
                     backgroundColor: navigationBackground,
                     borderBottom: '.5rem solid',
-                    borderColor: 'background.paper',
+                    borderColor: theme.palette.mode === 'dark' ? 'background.paper' : "#bdbdbd",
                     width: '100%'
                 }}>
                     <Slide in={!props.open} direction="left" container={containerRef.current} unmountOnExit>

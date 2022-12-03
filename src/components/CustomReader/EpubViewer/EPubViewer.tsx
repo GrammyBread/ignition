@@ -3,21 +3,18 @@ import Epub from "epubjs";
 import Book, { BookOptions } from "epubjs/types/book";
 import Rendition, {
     DisplayedLocation,
-    Location,
     RenditionOptions,
 } from "epubjs/types/rendition";
 import { NavItem } from "epubjs/types/navigation";
-import { styled } from "@mui/material/styles";
-import TableOfContents from "../TableOfContents/Table/Table";
 import { ViewerFailed } from "./ViewerError";
-import { Orientiation } from "./CustomerReader";
+import { Orientiation } from "../CustomerReader";
+import Styles from './EPubViewer.module.scss';
 
 export interface EpubViewerProps {
     url: string | ArrayBuffer;
     loadingView: JSX.Element;
     epubInitOptions: BookOptions;
     bookTitle: string;
-    styles: EpubViewerStyles;
     orientation: Orientiation;
     location?: DisplayedLocation;
     locationChanged?: (newLocation: DisplayedLocation) => void;
@@ -37,19 +34,9 @@ export interface EpubViewerState {
 }
 
 export interface EpubViewerStyles {
-    view: React.CSSProperties;
-    holder: React.CSSProperties;
+    view: string;
+    holder: string;
 }
-
-const ViewerDiv = styled("div", {
-    shouldForwardProp: (prop) => prop !== "style",
-})<{ style: React.CSSProperties }>(({ style }) => ({
-    overflow: "auto",
-    ".epub-container": {
-        overflow: "visible !important",
-    },
-    ...style,
-}));
 
 export class EpubViewer extends React.Component<
     EpubViewerProps,
@@ -166,7 +153,7 @@ export class EpubViewer extends React.Component<
         const node = this.viewerRef.current;
         const options = {
             flow: "scrolled-doc",
-            width: "100%",
+            width: "calc(100% - 5px)",
             ...renditionOptions,
         } as RenditionOptions;
 
@@ -228,8 +215,7 @@ export class EpubViewer extends React.Component<
     }
 
     renderBook() {
-        const { styles } = this.props;
-        return <ViewerDiv ref={this.viewerRef} style={styles.view} />;
+        return <div ref={this.viewerRef} className={Styles.epubViewer} />;
     }
 
     renderError() {
@@ -244,9 +230,9 @@ export class EpubViewer extends React.Component<
 
     render() {
         const { isLoaded, errorOccured } = this.state;
-        const { loadingView, styles } = this.props;
+        const { loadingView } = this.props;
         return (
-            <div className="holder" style={styles.holder}>
+            <div className={Styles.viewerHolder}>
                 {(isLoaded && this.renderBook()) ||
                     (errorOccured && this.renderError()) ||
                     loadingView}

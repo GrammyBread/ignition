@@ -7,7 +7,7 @@
     height: 100%;
     max-width: 100vw;
     overflow-y: hidden;
-    overflow-x: scroll;
+    overflow-x: auto;
 
     .SlidesHolder {
         max-height: 100%;
@@ -44,7 +44,7 @@
     .readerArea {
 
         &.mobile {
-            width: min(5.5in + .5in, 100vw + .5in + 10px)
+            width: min(5.5in + .5in, 100vw + .5in + 15px)
         }
 
         &.small {
@@ -73,6 +73,15 @@
             max-width: calc(100vw - 10in);
             flex: 1;
             margin: var(--theme-spacing-three);
+        }
+
+        .titleCoverImage {
+            max-width: 100%;
+            margin: auto;           
+        }
+
+        .buttonGroup {
+            margin: auto;
         }
     }
 }

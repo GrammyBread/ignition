@@ -10,7 +10,7 @@ import { RedirectTo404 } from "../../src/common/common-redirects";
 import getCleanSiteData from "../../src/lib/api/sitedata/cache-site-data";
 import { getAllAvailableLoreDocs, getLoreDocument } from "../../src/lib/api/client";
 import { AppendixDocument as AppendixDocumentPage } from "../../src/interfaces/appendices/documents.interface";
-import EPubReaderPage from "../../src/components/Appendix/Parts/EPubReaderPage";
+import EPubReaderPage from "../../src/components/Appendix/ReaderPage/ReaderPage";
 import { MakeSocialUrl } from "../../src/mappers/pathname.mapper";
 import CreateEPubReader from "../../src/mappers/epub.mapper";
 

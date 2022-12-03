@@ -7,26 +7,24 @@ import {
     CardMedia
 } from '@mui/material';
 import { EpubHeader } from '../../../interfaces/epub/epub-reader.interface';
+import Styles from "./ReaderPage.module.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faRedditAlien, faTumblr, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 export default function EPubCover(props: EpubHeader): JSX.Element {
     return (
-        <Card>
+        <Card id="cover">
         <CardMedia
-            component="img"
-            sx={{
-                maxWidth: '100%',
-                margin: 'auto'
-            }}
+            component="img"            
+            className={Styles.titleCoverImage}
             image={props.coverUrl}
             alt={`${props.title} cover image`}
         />
             <CardActions>
                 <ButtonGroup 
                 orientation={props.verticalButtons ? "vertical" : "horizontal"}
+                className={Styles.buttonGroup}
                 sx={{ 
-                    margin: 'auto',
                     'svg': {
                         height: props.verticalButtons ? '2rem' : '1.25rem'
                     }

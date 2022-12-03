@@ -1,14 +1,14 @@
 import { Paper, styled } from '@mui/material';
 import { DisplayedLocation } from 'epubjs/types/rendition';
 import React, { useState, useEffect } from 'react';
-import { EpubViewer, EpubViewerStyles } from './EPubViewer';
+import { EpubViewer } from './EpubViewer/EPubViewer';
 import { BookOptions } from 'epubjs/types/book';
-import { ViewerLoading } from './ViewerLoading';
+import { ViewerLoading } from './EpubViewer/ViewerLoading';
 import { useTheme } from '@mui/material';
 import Styles from './CustomReader.module.scss';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import classNames from 'classnames';
-import { ChevronLeft, PropaneSharp } from '@mui/icons-material';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import Link from 'next/link';
 
 interface CustomReaderProps {
@@ -42,6 +42,7 @@ export default function CustomReader({ resourceUrl, title, readerType, showPullT
     const isPortraitMode = useMediaQuery('(orientation: portrait)');
     // And your own state logic to persist state
     const [location, setLocation] = useState<DisplayedLocation | undefined>(undefined)
+    const [readerOpened, setReaderOpen] = useState(false);
     const [readerTypeStyles, setReaderTypeStyles] = useState({ className: Styles.mobile, viewerWidth: "min(5.5in, 100%)" })
     const [orientation, setOrientation] = useState<Orientiation>(isPortraitMode ? Orientiation.portrait : Orientiation.landscape);
 
@@ -61,17 +62,11 @@ export default function CustomReader({ resourceUrl, title, readerType, showPullT
         setLocation(epubcifi)
     }
 
-    const theme = useTheme();
+    const toggleReaderOpenState = () => {
+        setReaderOpen(!readerOpened);
+    }
 
-    const styles = {
-        view: {
-        },
-        holder: {
-            height: '100%',
-            flex: '1',
-            overflowY: 'scroll'
-        }
-    } as EpubViewerStyles;
+    const theme = useTheme();
 
     const initConfig = {
 
@@ -79,7 +74,7 @@ export default function CustomReader({ resourceUrl, title, readerType, showPullT
 
     const loadingView = <ViewerLoading />;
 
-    return <Paper square elevation={0} id="test" sx={{
+    return <Paper square elevation={0} id="reader" sx={{
         backgroundColor: theme.palette.primary.main,
         position: 'relative',
         maxHeight: '100%',
@@ -89,21 +84,25 @@ export default function CustomReader({ resourceUrl, title, readerType, showPullT
         <div className={classNames(Styles.holder, readerTypeStyles.className)}>
             {
                 showPullTab &&
-                <div className={classNames(Styles.puller, readerTypeStyles.className)}>
-                    <Link href='#test' scroll={false}>
-                        <ChevronLeft fontSize='large'></ChevronLeft>
-                    </Link>
+                <div className={classNames(Styles.puller, readerTypeStyles.className)} onClick={toggleReaderOpenState}>
+                    {readerOpened ?
+                        <a href='#reader'>
+                            <ChevronLeft fontSize='large'></ChevronLeft>
+                        </a>
+                        :
+                        <a href='#cover'>
+                            <ChevronRight fontSize='large'></ChevronRight>
+                        </a>}
                 </div>
             }
             <div className={classNames(Styles.tocToggle, readerTypeStyles.className)}>
                 {title}
             </div>
             <Reader className={classNames(Styles.reader, readerTypeStyles.className)}
-                color={theme.palette.mode === 'dark' ? '#424242' : '#424242'}>
+                color={theme.palette.mode === 'dark' ? '#424242' : '#EEEEEE'}>
                 <EpubViewer
                     url={resourceUrl}
                     bookTitle="testDocument"
-                    styles={styles}
                     orientation={orientation}
                     loadingView={loadingView}
                     epubInitOptions={initConfig}
