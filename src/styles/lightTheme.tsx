@@ -1,11 +1,11 @@
 import { createTheme } from '@mui/material/styles';
 
-export const ignitionThemeDark = createTheme({
+export const ignitionThemeLight = createTheme({
     palette: {
-        mode: 'dark',
+        mode: 'light',
         background: {
-            paper: 'rgba(42, 42, 42, .9)',
-            default: '#000000'
+            paper: 'rgba(238, 238, 238, .9)',
+            default: '#ffffff',
         },
         primary: {
             main: '#39cdb2',
@@ -14,7 +14,7 @@ export const ignitionThemeDark = createTheme({
             main: '#cd3954',
         },
         error: {
-            main: '#424242',
+            main: '#f44336'
         },
         warning: {
             main: '#ffea00',
@@ -23,17 +23,17 @@ export const ignitionThemeDark = createTheme({
             main: '#39cd68',
         },
         info: {
-            main: '#000000',
-            contrastText: '#ffffff'
+            main: '#ffffff',
+            contrastText: '#000000'
         },
         text: {
-            primary: "#ffffff",
-            secondary: "#ffffff"
+            primary: "#000000",
+            secondary: "#000000"
         }
     },
     typography: {
         fontFamily: 'var(--oswald-font)',
-        fontWeightLight: 100,
+        fontWeightLight: 300,
         fontWeightMedium: 500,
         fontWeightRegular: 400,
         fontWeightBold: 700,
@@ -56,10 +56,10 @@ export const ignitionThemeDark = createTheme({
             fontWeight: 400,
         },
         body2: {
-            fontWeight: 100,
+            fontWeight: 300,
         },
         body1: {
-            fontWeight: 100,
+            fontWeight: 300,
         },
         h5: {
             fontWeight: 700,

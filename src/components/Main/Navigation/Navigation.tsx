@@ -21,6 +21,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { AppBar, ImageContainer } from './NavigationHelper';
 import { NavigationLeft } from './NavigationLeft';
 import { NavigationRight } from './NavigationRight';
+import { useTheme } from '@mui/material';
 
 export interface RelatedScript {
     params: ParsedUrlQuery;
@@ -40,6 +41,7 @@ export interface NavigationProps {
 export function Navigation(props: NavigationProps) {
     const [leftDirection, setDirection] = React.useState(false);
     const containerRef = React.useRef(null);
+    const theme = useTheme();
 
     React.useEffect(() => {
         setDirection(Math.floor(Math.random() * 2) + 1 == 2 ? true : false);
@@ -50,8 +52,10 @@ export function Navigation(props: NavigationProps) {
         drawerWidth: props.drawerWidth,
         open: props.open,
         closeDrawer: props.closeDrawer,
-        navlistItems: props.navData.data
+        navlistItems: props.navData.data,
     } as NavigationListProps;
+
+    const navigationBackground = theme.palette.mode === 'dark' ? "#424242" : "#EEEEEE";
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -61,19 +65,19 @@ export function Navigation(props: NavigationProps) {
                 open={props.open}
                 drawerWidth={props.drawerWidth}
                 sx={{
-                    backgroundColor: 'error.main'
+                    backgroundColor: navigationBackground
                 }}>
                 <Toolbar ref={containerRef} sx={{
-                    backgroundColor: 'error.main',
+                    backgroundColor: navigationBackground,
                     borderBottom: '.5rem solid',
-                    borderColor: 'background.paper',
+                    borderColor: theme.palette.mode === 'dark' ? 'background.paper' : "#bdbdbd",
                     width: '100%'
                 }}>
                     <Slide in={!props.open} direction="left" container={containerRef.current} unmountOnExit>
                         <Box className={Styles.navbar}>
                             <NavigationLeft script={props.previousScript} />
                             <Box className={Styles.logoContainer}>
-                                <Circle className={Styles.logoCircle} {...{ isPrimary: false }}>
+                                <Circle className={Styles.logoCircle} {...{ backingColor: navigationBackground }}>
                                     <Button className={Styles.logoButton} onClick={props.openDrawer}>
                                         <Image priority={true} alt="Site Logo" src='/assets/Only1Logo.svg' fill sizes='20vw' />
                                     </Button>

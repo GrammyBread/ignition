@@ -24,7 +24,7 @@ const AppendixListContainer = styled('ul')(({ theme }) => ({
         flexFlow: 'row',
         justifyContent: 'space-between'
     },
-    alignItems: 'center',
+    alignItems: 'stretch',
     padding: '20px 0',
     flex: '0 0 600px',
     margin: '0 auto',
@@ -45,6 +45,9 @@ const AppendixListContainer = styled('ul')(({ theme }) => ({
         [theme.breakpoints.between('sm', 'xl')]: {
             margin: '0 20px 0 0'
         },
+    },
+    'a' : {
+        textDecoration: 'none'
     }
 }));
 

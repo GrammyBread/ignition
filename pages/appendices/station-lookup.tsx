@@ -24,6 +24,7 @@ import { useTheme } from '@mui/material/styles';
 import { Container } from '@mui/system';
 import { Resource } from '../../src/interfaces/read/read-metadata.interfaces';
 import { PublicBackground } from '../../public/backgroundImage';
+import { StationSearchHeader } from '../../src/components/Appendix/StationSearchHeader/StationSearchHeader';
 
 interface Props {
     navData: CleanedNavigation;
@@ -107,7 +108,10 @@ const StationSearch = (props: Props): JSX.Element => {
                         }}
                         sx={{
                             maxWidth: '400',
-                            margin: '1rem'
+                            margin: '1rem',
+                            '& input': {
+                                fontWeight: '500'
+                            }
                         }}
                         renderInput={(params) => <TextField {...params} label="Search by Station Name" />}
                     />

@@ -11,7 +11,7 @@ import {
   makeGetChapterQuery, 
   makeGetSectionQuery, 
   makeGetSiteDataQuery } from './readmeta/read-metadata-queries';
-import { HomePage } from '../../interfaces/static/home.interfaces'
+import { HomePage, PingPage } from '../../interfaces/static/home.interfaces'
 import { 
   makeGetHomeQuery, 
   makeGetPatreonQuery } from './static/page-queries'
@@ -73,6 +73,11 @@ export async function getSectionData(slug:string): Promise<CosmicSection> {
 //Non-Read Pages
 export async function getHome(): Promise<HomePage> {
   let response = await getObjects<HomePage[]>(makeGetHomeQuery());
+  return response[0];
+}
+
+export async function pingCosmic(): Promise<PingPage> {
+  let response = await getObjects<PingPage[]>(makeGetHomeQuery());
   return response[0];
 }
 

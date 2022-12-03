@@ -1,14 +1,15 @@
 
 
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import NavigationPartItem from './NavigationPart';
 import {
     ChevronLeft,
+    DarkMode,
     ExpandLess,
     HomeOutlined,
-    MenuBook,
-    NoEncryption
+    LightMode,
+    MenuBook
 } from '@mui/icons-material';
 import {
     Collapse,
@@ -19,13 +20,14 @@ import {
     ListItem,
     ListItemButton,
     ListItemIcon,
-    ListItemText
+    ListItemText,
+    Button
 } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NavPart } from '../../../../interfaces/read/nav-data.interfaces';
 import { ExpandMore } from '@mui/icons-material';
-import Styles from "../Navigation.module.scss";
+import { ThemeModeContext } from '../../../../../pages/_app';
 
 export interface NavigationListProps {
     drawerWidth: number;
@@ -35,23 +37,44 @@ export interface NavigationListProps {
 }
 
 const DrawerSection = styled(List)(({ theme }) => ({
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
+    flex: "2",
+    '& .MuiSvgIcon-root': {
+        color: theme.palette.mode === 'dark' ? 'white' : 'black'
+    }
 }));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: theme.palette.primary.main,
-    padding: theme.spacing(1, 1),
+    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+    padding: theme.spacing(3, 1),
+    flex: "1",
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
-    color: theme.palette.text.primary
+    color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.secondary.contrastText
+}));
+
+const DrawerFooter = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    flex: "1",
+    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+    padding: theme.spacing(1, 1),
+    position: "sticky",
+    bottom: "0",
+    width: "100%",
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+    color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.secondary.contrastText
 }));
 
 export default function NavigationList(props: NavigationListProps) {
     const router = useRouter()
     const [readOpen, setReadOpen] = React.useState(false);
     const [lastClickTime, setLastClickTime] = React.useState(Date.now() - 1000);
+    const themeToggler = React.useContext(ThemeModeContext);
+    const theme = useTheme();
 
     function handleClick(event: React.MouseEvent<HTMLDivElement>) {
         const dif = Date.now() - lastClickTime;
@@ -64,6 +87,10 @@ export default function NavigationList(props: NavigationListProps) {
         }
         event.stopPropagation();
     };
+
+    function handleThemeClick() {
+        themeToggler.toggleThemeMode();
+    }
 
     return (
         <Drawer
@@ -130,6 +157,14 @@ export default function NavigationList(props: NavigationListProps) {
                     </ListItem>
                 </List>
             </DrawerSection>
+            <DrawerFooter>
+                <Button variant="contained" onClick={handleThemeClick} color="warning" size="large" endIcon={theme.palette.mode == 'dark' ? <LightMode /> : <DarkMode />} sx={{
+                    backgroundColor: theme.palette.mode == 'dark' ? "white" : "black",
+                    color: theme.palette.mode == 'dark' ? "black" : "white",
+                }}>
+                    {theme.palette.mode == 'dark' ? "Light Mode" : "Dark Mode"}
+                </Button>
+            </DrawerFooter>
         </Drawer>
     );
 }
