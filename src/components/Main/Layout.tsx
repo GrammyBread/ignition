@@ -11,6 +11,7 @@ import Image from "next/image";
 import Head from "next/head";
 import { motion, useAnimation } from "framer-motion";
 import { Resource } from "../../interfaces/read/read-metadata.interfaces";
+import { DetectScreenSize, ScreenSize } from "../../lib/assistants/screenSizeHelper";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -31,11 +32,11 @@ export interface Socials {
 }
 
 const PageRoot = styled(Box)(({ theme }) => ({
-  maxHeight: "100%",
+  maxHeight: "100vh",
   display: "flex",
 }));
 
-enum ScreenSize {
+enum ScreenSizePixels {
   Tiny = 240,
   Small = 300,
   Medium = 350,
@@ -94,7 +95,7 @@ export default function Layout({
 
 }: LayoutProps) {
   const [open, setOpen] = React.useState(false);
-  const [drawerWidth, setDrawerWidth] = React.useState(ScreenSize.Tiny);
+  const [drawerWidth, setDrawerWidth] = React.useState(ScreenSizePixels.Tiny);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -104,31 +105,24 @@ export default function Layout({
     setOpen(false);
   };
 
-  const theme = useTheme();
-  const isTinyScreen = useMediaQuery(theme.breakpoints.between("xs", "sm"));
-  const isSmallScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.between("md", "lg"));
-  const isLargeScreen = useMediaQuery(theme.breakpoints.between("lg", "xl"));
-  const isGiantScreen = useMediaQuery(theme.breakpoints.up("xl"));
+  const detectedScrenSize = DetectScreenSize();
+  var isLargeScreen = detectedScrenSize === ScreenSize.large || detectedScrenSize === ScreenSize.giant;
 
   React.useEffect(() => {
-    if (isTinyScreen) {
-      setDrawerWidth(ScreenSize.Tiny);
-    } else if (isSmallScreen) {
-      setDrawerWidth(ScreenSize.Small);
-    } else if (isMediumScreen) {
-      setDrawerWidth(ScreenSize.Medium);
-    } else if (isLargeScreen) {
-      setDrawerWidth(ScreenSize.Large);
-    } else if (isGiantScreen) {
-      setDrawerWidth(ScreenSize.Giant);
-    }
+    if (detectedScrenSize === ScreenSize.tiny) {
+      setDrawerWidth(ScreenSizePixels.Tiny);
+    } else if (detectedScrenSize === ScreenSize.small) {
+      setDrawerWidth(ScreenSizePixels.Small);
+    } else if (detectedScrenSize === ScreenSize.medium) {
+      setDrawerWidth(ScreenSizePixels.Medium);
+    } else if (detectedScrenSize === ScreenSize.large) {
+      setDrawerWidth(ScreenSizePixels.Large);
+    } else if (detectedScrenSize === ScreenSize.giant) {
+      setDrawerWidth(ScreenSizePixels.Giant);
+    }    
+    var isLargeScreen = detectedScrenSize === ScreenSize.large || detectedScrenSize === ScreenSize.giant;
   }, [
-    isTinyScreen,
-    isSmallScreen,
-    isMediumScreen,
-    isLargeScreen,
-    isGiantScreen,
+    detectedScrenSize,
   ]); // Only re-run the effect if count changes
 
   const navigationProps = {
@@ -193,7 +187,7 @@ export default function Layout({
         {backgroundImageUrl && (
           <FadeInImage
             backgroundImageUrl={
-              isLargeScreen || isGiantScreen
+              isLargeScreen
                 ? backgroundImageUrl.url
                 : backgroundImageUrl.imgix_url
             }

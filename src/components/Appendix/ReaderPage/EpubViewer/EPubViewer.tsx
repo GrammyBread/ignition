@@ -7,8 +7,8 @@ import Rendition, {
 } from "epubjs/types/rendition";
 import { NavItem } from "epubjs/types/navigation";
 import { ViewerFailed } from "./ViewerError";
-import { Orientiation } from "../CustomerReader";
 import Styles from './EPubViewer.module.scss';
+import { Orientiation } from "../Books/helpers";
 
 export interface EpubViewerProps {
     url: string | ArrayBuffer;

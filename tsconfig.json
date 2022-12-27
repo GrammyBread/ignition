@@ -15,6 +15,6 @@
       "jsx": "preserve",
       "incremental": true
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.js", "pages/_app.tsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.js", "pages/_app.tsx", "src/components/Appendix/ReaderPage/Books/TouchScreenBook/TouchScreenBook.module.scsss"],
     "exclude": ["node_modules"]
   }  
