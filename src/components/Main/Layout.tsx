@@ -1,4 +1,4 @@
-import { ThemeProvider, Box, CssBaseline, Fade } from "@mui/material";
+import { Box, CssBaseline, Fade } from "@mui/material";
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Styles from "../../styles/shared.module.scss";
@@ -181,7 +181,7 @@ export default function Layout({
         )}
       </Head>
 
-      <PageRoot className={Styles.root}>
+      <PageRoot>
         <CssBaseline />
         <Navigation {...navigationProps}></Navigation>
         {backgroundImageUrl && (

@@ -1,20 +1,20 @@
 import { Skeleton, styled, SwipeableDrawer, Typography } from "@mui/material";
 import { DisplayedLocation } from "epubjs/types/rendition";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BookOptions } from "epubjs/types/book";
 import { useTheme } from "@mui/material";
 import Styles from "./TouchScreenBook.module.scss";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import classNames from "classnames";
-import { ChevronLeft, ChevronRight, PropaneSharp } from "@mui/icons-material";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import {
   DetectScreenSize,
   ScreenSize,
 } from "../../../../../lib/assistants/screenSizeHelper";
-import { BookProperties, Orientiation } from "../helpers";
+import { BookHolder, Orientiation } from "../helpers";
 import { ViewerLoading } from "../../EpubViewer/ViewerLoading";
-import { EpubDetails } from '../../../../../interfaces/epub/epub-reader.interface';
+import { EpubDetails } from "../../../../../interfaces/epub/epub-reader.interface";
 
 interface CustomReaderProps {
   resourceUrl: string;
@@ -37,7 +37,7 @@ enum ScreenSizePixels {
   Giant = 200,
 }
 
-export default function TouchScreenBook(details: BookProperties) {
+export default function TouchScreenBook(details: EpubDetails) {
   const isLandscapeMode = useMediaQuery("(orientation: landscape)");
   const isPortraitMode = useMediaQuery("(orientation: portrait)");
   // And your own state logic to persist state
@@ -45,10 +45,11 @@ export default function TouchScreenBook(details: BookProperties) {
     undefined
   );
   const [bookOpen, setBookOpen] = useState<boolean>(false);
-  const [drawerWidth, setDrawerWidth] = React.useState(ScreenSizePixels.Tiny);
+  const [drawerWidth, setDrawerWidth] = useState(ScreenSizePixels.Tiny);
   const [orientation, setOrientation] = useState<Orientiation>(
     isPortraitMode ? Orientiation.portrait : Orientiation.landscape
   );
+  const bookHolder = useRef(null);
 
   useEffect(() => {
     setOrientation(
@@ -57,7 +58,7 @@ export default function TouchScreenBook(details: BookProperties) {
     console.log(
       `orientation| lanscape: ${isLandscapeMode}. portrait: ${isPortraitMode}`
     );
-  }, []);
+  }, [isLandscapeMode, isPortraitMode]);
 
   const detectedScreenSize = DetectScreenSize();
 
@@ -90,9 +91,9 @@ export default function TouchScreenBook(details: BookProperties) {
 
   const loadingView = <ViewerLoading />;
 
-  return (
+  return <BookHolder ref={bookHolder}>
     <SwipeableDrawer
-      container={details.reference.current}
+      container={bookHolder.current}
       anchor="left"
       open={bookOpen}
       onClose={toggleBookCover(false)}
@@ -136,7 +137,7 @@ export default function TouchScreenBook(details: BookProperties) {
         <Skeleton variant="rectangular" height="100%" />
       </Cover>
     </SwipeableDrawer>
-  );
+  </BookHolder>;
 
   /* 
   <Paper square elevation={0} id="reader" sx={{

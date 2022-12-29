@@ -30,6 +30,7 @@ interface ExpandMoreProps extends IconButtonProps {
 }
 
 interface SocialLinkDetails {
+    key: string;
     link: string;
     label: string;
     icon: IconDefinition;
@@ -46,7 +47,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     }),
 }));
 
-export default function TitleCover(props: EpubHeader): JSX.Element {
+export default function TitleCoverSmall(props: EpubHeader): JSX.Element {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -55,21 +56,25 @@ export default function TitleCover(props: EpubHeader): JSX.Element {
 
     const socialLinks = [
         {
+            key: "twitter",
             link: props.twitterShare,
             label: "Share on Twitter",
             icon: faTwitter
         },
         {
+            key: "facebook",
             link: props.facebookShare,
             label: "Share on Facebook",
             icon: faFacebookF
         },
         {
+            key: "reddit",
             link: props.redditShare,
             label: "Share on Reddit",
             icon: faRedditAlien
         },
         {
+            key: "tumblr",
             link: props.tumblrShare,
             label: "Share on Tumblr",
             icon: faTumblr
@@ -88,10 +93,10 @@ export default function TitleCover(props: EpubHeader): JSX.Element {
                 alt={`${props.title} cover image`}
             />
             <CardActions>
-                <Grid container spacing={2}>
+                <Grid container spacing={1} columns={{xs: 2, sm: 2, md: 2, lg: 2, xl: 2}}>
                     {
                         socialLinks.map((link) => {
-                            return <Grid item>
+                            return <Grid item key={link.key} xs={1} sm={1} md={1} lg={1} xl={1}>
                                 <Button variant="contained" size="large" aria-label={link.label} href={link.link}>
                                     <FontAwesomeIcon icon={link.icon} />
                                 </Button>

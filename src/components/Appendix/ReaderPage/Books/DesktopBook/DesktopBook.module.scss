@@ -1,0 +1,50 @@
+$full-width: calc(8.5in + 48px);
+
+@media screen and (max-width: $full-width ) {
+    .BookArea {
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            height: 5px;
+            width: 5px;
+            background: #fff3;
+            -webkit-border-radius: 1ex;
+        }
+    
+        &::-webkit-scrollbar-thumb {
+            background: white;
+            -webkit-border-radius: 1ex;
+        }
+    
+        &::-webkit-scrollbar-corner {
+            background: #fff3;
+        }
+    }
+    
+    .BookBinder {
+        flex-flow: column-reverse nowrap;
+        justify-content: start;
+    }
+
+    .ReadingAreaHolder {
+        padding-right: var(--theme-spacing-six);
+    }
+
+    .ReadingArea {
+        height: 88vh;
+    }
+
+    .TitleCoverHolder {
+        justify-content: center;
+        display: flex;
+        padding-right: var(--theme-spacing-six);
+    }
+}
+
+
+@media only screen and (min-width: $full-width) {
+    .BookBinder {
+        flex-flow: row nowrap;
+        justify-content: space-between;
+    }
+}
