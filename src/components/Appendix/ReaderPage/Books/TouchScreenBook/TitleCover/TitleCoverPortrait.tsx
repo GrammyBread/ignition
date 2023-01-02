@@ -9,14 +9,15 @@ import {
   Collapse,
   Typography,
   ButtonGroup,
-  Divider
+  Divider,
+  Stack
 } from "@mui/material";
 import { EpubHeader } from "../../../../../../interfaces/epub/epub-reader.interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { BookOnline, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import { ExpandMore as ExpandMoreIcon, AutoStories } from '@mui/icons-material';
 import { Orientiation } from "../../Helpers/enums";
 import { coverSocialLinks } from "../../Helpers/functions";
-import { ExpandToggle } from "../../Helpers/Components/ExpandToggle";
+import { ExpandToggle } from "../../Helpers/Pieces/ExpandToggle";
 import { useTheme } from "@mui/material/styles";
 import { Container } from '@mui/system';
 
@@ -41,7 +42,16 @@ export default function TitleCoverPortrait(props: EpubHeader): JSX.Element {
         margin: `${theme.spacing(3)} auto`,
       }}
     >
-      <CardHeader title={props.title} subheader="<Publish Date>" />
+      <CardHeader title={props.title} subheader={
+        <Stack direction="row" spacing={1} alignItems="baseline">
+          <Typography gutterBottom variant="subtitle1" component="h2">
+            Last Updated:
+          </Typography>
+          <Typography gutterBottom variant="subtitle2" component="h2">
+            <em>{props.modifiedDate.toLocaleDateString()}</em>
+          </Typography>
+        </Stack>
+      }/>
       <CardMedia
         component="img"
         image={props.coverUrl}
@@ -52,7 +62,7 @@ export default function TitleCoverPortrait(props: EpubHeader): JSX.Element {
           justifyContent: "space-between",
         }}
       >
-        <Button variant="contained" endIcon={<BookOnline />}>
+        <Button variant="contained" endIcon={<AutoStories />}>
           Read Now
         </Button>
         <ExpandToggle
@@ -78,7 +88,7 @@ export default function TitleCoverPortrait(props: EpubHeader): JSX.Element {
               variant="contained"
               color="secondary"
               aria-label="outlined primary button group"
-              sx={{margin: 'auto'}}
+              sx={{ margin: 'auto' }}
             >
               {socialLinks.map((link) => {
                 return (

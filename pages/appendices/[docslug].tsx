@@ -12,7 +12,7 @@ import {
   getAllAvailableLoreDocs,
   getLoreDocument,
 } from "../../src/lib/api/client";
-import { AppendixDocument as AppendixDocumentPage } from "../../src/interfaces/appendices/documents.interface";
+import { AppendixDocument } from "../../src/interfaces/appendices/documents.interface";
 import ReaderPage from "../../src/components/Appendix/ReaderPage/ReaderPage";
 import { MakeSocialUrl } from "../../src/mappers/pathname.mapper";
 import CreateEPubReader from "../../src/mappers/epub.mapper";
@@ -24,7 +24,7 @@ interface AppendixDocPath {
 }
 
 interface Props {
-  document: AppendixDocumentPage;
+  document: AppendixDocument;
   navData: CleanedNavigation;
   facebookAppId: string;
   isTest: boolean;
@@ -69,7 +69,7 @@ const AppendixDocumentPage = (props: Props): JSX.Element => {
 export default AppendixDocumentPage;
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  let data: AppendixDocumentPage | undefined = undefined;
+  let data: AppendixDocument | undefined = undefined;
   let slug = context?.params?.docslug;
   if (slug != undefined) {
     data = await getLoreDocument(slug.toString());

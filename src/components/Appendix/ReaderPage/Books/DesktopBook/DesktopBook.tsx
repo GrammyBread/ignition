@@ -3,7 +3,7 @@ import Styles from "./DesktopBook.module.scss";
 import TitleCoverSmall from "./TitleCover/TitleCoverSmall";
 import { EpubDetails } from "../../../../../interfaces/epub/epub-reader.interface";
 import { useEffect, useReducer } from "react";
-import { BookHolder } from "../Helpers/Components/BookHolder";
+import { BookHolder } from "../Helpers/Pieces/BookHolder";
 import { EpubReaderType } from "../Helpers/enums";
 import { ReaderState } from "../Helpers/interfaces";
 import { readerReducer } from "../Helpers/functions";

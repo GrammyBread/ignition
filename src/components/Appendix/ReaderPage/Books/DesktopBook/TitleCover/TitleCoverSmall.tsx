@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import { coverSocialLinks } from "../../Helpers/functions";
-import { ExpandToggle } from "../../Helpers/Components/ExpandToggle";
+import { ExpandToggle } from "../../Helpers/Pieces/ExpandToggle";
 
 export default function TitleCoverSmall(props: EpubHeader): JSX.Element {
   const [expanded, setExpanded] = React.useState(false);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Styles from "./TouchScreenBook.module.scss";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { BookHolder } from "../Helpers/Components/BookHolder";
+import { BookHolder } from "../Helpers/Pieces/BookHolder";
 import { Orientiation } from "../Helpers/enums";
 import { ViewerLoading } from "../../EpubViewer/ViewerLoading";
 import { EpubDetails } from "../../../../../interfaces/epub/epub-reader.interface";

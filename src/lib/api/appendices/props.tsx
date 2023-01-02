@@ -11,7 +11,8 @@ export const getTitleAndMetaProps: string = `
 slug,
 title,
 id,
-metadata`;
+metadata,
+modified_at`;
 
 export const getAppendixProps: string = `
 title,

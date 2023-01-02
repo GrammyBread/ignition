@@ -25,6 +25,7 @@ export default function CreateEPubReader(
         twitterShare: twitterShareLink,
         facebookShare: facebookShareLink,
         redditShare: redditShareLink,
-        tumblrShare: tumblrShareLink
+        tumblrShare: tumblrShareLink,
+        modifiedDate: new Date(cosmicDoc.modified_at)
     } as EpubDetails;
 }
