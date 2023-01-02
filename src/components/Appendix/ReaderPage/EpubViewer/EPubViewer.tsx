@@ -5,7 +5,7 @@ import Rendition, { RenditionOptions } from "epubjs/types/rendition";
 import { NavItem } from "epubjs/types/navigation";
 import { ViewerFailed } from "./ViewerError";
 import Styles from "./EPubViewer.module.scss";
-import { Orientiation } from "../Books/helpers";
+import { Orientiation } from "../Books/Helpers/enums";
 
 export interface EpubViewerProps {
   url: string | ArrayBuffer;

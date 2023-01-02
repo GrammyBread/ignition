@@ -9,7 +9,8 @@ import {
   styled,
   SwipeableDrawer,
 } from "@mui/material";
-import { EpubReaderType, Orientiation } from "../helpers";
+import { EpubReaderType } from "../Helpers/enums";
+import { Orientiation } from "../Helpers/enums";
 import { ViewerLoading } from "../../EpubViewer/ViewerLoading";
 import { EpubViewer } from "../../EpubViewer/EPubViewer";
 import { BookOptions } from "epubjs/types/book";

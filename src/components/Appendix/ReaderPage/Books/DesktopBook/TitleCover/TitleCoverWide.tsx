@@ -6,15 +6,14 @@ import {
   CardContent,
   Collapse,
   Typography,
-  Box,
+  CardMedia,
 } from "@mui/material";
 import { EpubHeader } from "../../../../../../interfaces/epub/epub-reader.interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Share } from "@mui/icons-material";
 import { Grid } from "@mui/material";
-import Image from "next/image";
 import Link from "next/link";
-import { coverSocialLinks } from "../../helpers";
+import { coverSocialLinks } from "../../Helpers/functions";
 
 export default function TitleCoverWide(props: EpubHeader): JSX.Element {
   const [expanded, setExpanded] = React.useState(false);
@@ -57,20 +56,11 @@ export default function TitleCoverWide(props: EpubHeader): JSX.Element {
               </Grid>
             </Grid>
             <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-              <Box
-                sx={{
-                  margin: "auto",
-                  position: "relative",
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Image
-                  src={props.coverUrl}
-                  fill
-                  alt={`${props.title} cover image`}
-                />
-              </Box>
+              <CardMedia
+                component="img"
+                image={props.coverUrl}
+                alt={`${props.title} cover image`}
+              />
             </Grid>
           </Grid>
         </CardContent>

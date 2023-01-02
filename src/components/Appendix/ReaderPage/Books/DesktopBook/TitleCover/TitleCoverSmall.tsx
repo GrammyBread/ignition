@@ -7,31 +7,14 @@ import {
   CardMedia,
   CardContent,
   Collapse,
-  Typography,
-  IconButton,
-  IconButtonProps,
-  styled,
+  Typography
 } from "@mui/material";
 import { EpubHeader } from "../../../../../../interfaces/epub/epub-reader.interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import { Grid } from "@mui/material";
-import { coverSocialLinks } from "../../helpers";
-
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
-
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+import { coverSocialLinks } from "../../Helpers/functions";
+import { ExpandToggle } from "../../Helpers/Components/ExpandToggle";
 
 export default function TitleCoverSmall(props: EpubHeader): JSX.Element {
   const [expanded, setExpanded] = React.useState(false);
@@ -75,14 +58,14 @@ export default function TitleCoverSmall(props: EpubHeader): JSX.Element {
             );
           })}
         </Grid>
-        <ExpandMore
+        <ExpandToggle
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
         >
           <ExpandMoreIcon />
-        </ExpandMore>
+        </ExpandToggle>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
