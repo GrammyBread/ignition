@@ -1,13 +1,15 @@
-import { Grid, styled, Card, useMediaQuery, CardContent, useTheme } from "@mui/material";
+import { Grid, styled, Card, useMediaQuery, useTheme } from "@mui/material";
 import Styles from "./DesktopBook.module.scss";
-import TitleCoverSmall from "../TitleCover/TitleCoverSmall";
+import TitleCoverSmall from "./TitleCover/TitleCoverSmall";
 import { EpubDetails } from "../../../../../interfaces/epub/epub-reader.interface";
 import { useEffect, useReducer } from "react";
 import { BookHolder, EpubReaderType, ReaderState, readerReducer } from "../helpers";
-import TitleCoverWide from "../TitleCover/TitleCoverWide";
+import TitleCoverWide from "./TitleCover/TitleCoverWide";
+import dynamic from "next/dynamic";
+import { PageProps } from "../Page/Page";
 
 const ReadingArea = styled(Card)(({ theme }) => ({
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.background.paper,
     height: "100%",
     borderRadius: "4px 4px 0 0"
 }));
@@ -27,11 +29,9 @@ function DetermineReaderType(
     else return EpubReaderType.fullWidth;
 }
 
-function DetermineContentWidth(type: EpubReaderType): string {
-    if (type === EpubReaderType.fullPageWidth) return "calc(8.5in + 10px)";
-    else if (type === EpubReaderType.halfPageWidth) return "calc(5.5in + 10px)";
-    else return "min(5.5in, 100%)";
-}
+const Page = dynamic(() => import("../Page/Page"), {
+    ssr: false
+});
 
 export default function DesktopBook(details: EpubDetails): JSX.Element {
     const theme = useTheme();
@@ -41,23 +41,25 @@ export default function DesktopBook(details: EpubDetails): JSX.Element {
         currentScript: details.smallEpub,
         setting: EpubReaderType.halfPageWidth
     } as ReaderState);
-    const isSmallReader = useMediaQuery(`(min-width: calc(5.5in + 3in + ${theme.spacing(6)})`);
-    const isLargeReader = useMediaQuery(`(min-width: calc(8.5in + 3in + ${theme.spacing(6)})`);
+    const isSmallReader = useMediaQuery(`(min-width: calc(6in + 3in + ${theme.spacing(6)})`);
+    const isLargeReader = useMediaQuery(`(min-width: calc(9in + 3in + ${theme.spacing(6)})`);
 
     useEffect(() => {
         const newReaderType = DetermineReaderType(isLargeReader, isSmallReader);
         dispatch({ type: newReaderType });
     }, [isSmallReader, isLargeReader]);
 
+    const pageProps = {
+        EPubURL: readerState.currentScript,
+        title: details.title,
+        setting: readerState.setting
+    } as PageProps;
+
     return <BookHolder className={Styles.BookArea}>
         <BookArea container className={Styles.BookBinder} spacing={3}>
             <Grid item className={Styles.ReadingAreaHolder}>
                 <ReadingArea className={Styles.ReadingArea}>
-                    <CardContent
-                        sx={{
-                            width: DetermineContentWidth(readerState.setting),
-                        }}
-                    ></CardContent>
+                    <Page {...pageProps}/>
                 </ReadingArea>
             </Grid>
             <Grid item className={Styles.TitleCoverHolder}>

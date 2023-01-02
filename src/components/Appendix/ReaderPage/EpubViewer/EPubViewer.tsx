@@ -16,8 +16,7 @@ export interface EpubViewerProps {
     epubInitOptions: BookOptions;
     bookTitle: string;
     orientation: Orientiation;
-    location?: DisplayedLocation;
-    locationChanged?: (newLocation: DisplayedLocation) => void;
+    location?: NavItem;
     tocChanged?: (newTableOfContents: NavItem[]) => void;
     renditionHeight?: string;
     renditionWidth?: string;
@@ -45,7 +44,7 @@ export class EpubViewer extends React.Component<
     viewerRef: React.RefObject<HTMLDivElement>;
     book: Book | undefined;
     rendition: Rendition | undefined;
-    location?: DisplayedLocation;
+    location?: NavItem;
     prevPage?: () => void;
     nextPage?: () => void;
 
@@ -85,8 +84,9 @@ export class EpubViewer extends React.Component<
     ): boolean {
         return (
             !this.state.isLoaded ||
+            nextProps.url !== this.props.url ||
             nextProps.location !== this.props.location ||
-            nextProps.location !== this.props.location
+            nextProps.orientation !== this.props.orientation
         );
     }
 
@@ -99,9 +99,10 @@ export class EpubViewer extends React.Component<
             this.props.location &&
             this.rendition &&
             prevProps.location !== this.props.location &&
-            this.location !== this.props.location
+            this.location !== this.props.location &&
+            this.props.location.href
         ) {
-            this.rendition.display(this.props.location.location);
+            this.rendition.display(this.props.location.href);
         }
         if (prevProps.url !== this.props.url) {
             this.initBook();
@@ -176,8 +177,8 @@ export class EpubViewer extends React.Component<
                         viewer.registerEvents();
                         renditionChanged && renditionChanged(viewer.rendition);
 
-                        if (typeof location === "string" || typeof location === "number") {
-                            viewer.rendition.display(location);
+                        if (location) {
+                            viewer.rendition.display(location.href);
                         } else if (tableOfContents.length > 0 && tableOfContents[0].href) {
                             viewer.rendition.display(tableOfContents[0].href);
                         } else {

@@ -1,4 +1,4 @@
-$full-width: calc(8.5in + 48px);
+$full-width: calc(9in + 48px);
 
 @media screen and (max-width: $full-width ) {
     .BookArea {
@@ -32,6 +32,7 @@ $full-width: calc(8.5in + 48px);
 
     .ReadingArea {
         height: 88vh;
+        position: relative;
     }
 
     .TitleCoverHolder {
@@ -45,6 +46,10 @@ $full-width: calc(8.5in + 48px);
 @media only screen and (min-width: $full-width) {
     .BookBinder {
         flex-flow: row nowrap;
-        justify-content: space-between;
+        justify-content: center;
+    }
+
+    .ReadingArea {
+        position: relative;
     }
 }

@@ -1,6 +1,5 @@
 import { GetStaticProps } from 'next';
 import * as React from 'react';
-import Styles from '../../src/styles/shared.module.scss';
 import Layout from '../../src/components/Main/Layout';
 import { CleanedNavigation } from '../../src/interfaces/read/cleaned-types.interface';
 import NotFoundPage from '../../src/components/Error/NotFound';

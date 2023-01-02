@@ -7,16 +7,12 @@ import {
     Backdrop,
     Button,
     Box,
-    CssBaseline,
-    ListItemText
+    CssBaseline
 } from '@mui/material';
-import { ExpandMore } from '@mui/icons-material';
-import Link from 'next/link';
 import NavigationList from './NavigationList/NavigationList';
 import { NavigationListProps } from './NavigationList/NavigationList';
 import { CleanedNavigation } from '../../../interfaces/read/cleaned-types.interface';
 import { Circle } from '../../TableOfContents/helper';
-import ExpandLess from '@mui/icons-material/ExpandLess';
 import { ParsedUrlQuery } from 'querystring';
 import { AppBar, ImageContainer } from './NavigationHelper';
 import { NavigationLeft } from './NavigationLeft';

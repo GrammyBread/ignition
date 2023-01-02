@@ -1,14 +1,8 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import dynamic from "next/dynamic";
 import { EpubDetails } from '../../../interfaces/epub/epub-reader.interface';
-
-const TouchScreenBook = dynamic(() => import("./Books/TouchScreenBook/TouchScreenBook"), {
-    ssr: false
-});
-
-const DesktopBook = dynamic(() => import("./Books/DesktopBook/DesktopBook"), {
-    ssr: false
-});
+import DesktopBook from './Books/DesktopBook/DesktopBook';
+import TouchScreenBook from './Books/TouchScreenBook/TouchScreenBook';
 
 function detectIfTouchDevice() {
     return typeof window && (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));

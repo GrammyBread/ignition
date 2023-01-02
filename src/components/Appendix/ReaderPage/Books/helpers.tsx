@@ -1,6 +1,13 @@
 import { styled } from '@mui/material';
-import { EpubDetails } from '../../../../interfaces/epub/epub-reader.interface';
+import { EpubHeader } from '../../../../interfaces/epub/epub-reader.interface';
 import { Box } from '@mui/system';
+import {
+    IconDefinition,
+    faFacebookF,
+    faRedditAlien,
+    faTumblr,
+    faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 
 export enum Orientiation {
     landscape,
@@ -24,6 +31,13 @@ export interface ReaderState {
     setting: EpubReaderType;
 }
 
+export interface SocialLinkDetails {
+    key: string;
+    link: string;
+    label: string;
+    icon: IconDefinition;
+}
+
 export function readerReducer(state: ReaderState, action: ReaderDisplayAction) {
     const { type } = action;
     if (type != state.setting) {
@@ -34,6 +48,35 @@ export function readerReducer(state: ReaderState, action: ReaderDisplayAction) {
         }
     }
     else return state;
+}
+
+export function coverSocialLinks(props: EpubHeader) : SocialLinkDetails[]{
+    return [
+        {
+            key: "twitter",
+            link: props.twitterShare,
+            label: "Share on Twitter",
+            icon: faTwitter
+        },
+        {
+            key: "facebook",
+            link: props.facebookShare,
+            label: "Share on Facebook",
+            icon: faFacebookF
+        },
+        {
+            key: "reddit",
+            link: props.redditShare,
+            label: "Share on Reddit",
+            icon: faRedditAlien
+        },
+        {
+            key: "tumblr",
+            link: props.tumblrShare,
+            label: "Share on Tumblr",
+            icon: faTumblr
+        }
+    ] as SocialLinkDetails[];
 }
 
 export const BookHolder = styled(Box)(({
