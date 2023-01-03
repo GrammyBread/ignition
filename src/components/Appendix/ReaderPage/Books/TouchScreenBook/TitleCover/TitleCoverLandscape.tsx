@@ -111,7 +111,7 @@ export default function TitleCoverLandscape(props: TitleCover): JSX.Element {
                 <Typography
                   variant="body1"
                   fontWeight={500}
-                  component="p"
+                  component="div"
                   textAlign="center"
                 >
                   SHARE

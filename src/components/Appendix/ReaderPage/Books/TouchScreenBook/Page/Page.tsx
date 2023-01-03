@@ -1,13 +1,11 @@
 import {
   useTheme,
-  CardHeader,
-  useMediaQuery,
   IconButton,
   Typography,
-  SwipeableDrawer,
-  styled,
   Toolbar,
   Drawer,
+  setRef,
+  Theme,
 } from "@mui/material";
 import { EpubReaderType } from "../../Helpers/enums";
 import { Orientiation } from "../../Helpers/enums";
@@ -18,8 +16,6 @@ import { useEffect, useRef, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import BookmarkDrawer from "../../Bookmarks/BookmarkDrawer";
 import { NavItem } from "epubjs";
-import { ViewerHolder } from "../../Helpers/Pieces/ViewerHolder";
-import { ViewerCard } from "../../Helpers/Pieces/ViewerCard";
 import { PageProps } from "../../Helpers/interfaces";
 import { BookmarkHeader } from "./BookmarkHeader";
 import { FlexViewCard } from "./FlexViewCard";
@@ -46,13 +42,18 @@ export interface TouchScreenPageProps extends PageProps {
 function DetermineContentWidth(type: EpubReaderType): string {
   if (type === EpubReaderType.fullPageWidth) return "calc(8.5in + 10px)";
   else if (type === EpubReaderType.halfPageWidth) return "calc(5.5in + 10px)";
-  else return "min(calc(5.5in + 10px), 100%)";
+  else return "min(calc(5.5in + 10px), 100vw)";
+}
+
+function DeterminePadding(type: EpubReaderType, theme: Theme): string {
+  if (type === EpubReaderType.fullWidth) return `0`;
+  else return `0 ${theme.spacing(3)}`;
 }
 
 function DetermineViewerWidth(type: EpubReaderType): string {
   if (type === EpubReaderType.fullPageWidth) return "calc(8.5in)";
   else if (type === EpubReaderType.halfPageWidth) return "calc(5.5in)";
-  else return "min(calc(5.5in), 100%)";
+  else return "min(calc(5.5in), 100vw)";
 }
 
 export default function Page(props: TouchScreenPageProps): JSX.Element {
@@ -64,25 +65,27 @@ export default function Page(props: TouchScreenPageProps): JSX.Element {
     undefined
   );
   const contentRef = useRef(null);
+  const iFrame = useRef<HTMLIFrameElement>(null);
   const detectedScrenSize = DetectScreenSize();
 
-    const setTOCLoaded = (items: NavItem[]) => {
-        setNavigationItems(items);
-    }
+  const setTOCLoaded = (items: NavItem[]) => {
+    setNavigationItems(items);
+  };
 
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
-  let frame: HTMLIFrameElement | undefined;
   useEffect(() => {
-    const availableFrames =
-      typeof window !== undefined &&
-      window.document.getElementsByTagName("iframe");
-    if (availableFrames && availableFrames.length > 0) {
-      frame = availableFrames[0];
+    if (!isLoading) {
+      const availableFrames =
+        typeof window !== undefined &&
+        window.document.getElementsByTagName("iframe");
+      if (availableFrames && availableFrames.length > 0) {
+        setRef(iFrame, availableFrames[0]);
+      }
     }
-  });
+  }, [isLoading]);
 
   useEffect(() => {
     if (detectedScrenSize === ScreenSize.tiny) {
@@ -100,17 +103,20 @@ export default function Page(props: TouchScreenPageProps): JSX.Element {
 
   const locationChanged = (elementID: string) => {
     console.log(`New Location selected: ${elementID}`);
-    if (frame?.contentDocument?.location) {
-      const locationParts = frame.contentDocument.location.href.split("#");
-      frame.contentDocument.location.assign(
+    if (
+      iFrame &&
+      iFrame.current != null &&
+      iFrame.current?.contentDocument?.location
+    ) {
+      const contentDoc = iFrame.current.contentDocument;
+      const locationParts = contentDoc.location.href.split("#");
+      contentDoc.location.assign(
         `${(locationParts.length > 0 && locationParts[0]) || ""}#${elementID}`
       );
     }
   };
 
   const initConfig = {} as BookOptions;
-
-  const loadingView = <ViewerLoading />;
   const viewer = (
     <EpubViewer
       url={props.EPubURL}
@@ -157,10 +163,18 @@ export default function Page(props: TouchScreenPageProps): JSX.Element {
       <FlexViewCard
         ref={contentRef}
         onClick={handleDrawerClose}
-        open={open}
+        determinedWidth={DetermineContentWidth(props.setting)}
+        determinedPadding={DeterminePadding(props.setting, theme)}
         drawerWidth={drawerWidth}
+        open={open}
       >
-        <FlexViewHolder>
+        <FlexViewHolder
+          determinedPadding={
+            props.setting === EpubReaderType.fullWidth
+              ? "0 !important"
+              : "0 auto"
+          }
+        >
           {isLoading && <ViewerLoading />}
           {viewer}
         </FlexViewHolder>
@@ -171,8 +185,9 @@ export default function Page(props: TouchScreenPageProps): JSX.Element {
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
-            height: "calc(100% - 20vh)",
-            marginTop: "20vh",
+            zIndex: 1000,
+            height: `calc(100% - ${theme.spacing(9)})` ,
+            marginTop: theme.spacing(9)
           },
         }}
         variant="persistent"

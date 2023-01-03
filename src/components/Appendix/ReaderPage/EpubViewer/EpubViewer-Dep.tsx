@@ -6,8 +6,6 @@ import { NavItem } from "epubjs/types/navigation";
 import { ViewerFailed } from "./ViewerError";
 import Styles from "./EPubViewer.module.scss";
 import { Orientiation } from "../Books/Helpers/enums";
-import { ViewerLoading } from "./ViewerLoading";
-import { ThreeSixty } from "@mui/icons-material";
 
 export interface EpubViewerProps {
   url: string | ArrayBuffer;
@@ -37,7 +35,7 @@ export interface EpubViewerStyles {
   holder: string;
 }
 
-export class EpubViewer extends React.Component<
+export class EpubViewerOld extends React.Component<
   EpubViewerProps,
   EpubViewerState
 > {
@@ -70,6 +68,9 @@ export class EpubViewer extends React.Component<
   }
 
   componentDidMount(): void {
+    this.setState({
+      isLoading: true
+    })
     this.initBook();
     document.addEventListener("keyup", this.handleKeyPress, false);
   }
@@ -88,8 +89,7 @@ export class EpubViewer extends React.Component<
     nextContext: any
   ): boolean {
     return (
-      !this.state.isLoaded &&
-      !this.state.isLoading ||
+      !this.state.isLoaded ||
       nextProps.url !== this.props.url ||
       nextProps.location !== this.props.location ||
       nextProps.orientation !== this.props.orientation
@@ -140,13 +140,11 @@ export class EpubViewer extends React.Component<
     this.setIsLoading(false);
   }
 
-  initBook() {
+  async initBook() {
     const { url, epubInitOptions } = this.props;
-    const node = this.viewerRef.current;
 
     this.setState({
       isLoaded: false,
-      isLoading: true,
       errorOccured: false,
       errorMessage: undefined,
     });
@@ -154,6 +152,12 @@ export class EpubViewer extends React.Component<
 
     try {
       if (this.book) {
+        await this.book.ready;
+        this.location = {
+          ...this.book.locations.currentLocation,
+          id: "0_1",
+          label: "Current Location",
+        } as NavItem;
         this.book.destroy();
       }
     } catch (error) {
@@ -161,43 +165,90 @@ export class EpubViewer extends React.Component<
       this.setErrorState(errorMessage, error);
     }
 
-    try {
-      const viewer = this;
-      this.book = Epub(url);
-      const book = this.book;    
-      if (this.book && node) {
-          this.rendition = book.renderTo(node, {
-            manager: "continuous",
-            flow: "scrolled",
-            width: "100%",
-            height: "100%"
-          });
-          const rendition = this.rendition;
+    const loadEpub: (
+      urlOrData: string | ArrayBuffer,
+      options: BookOptions
+    ) => Book = Epub;
 
-          var displayed = rendition.display();
-
-          book.ready.then(() => {            
-            displayed.then(function (renderer) {
-              book.loaded.navigation.then(({toc}) => {
-                viewer.setState({
+    const viewer = this;
+    debounce(loadEpub, 1000)(url, epubInitOptions)
+      .then((loadedEpub) => {
+        if (loadedEpub) {
+          loadedEpub.ready.then(() => {
+            viewer.book = loadedEpub;
+            viewer.book.loaded.navigation.then(({ toc }) => {
+              viewer.setState(
+                {
                   isLoaded: true,
-                  isLoading: false,
                   errorOccured: false,
-                  errorMessage: undefined
+                  errorMessage: undefined,
+                  tableOfContents: toc,
                 },
                 () => {
-                  viewer.tocChanged && viewer.tocChanged(toc)
+                  viewer.tocChanged(toc);
+                  viewer.initReader();
                   viewer.setIsLoading(false);
-                })
-              });
-              //Add location logic later
+                }
+              );
             });
           });
         }
-    } catch (error) {
-      let errorMessage = "Could not load book! Please reload page.";
-      this.setErrorState(errorMessage, error);
-    };
+      })
+      .catch((error) => {
+        let errorMessage = "Could not load book! Please reload page.";
+        this.setErrorState(errorMessage, error);
+      });
+  }
+
+  async initReader() {
+    const { tableOfContents } = this.state;
+    const { location, renditionOptions, renditionChanged } = this.props;
+    const node = this.viewerRef.current;
+    const options = {
+      flow: "scrolled-doc",
+      width: "calc(100% - 5px)",
+      ...renditionOptions,
+    } as RenditionOptions;
+
+    if (node && this.book) {
+      const viewer = this;
+      const renderRendition: (
+        element: Element,
+        options?: RenditionOptions
+      ) => Rendition = this.book.renderTo.bind(this.book);
+      debounce(renderRendition, 1000)(node, options)
+        .then((renderedRendition) => {
+          if (renderedRendition) {
+            viewer.rendition = renderedRendition;
+            viewer.prevPage = () => {
+              viewer.rendition!.prev();
+            };
+            viewer.nextPage = () => {
+              viewer.rendition!.next();
+            };
+            viewer.registerEvents();
+            renditionChanged && renditionChanged(viewer.rendition);
+
+            if (viewer.rendition) {
+              if (location && this.book?.locations) {
+                viewer.rendition.display(location.href);
+              } else if (
+                tableOfContents.length > 0 &&
+                tableOfContents[0].href
+              ) {
+                viewer.rendition.display(tableOfContents[0].href);
+              } else {
+                viewer.rendition.display();
+              }
+            }
+          }
+        })
+        .catch((error) => {
+          let errorMessage = "Could not load rendition! Please reload page.";
+          this.setErrorState(errorMessage, error);
+          this.render();
+        });
+    }
   }
 
   handleKeyPress = ({ key }: KeyboardEvent): any => {
@@ -227,12 +278,11 @@ export class EpubViewer extends React.Component<
   }
 
   render() {
-    const { isLoading, errorOccured } = this.state;
+    const { isLoaded, errorOccured } = this.state;
     return (
       <div className={Styles.viewerHolder}>
-        {!errorOccured ? this.renderBook()
-        : this.renderError()}
-        {isLoading && <ViewerLoading/>}
+        {isLoaded && this.renderBook()}
+        {errorOccured && this.renderError()}
       </div>
     );
   }

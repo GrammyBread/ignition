@@ -3,13 +3,12 @@ import Styles from "./TouchScreenBook.module.scss";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { BookHolder } from "../Helpers/Pieces/BookHolder";
 import { EpubReaderType, Orientiation } from '../Helpers/enums';
-import { ViewerLoading } from "../../EpubViewer/ViewerLoading";
 import { EpubDetails } from "../../../../../interfaces/epub/epub-reader.interface";
 import TitleCoverPortrait from "./TitleCover/TitleCoverPortrait";
 import { Card, styled, useTheme } from "@mui/material";
 import TitleCoverLandscape from "./TitleCover/TitleCoverLandscape";
 import Page, { TouchScreenPageProps } from "./Page/Page";
-import { PageProps, ReaderState } from "../Helpers/interfaces";
+import { ReaderState } from "../Helpers/interfaces";
 import { useReducer } from "react";
 import { readerReducer } from "../Helpers/functions";
 

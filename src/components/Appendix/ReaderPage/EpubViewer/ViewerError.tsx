@@ -15,7 +15,7 @@ const ViewerErrorPage = styled(Paper)(({ theme }) => ({
 
 export function ViewerFailed({ errorMessage, title }: ViewerFailedProps): JSX.Element {
     return <ViewerErrorPage>
-        <Typography component="p" variant="h4" sx={{
+        <Typography component="div" variant="h4" sx={{
             textDecoration: "underline"
         }}>
             <p>Sorry, we couldn&apos;t load our document!</p>
@@ -23,10 +23,10 @@ export function ViewerFailed({ errorMessage, title }: ViewerFailedProps): JSX.El
         <div style={{
             paddingLeft: "3rem"
         }}>
-            <Typography component="p" variant="body1" sx={{ margin: ".25rem" }}>
+            <Typography component="div" variant="body1" sx={{ margin: ".25rem" }}>
                 <strong>Document title:</strong> <em style={{ color: "white" }}>{title}</em>
             </Typography>
-            <Typography component="p" variant="body1" sx={{ margin: ".25rem" }}>
+            <Typography component="div" variant="body1" sx={{ margin: ".25rem" }}>
                 <strong>Error code:</strong> <em style={{ color: "white" }}>{errorMessage}</em>
             </Typography>
         </div>

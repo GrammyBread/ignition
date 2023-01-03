@@ -81,7 +81,7 @@ export default function TitleCoverPortrait(props: TitleCoverProps): JSX.Element 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <Divider />
         <Container>
-          <Typography variant="body1" fontWeight={500} component="p" textAlign="center">
+          <Typography variant="body1" fontWeight={500} component="div" textAlign="center">
             SHARE
           </Typography>
           <CardActions>
