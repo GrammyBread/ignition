@@ -1,67 +1,23 @@
 import {
-  CardContent,
   useTheme,
   CardHeader,
   useMediaQuery,
   IconButton,
   Typography,
-  Container,
-  styled,
   SwipeableDrawer,
 } from "@mui/material";
-import { EpubReaderType } from "../Helpers/enums";
-import { Orientiation } from "../Helpers/enums";
-import { ViewerLoading } from "../../EpubViewer/ViewerLoading";
-import { EpubViewer } from "../../EpubViewer/EPubViewer";
+import { EpubReaderType } from "../../Helpers/enums";
+import { Orientiation } from "../../Helpers/enums";
+import { ViewerLoading } from "../../../EpubViewer/ViewerLoading";
+import { EpubViewer } from "../../../EpubViewer/EPubViewer";
 import { BookOptions } from "epubjs/types/book";
 import { useEffect, useRef, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import LocationDrawer from "./LocationDrawer";
+import BookmarkDrawer from "../../Bookmarks/BookmarkDrawer";
 import { NavItem } from "epubjs";
-
-const ViewerHolder = styled(Container)(({ theme }) => ({
-  backgroundColor: "white",
-  height: "100%",
-  border: `5px solid ${theme.palette.primary.dark}`,
-  borderBottom: "0px",
-  ["&::-webkit-scrollbar"]: {
-    height: "5px",
-    width: "5px",
-    background: theme.palette.primary.dark,
-    borderRadius: "1ex",
-  },
-  ["&::-webkit-scrollbar-thumb"]: {
-    background: "white",
-    borderRadius: "1ex",
-  },
-  ["&::-webkit-scrollbar-corner"]: {
-    background: theme.palette.primary.dark,
-  },
-}));
-
-const PageCardContent = styled(CardContent, {
-  shouldForwardProp: (prop) => prop !== "maxWidth",
-})<{
-  maxWidth?: string;
-}>(({ theme, maxWidth }) => ({
-  width: maxWidth,
-  margin: "auto",
-  paddingTop: 0,
-  paddingBottom: '0 !important',
-  height: `calc(100% - (1rem + ${theme.spacing(6)}))`,
-  [".MuiDrawer-modal"]: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    [".MuiPaper-root"]: {
-      position: "relative",
-      width: "50%",
-      marginLeft: "auto",
-      top: `calc(1rem + ${theme.spacing(6)})`,
-      maxHeight: `calc(100% - (1rem + ${theme.spacing(6)}))`,
-    },
-  },
-}));
+import { ViewerHolder } from "../../Helpers/Pieces/ViewerHolder";
+import { ViewerCard } from "../../Helpers/Pieces/ViewerCard";
+import { PageProps } from "../../Helpers/interfaces";
 
 function DetermineContentWidth(type: EpubReaderType): string {
   if (type === EpubReaderType.fullPageWidth) return "calc(8.5in + .5in + 10px)";
@@ -76,16 +32,11 @@ function DetermineViewerWidth(type: EpubReaderType): string {
   else return "min(calc(5.5in + 10px), calc(100% - 10px))";
 }
 
-export interface PageProps {
-  EPubURL: string;
-  title: string;
-  setting: EpubReaderType;
-}
-
 export default function Page(props: PageProps): JSX.Element {
   const theme = useTheme();
   const isLandscapeMode = useMediaQuery("(orientation: landscape)");
   const isPortraitMode = useMediaQuery("(orientation: portrait)");
+  const [isLoading, setIsLoading] = useState(true);
   const [orientation, setOrientation] = useState<Orientiation>(
     isPortraitMode ? Orientiation.portrait : Orientiation.landscape
   );
@@ -104,25 +55,27 @@ export default function Page(props: PageProps): JSX.Element {
   };
 
   let frame: HTMLIFrameElement | undefined;
-  let baseLocation: string | undefined;
-  const availableFrames = window.document.getElementsByTagName("iframe");
-  if (availableFrames.length > 0) {
-    frame = availableFrames[0];
-  }
-
-  const locationChanged = (elementID: string) => {
-    console.log(`New Location selected: ${elementID}`);
-    if (frame?.contentDocument?.location) {
-        const locationParts = frame.contentDocument.location.href.split("#");
-        frame.contentDocument.location.assign(`${locationParts.length > 0 && locationParts[0] || ''}#${elementID}`);
-    }
-  };
-
   useEffect(() => {
+    const availableFrames =
+      typeof window !== undefined &&
+      window.document.getElementsByTagName("iframe");
+    if (availableFrames && availableFrames.length > 0) {
+      frame = availableFrames[0];
+    }
     setOrientation(
       isPortraitMode ? Orientiation.portrait : Orientiation.landscape
     );
   }, [isLandscapeMode, isPortraitMode]);
+
+  const locationChanged = (elementID: string) => {
+    console.log(`New Location selected: ${elementID}`);
+    if (frame?.contentDocument?.location) {
+      const locationParts = frame.contentDocument.location.href.split("#");
+      frame.contentDocument.location.assign(
+        `${(locationParts.length > 0 && locationParts[0]) || ""}#${elementID}`
+      );
+    }
+  };
 
   const initConfig = {} as BookOptions;
 
@@ -132,8 +85,8 @@ export default function Page(props: PageProps): JSX.Element {
       url={props.EPubURL}
       bookTitle="testDocument"
       orientation={orientation}
-      loadingView={loadingView}
       epubInitOptions={initConfig}
+      setIsLoading={setIsLoading}
       renditionWidth={DetermineViewerWidth(props.setting)}
       tocChanged={setNavigationItems}
     />
@@ -163,9 +116,10 @@ export default function Page(props: PageProps): JSX.Element {
           </IconButton>
         }
       />
-      <PageCardContent
+      <ViewerCard
         ref={contentRef}
         maxWidth={DetermineContentWidth(props.setting)}
+        paddingConfig={"0 auto !important"}
         onClick={handleDrawerClose}
       >
         <SwipeableDrawer
@@ -179,15 +133,18 @@ export default function Page(props: PageProps): JSX.Element {
           disableBackdropTransition={true}
           transitionDuration={0}
         >
-          <LocationDrawer
+          <BookmarkDrawer
             closeDrawer={handleDrawerClose}
             setLocation={locationChanged}
             locations={navigationItems}
           />
         </SwipeableDrawer>
-        <ViewerHolder>{viewer}</ViewerHolder>
+        <ViewerHolder>
+          {viewer}
+          {isLoading && <ViewerLoading />}
+        </ViewerHolder>
         <div id={"reader"}></div>
-      </PageCardContent>
+      </ViewerCard>
     </>
   );
 }

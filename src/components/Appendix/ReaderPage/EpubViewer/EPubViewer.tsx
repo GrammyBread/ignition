@@ -9,12 +9,12 @@ import { Orientiation } from "../Books/Helpers/enums";
 
 export interface EpubViewerProps {
   url: string | ArrayBuffer;
-  loadingView: JSX.Element;
   epubInitOptions: BookOptions;
   bookTitle: string;
   orientation: Orientiation;
+  setIsLoading: (value: boolean) => void;
+  tocChanged: (newTableOfContents: NavItem[]) => void;
   location?: NavItem;
-  tocChanged?: (newTableOfContents: NavItem[]) => void;
   renditionHeight?: string;
   renditionWidth?: string;
   renditionOptions?: RenditionOptions;
@@ -44,6 +44,8 @@ export class EpubViewer extends React.Component<
   location?: NavItem;
   prevPage?: () => void;
   nextPage?: () => void;
+  setIsLoading: (state: boolean) => void;
+  tocChanged: (newTableOfContents: NavItem[]) => void;
 
   constructor(props: EpubViewerProps) {
     super(props);
@@ -53,6 +55,8 @@ export class EpubViewer extends React.Component<
       errorOccured: false,
     };
     this.viewerRef = React.createRef();
+    this.setIsLoading = this.props.setIsLoading;
+    this.tocChanged = this.props.tocChanged;
     this.location = this.props.location;
     this.book = this.rendition = this.prevPage = this.nextPage = undefined;
   }
@@ -109,40 +113,74 @@ export class EpubViewer extends React.Component<
     }
   }
 
+  setErrorState(errorMessage: string, error?: any) {
+    let detailedErrors = errorMessage;
+    if (error) {
+      if (typeof error === "string") {
+        detailedErrors = `${errorMessage}\nDetails: ${error.toUpperCase()}`;
+      } else if (error instanceof Error) {
+        detailedErrors = `${errorMessage}\nDetails: ${error.message}`;
+      }
+    }
+
+    console.log(detailedErrors);
+
+    this.setState({
+      isLoaded: false,
+      tableOfContents: [],
+      errorOccured: true,
+      errorMessage: errorMessage,
+    });
+
+    this.setIsLoading(false);
+  }
+
   initBook() {
-    const { url, tocChanged, epubInitOptions } = this.props;
+    const { url, epubInitOptions } = this.props;
+
+    this.setState({
+      isLoaded: false,
+    });
+    this.setIsLoading(true);
+
     try {
       if (this.book) {
         this.book.destroy();
       }
-
-      this.book = Epub(url, epubInitOptions);
-      this.book.loaded.navigation.then(({ toc }) => {
-        this.setState(
-          {
-            isLoaded: true,
-            tableOfContents: toc,
-          },
-          () => {
-            tocChanged && tocChanged(toc);
-            this.initReader();
-          }
-        );
-      });
     } catch (error) {
-      let errorMessage = "Unknown Error Occured";
-      if (typeof error === "string") {
-        errorMessage = error.toUpperCase();
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-      this.setState({
-        isLoaded: false,
-        tableOfContents: [],
-        errorOccured: true,
-        errorMessage: errorMessage,
-      });
+      let errorMessage = "Could not destory existing book. Please reload page.";
+      this.setErrorState(errorMessage, error);
     }
+
+    const loadEpub: (
+      urlOrData: string | ArrayBuffer,
+      options: BookOptions
+    ) => Book = Epub;
+
+    const viewer = this;
+    debounce(loadEpub, 1000)(url, epubInitOptions)
+      .then((loadedEpub) => {
+        if (loadedEpub) {
+          viewer.book = loadedEpub;
+          loadedEpub.loaded.navigation.then(({ toc }) => {
+            viewer.setState(
+              {
+                isLoaded: true,
+                tableOfContents: toc,
+              },
+              () => {
+                viewer.tocChanged(toc);
+                viewer.initReader();
+                viewer.setIsLoading(false);
+              }
+            );
+          });
+        }
+      })
+      .catch((error) => {
+        let errorMessage = "Could not load book! Please reload page.";
+        this.setErrorState(errorMessage, error);
+      });
   }
 
   async initReader() {
@@ -162,9 +200,9 @@ export class EpubViewer extends React.Component<
         options?: RenditionOptions
       ) => Rendition = this.book.renderTo.bind(this.book);
       debounce(renderRendition, 1000)(node, options)
-        .then((val) => {
-          if (val) {
-            viewer.rendition = val;
+        .then((renderedRendition) => {
+          if (renderedRendition) {
+            viewer.rendition = renderedRendition;
             viewer.prevPage = () => {
               viewer.rendition!.prev();
             };
@@ -184,18 +222,9 @@ export class EpubViewer extends React.Component<
           }
         })
         .catch((error) => {
-          let errorMessage = "Unknown error occured.";
-          if (typeof error === "string") {
-            errorMessage = error.toUpperCase();
-          } else if (error instanceof Error) {
-            errorMessage = error.message;
-          }
-          this.setState({
-            isLoaded: false,
-            tableOfContents: [],
-            errorOccured: true,
-            errorMessage: errorMessage,
-          });
+          let errorMessage = "Could not load rendition! Please reload page.";
+          this.setErrorState(errorMessage, error);
+          this.render();
         });
     }
   }
@@ -228,12 +257,10 @@ export class EpubViewer extends React.Component<
 
   render() {
     const { isLoaded, errorOccured } = this.state;
-    const { loadingView } = this.props;
     return (
       <div className={Styles.viewerHolder}>
-        {(isLoaded && this.renderBook()) ||
-          (errorOccured && this.renderError()) ||
-          loadingView}
+        {isLoaded && this.renderBook()}
+        {errorOccured && this.renderError()}
       </div>
     );
   }

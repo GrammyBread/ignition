@@ -21,11 +21,12 @@ import { ExpandToggle } from "../../Helpers/Pieces/ExpandToggle";
 import { useTheme } from "@mui/material/styles";
 import { Container } from '@mui/system';
 
-export interface TitleCoverProps {
-  oreientation: Orientiation;
+export interface TitleCoverProps extends EpubHeader {
+  orientation: Orientiation;
+  openReader: () => void;
 }
 
-export default function TitleCoverPortrait(props: EpubHeader): JSX.Element {
+export default function TitleCoverPortrait(props: TitleCoverProps): JSX.Element {
   const theme = useTheme();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -62,7 +63,7 @@ export default function TitleCoverPortrait(props: EpubHeader): JSX.Element {
           justifyContent: "space-between",
         }}
       >
-        <Button variant="contained" endIcon={<AutoStories />}>
+        <Button variant="contained" endIcon={<AutoStories />} onClick={props.openReader}>
           Read Now
         </Button>
         <ExpandToggle

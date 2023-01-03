@@ -20,3 +20,9 @@ export interface SocialLinkDetails {
     label: string;
     icon: IconDefinition;
 }
+
+export interface PageProps {
+    EPubURL: string;
+    title: string;
+    setting: EpubReaderType;
+  }

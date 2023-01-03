@@ -3,16 +3,16 @@ import {
   List
 } from "@mui/material";
 import { NavItem } from "epubjs";
-import { LocationList } from "./LocationList";
+import { BookmarkList } from "./BookmarkList";
 
-export interface LocationDrawerProps {
+export interface BookmarkDrawerProps {
   closeDrawer: () => void;
   setLocation: (elementID: string) => void;
   locations?: NavItem[];
 }
 
-export default function LocationDrawer(
-  props: LocationDrawerProps
+export default function BookmarkDrawer(
+  props: BookmarkDrawerProps
 ): JSX.Element {
   return (
     <Box
@@ -24,7 +24,7 @@ export default function LocationDrawer(
       onKeyDown={() => props.closeDrawer()}
     >
       <List>
-        <LocationList {...props} />
+        <BookmarkList {...props} />
       </List>
     </Box>
   );

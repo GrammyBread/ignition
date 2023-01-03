@@ -123,7 +123,7 @@ export default function Layout({
     var isLargeScreen = detectedScrenSize === ScreenSize.large || detectedScrenSize === ScreenSize.giant;
   }, [
     detectedScrenSize,
-  ]); // Only re-run the effect if count changes
+  ]);
 
   const navigationProps = {
     drawerWidth: drawerWidth,

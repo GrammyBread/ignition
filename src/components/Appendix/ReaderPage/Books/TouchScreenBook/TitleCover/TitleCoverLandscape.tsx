@@ -20,7 +20,11 @@ import { useTheme } from "@mui/material/styles";
 import { Container } from "@mui/system";
 import { useRef } from "react";
 
-export default function TitleCoverLandscape(props: EpubHeader): JSX.Element {
+interface TitleCover extends EpubHeader {
+  openReader: () => void;
+}
+
+export default function TitleCoverLandscape(props: TitleCover): JSX.Element {
   const [expanded, setExpanded] = React.useState(false);
   const theme = useTheme();
   const containerRef = useRef(null);
@@ -68,7 +72,7 @@ export default function TitleCoverLandscape(props: EpubHeader): JSX.Element {
             </Grid>
             <Grid item>
               <ButtonGroup>
-                <Button variant="contained" endIcon={<AutoStories />}>
+                <Button variant="contained" endIcon={<AutoStories />} onClick={props.openReader}>
                   Read Now
                 </Button>
                 <Button

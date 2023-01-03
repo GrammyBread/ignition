@@ -9,7 +9,7 @@ import { ReaderState } from "../Helpers/interfaces";
 import { readerReducer } from "../Helpers/functions";
 import TitleCoverWide from "./TitleCover/TitleCoverWide";
 import dynamic from "next/dynamic";
-import { PageProps } from "../Page/Page";
+import { PageProps } from "../Helpers/interfaces";
 
 const ReadingArea = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -32,7 +32,7 @@ function DetermineReaderType(
     else return EpubReaderType.fullWidth;
 }
 
-const Page = dynamic(() => import("../Page/Page"), {
+const Page = dynamic(() => import("./Page/Page"), {
     ssr: false
 });
 

@@ -8,17 +8,17 @@ import {
 } from "@mui/material";
 import { NavItem } from "epubjs";
 
-export interface LocationListProps {
+export interface BookmarkListProps {
     setLocation: (elementID: string) => void;
     locations?: NavItem[];
 }
 
-export class LocationList extends Component<LocationListProps> {
+export class BookmarkList extends Component<BookmarkListProps> {
     setLocation: (elementID: string) => void;
     locations?: NavItem[];
     frame?: HTMLIFrameElement;
 
-    constructor(props: LocationListProps) {
+    constructor(props: BookmarkListProps) {
         super(props);
         this.setLocation = props.setLocation;
         this.locations = props.locations;
