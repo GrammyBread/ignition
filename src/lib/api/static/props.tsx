@@ -1,12 +1,7 @@
-export const getHomeProps: string = `
+export const getGenericProps: string = `
 title,
 content,
 metadata`;
 
 export const getPingProps: string = `
 title`;
-
-export const getPatreonProps: string = `
-title,
-content,
-metadata`;

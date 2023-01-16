@@ -21,7 +21,7 @@ export interface LayoutProps {
   fadeInTrigger?: boolean;
   backgroundImageUrl?: Resource;
   socials?: Socials;
-  isReadingView?: boolean;
+  disableAllPadding?: boolean;
 }
 
 export interface Socials {
@@ -91,8 +91,7 @@ export default function Layout({
   nextSection,
   backgroundImageUrl,
   socials,
-  isReadingView,
-
+  disableAllPadding
 }: LayoutProps) {
   const [open, setOpen] = React.useState(false);
   const [drawerWidth, setDrawerWidth] = React.useState(ScreenSizePixels.Tiny);
@@ -196,7 +195,7 @@ export default function Layout({
         <Main
           open={open}
           drawerWidth={drawerWidth}
-          isReadingView={isReadingView}
+          disableAllPadding={disableAllPadding}
         >
           {children}
         </Main>

@@ -59,7 +59,7 @@ const AppendixDocumentPage = (props: Props): JSX.Element => {
       navData={props.navData}
       backgroundImageUrl={props.document.metadata.background_image}
       socials={socialData}
-      isReadingView={true}
+      disableAllPadding={true}
     >
       <ReaderPage {...documentProps}></ReaderPage>
     </Layout>

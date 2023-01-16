@@ -10,7 +10,8 @@ import {
   makeGetPartsQuery, 
   makeGetChapterQuery, 
   makeGetSectionQuery, 
-  makeGetSiteDataQuery } from './readmeta/read-metadata-queries';
+  makeGetSiteDataQuery, 
+  makeGetMostRecentSections} from './readmeta/read-metadata-queries';
 import { HomePage, PingPage } from '../../interfaces/static/home.interfaces'
 import { 
   makeGetHomeQuery, 
@@ -33,7 +34,7 @@ export const bucket = Cosmic().bucket({
   read_key: READ_KEY,
 })
 
-async function getObjects<T>(query: CosmicQuery): Promise<T> {
+async function getObjects<T>(query: CosmicQuery | any): Promise<T> {
       const data = await bucket.getObjects(query);
       return data.objects;
 }
@@ -68,6 +69,11 @@ export async function getChapterHeaderScript(slug:string): Promise<CosmicChapter
 export async function getSectionData(slug:string): Promise<CosmicSection> {
   let response = await getObjects<CosmicSection[]>(makeGetSectionQuery(slug));
   return response[0];
+}
+
+export async function getMostRecentSections(): Promise<CosmicSection[]> {
+  let response = await getObjects<CosmicSection[]>(makeGetMostRecentSections());
+  return response;
 }
 
 //Non-Read Pages

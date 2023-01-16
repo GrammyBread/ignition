@@ -2,7 +2,7 @@
     height: 100%;
     flex: 1;
     overflow-y: scroll;
-    
+
     &::-webkit-scrollbar {
         height: 5px;
         width: 5px;
@@ -21,9 +21,9 @@
 }
 
 .epubViewer {
-    overflow: auto;
+    overflow: hidden;
 
-    .epub-container {
-        overflow: visible !important;
+    div {
+        overflow-y: hidden !important;
     }
 }

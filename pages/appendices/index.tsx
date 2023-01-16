@@ -74,7 +74,7 @@ const AppendicesHome = ( props: Props ): JSX.Element =>
                 </Typography>
             </Paper>
             <Box sx={{
-
+                overflowX: 'auto'
             }}>
                 <AppendixList {...appendixProps}/>
             </Box>

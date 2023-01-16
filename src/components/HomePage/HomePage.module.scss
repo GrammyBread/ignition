@@ -1,0 +1,138 @@
+.homeHero {
+    position: relative;
+    padding-top: 30vh;
+
+    img {
+        object-fit: cover;
+        object-position: top;
+    }
+
+    .holderThing {
+        position: relative;
+        height: fit-content;
+
+        .textHolder {
+            position: relative;
+            overflow-wrap: break-word;
+            z-index: 1;
+            background: transparent;
+
+            .text {
+                padding: var(--theme-spacing-three);
+                padding-bottom: 0;
+
+                h1 {
+                    font-family: var(--montSub-font);
+                    color: var(--theme-primary-main);
+                    margin: 0;
+                }
+
+                h2 {
+                    margin: 0;
+                    font-weight: 300;
+                }
+            }
+        }
+
+        .textBackground {
+            background: linear-gradient(180deg, rgba(0, 0, 0, .7) 0%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 1) 100%);
+            filter: blur(5px);
+            position: absolute;
+            bottom: -5vh;
+            right: 0;
+            left: 0;
+            top: 0;
+            max-width: 100%;
+            z-index: 1;
+
+            .text {
+                visibility: hidden;
+                padding: var(--theme-spacing-three);
+
+                h1 {
+                    font-family: var(--montSub-font);
+                    color: var(--theme-primary-main);
+                    margin: 0;
+                }
+
+                h2 {
+                    margin: 0;
+                    font-weight: 300;
+                }
+            }
+        }
+    }
+}
+
+.homeBody {
+    padding-left: var(--theme-spacing-three);
+    margin: 0 !important;
+
+    .bodySection {
+        padding-top: 1vh;
+        display: flex;
+        flex-flow: column;
+        min-height: fit-content;
+
+        .imageArea {
+            flex: 1;
+            position: relative;
+            min-height: 90vh;
+            height: 100%;
+            width: 100%;
+
+            .image {
+                object-fit: cover;
+                object-position: top;
+            }
+
+            .subtext {
+                background-color: black;
+            }
+        }
+
+        .textHolder {
+            flex: 1;
+            position: relative;
+            height: 100%;
+            width: 100%;
+
+            .text {
+                padding: var(--theme-spacing-one) var(--theme-spacing-three);
+
+                h2 {
+                    font-family: var(--montSub-font);
+                    font-weight: 400;
+                }
+
+                p {
+                    padding-left: var(--theme-spacing-three);
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .homeHero h1 {
+        font-size: 3rem;
+    }
+}
+
+@media screen and (min-width: 501px) {
+    .homeHero h1 {
+        font-size: 4rem;
+    }
+}
+
+@media screen and (orientation: portrait) {
+    .homeBody .bodySection .imageArea {
+        min-height: 50vh;
+    }
+}
+
+@media screen and (orientation: landscape) and (min-width: 1000px) {
+    .homeBody .bodySection .imageArea {
+        min-height: 60vh;
+    }
+}

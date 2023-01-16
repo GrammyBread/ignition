@@ -119,7 +119,7 @@ export default function Page(props: PageProps): JSX.Element {
       <ViewerCard
         ref={contentRef}
         maxWidth={DetermineContentWidth(props.setting)}
-        paddingConfig={"0 auto !important"}
+        paddingConfig={"0 !important"}
         onClick={handleDrawerClose}
       >
         <SwipeableDrawer

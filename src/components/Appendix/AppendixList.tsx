@@ -12,7 +12,8 @@ import { Resource } from '../../interfaces/read/read-metadata.interfaces';
 const AppendixListContainer = styled('ul')(({ theme }) => ({
     display: 'flex',
     listStyle: 'none',
-    height: 'fit-content',
+    width: 'max-content',
+    height: `calc(100% - ${theme.spacing(10)})`,
     [theme.breakpoints.down('sm')]: {
         flexFlow: 'column'
     },
@@ -33,13 +34,13 @@ const AppendixListContainer = styled('ul')(({ theme }) => ({
             margin: '20px'
         },
         [theme.breakpoints.between('xs', 'xl')]: {
-            flex: '0 0 30vh'
+            flex: '1'
         },
         [theme.breakpoints.only('xl')]: {
-            flex: '0 0 50vh'
+            flex: '1'
         },
         [theme.breakpoints.up('xl')]: {
-            flex: '0 0 35vh',
+            flex: '1',
             margin: '0 20px 0 0'
         },
         [theme.breakpoints.between('sm', 'xl')]: {
@@ -58,13 +59,13 @@ export interface AppendixListProps {
     changeBackground: (newImage?: Resource) => {};
 }
 
-interface specialLIProps {
+interface AppendixItemProps {
     setInside: (val: boolean, id: string) => void;
     children: React.ReactNode;
     id: string;
 }
 
-const SpecialLi = ({ setInside, children, id }: specialLIProps) => {
+const AppendixItemComponent = ({ setInside, children, id }: AppendixItemProps) => {
     const ref = React.useRef(null);
     const [isInside, setIsInside] = useState(false)
 
@@ -134,17 +135,17 @@ export default function AppendixList(props: AppendixListProps): JSX.Element {
     }
 
     return <AppendixListContainer className={isTinyScreen ? '' : AppendixHomeStyles.appendixList}>
-        <SpecialLi setInside={changeChildState} id='c'>
+        <AppendixItemComponent setInside={changeChildState} id='c'>
             <SpecialItem {...props.CharacterProps} />
-        </SpecialLi>
+        </AppendixItemComponent>
         {props.Documents.map((item) => {
-            return <SpecialLi setInside={changeChildState} id={item.document.slug} key={item.document.slug}>
+            return <AppendixItemComponent setInside={changeChildState} id={item.document.slug} key={item.document.slug}>
                 <DocItemComponent key={item.document.slug} {...item} />
-            </SpecialLi>;
+            </AppendixItemComponent>;
         })
         }
-        <SpecialLi setInside={changeChildState} id='s'>
+        <AppendixItemComponent setInside={changeChildState} id='s'>
             <SpecialItem {...props.StationProps} />
-        </SpecialLi>
+        </AppendixItemComponent>
     </AppendixListContainer>;
 }

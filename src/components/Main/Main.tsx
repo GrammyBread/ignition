@@ -3,15 +3,16 @@ import { styled } from '@mui/material/styles';
 export const Main = styled('main', { 
     shouldForwardProp: (prop) => prop !== 'open' && 
     prop !== 'drawerWidth' && 
-    prop !== 'isReadingView' })<{
+    prop !== 'isReadingView' &&
+    prop !== 'disableAllPadding' })<{
     open?: boolean;
     drawerWidth?: number;
-    isReadingView?: boolean;
-}>(({ theme, open, drawerWidth, isReadingView }) => ({
+    disableAllPadding?: boolean;
+}>(({ theme, open, drawerWidth, disableAllPadding }) => ({
     flexGrow: 1,
     display: open ? 'none' : 'auto',
     marginTop: `5rem`,
-    padding: isReadingView ? 
+    padding: disableAllPadding ? 
     `0` :
     theme.spacing(3),
     maxHeight: '100%',
