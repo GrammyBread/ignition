@@ -1,13 +1,13 @@
 import { useState } from "react";
 import {
     Box,
-    Grow,
-    Paper
+    Grow
 } from "@mui/material";
 import { HomeSection } from "../../../interfaces/static/home.interfaces";
 import { Orientiation } from "../../Appendix/ReaderPage/Books/Helpers/enums";
 import Image from "next/image";
 import Styles from "../HomePage.module.scss";
+import classNames from "classnames";
 
 export interface PageViewDetails {
     orientation: Orientiation;
@@ -25,7 +25,7 @@ export const DetailsSection = ({
 }: DetailsSectionProps): JSX.Element => {
     const [showSubtext, setShowSubtext] = useState(false);
     let imageUrl: string;
-    if (setup.orientation == Orientiation.landscape) {
+    if (setup.orientation === Orientiation.landscape) {
         imageUrl = setup.isSmallScreen
             ? section.landscape_image.imgix_url
             : section.landscape_image.url;
@@ -42,7 +42,7 @@ export const DetailsSection = ({
                     src={imageUrl}
                     fill
                     alt={section.alt_image}
-                    className={Styles.image}
+                    className={classNames(Styles.image, section.leftfloat ? Styles.right : Styles.left)}
                 />
                 <Grow
                     in={showSubtext}
@@ -56,19 +56,13 @@ export const DetailsSection = ({
                     />
                 </Grow>
             </Box>
-            <Paper
-                className={Styles.textHolder}
-                elevation={7}
-                sx={{
-                    background: "black",
-                }}
-            >
+            <div className={Styles.textHolder}>
                 <Box
                     className={Styles.text}
                     component={"div"}
                     dangerouslySetInnerHTML={{ __html: section.text }}
                 />
-            </Paper>
+            </div>
         </Box>
     );
 };

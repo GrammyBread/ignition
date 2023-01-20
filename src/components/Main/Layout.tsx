@@ -1,23 +1,20 @@
-import { Box, CssBaseline, Fade } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Styles from "../../styles/shared.module.scss";
 import { Main } from "./Main";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { NavigationProps, Navigation } from "./Navigation/Navigation";
-import { CleanedNavigation } from "../../interfaces/read/cleaned-types.interface";
-import { Section } from "../../interfaces/read/view-data.interfaces";
+import { Navigation } from "./Navigation/Navigation";
 import Image from "next/image";
 import Head from "next/head";
 import { motion, useAnimation } from "framer-motion";
 import { Resource } from "../../interfaces/read/read-metadata.interfaces";
 import { DetectScreenSize, ScreenSize } from "../../lib/assistants/screenSizeHelper";
+import { NavigationScript } from "../../mappers/availability/nav-script.mappers";
 
 export interface LayoutProps {
   children: React.ReactNode;
-  navData: CleanedNavigation;
-  previousSection?: Section;
-  nextSection?: Section;
+  previousSection?: NavigationScript;
+  nextSection?: NavigationScript;
   fadeInTrigger?: boolean;
   backgroundImageUrl?: Resource;
   socials?: Socials;
@@ -86,7 +83,6 @@ const FadeInImage = ({ backgroundImageUrl }: ImageProps) => {
 
 export default function Layout({
   children,
-  navData,
   previousSection,
   nextSection,
   backgroundImageUrl,
@@ -123,16 +119,6 @@ export default function Layout({
   }, [
     detectedScrenSize,
   ]);
-
-  const navigationProps = {
-    drawerWidth: drawerWidth,
-    navData: navData,
-    open: open,
-    openDrawer: handleDrawerOpen,
-    closeDrawer: handleDrawerClose,
-    previousSection: previousSection,
-    nextScript: nextSection?.fullPath,
-  } as NavigationProps;
 
   return (
     <React.Fragment>
@@ -182,7 +168,14 @@ export default function Layout({
 
       <PageRoot>
         <CssBaseline />
-        <Navigation {...navigationProps}></Navigation>
+        <Navigation         
+    drawerWidth={drawerWidth}
+    open={open}
+    openDrawer={handleDrawerOpen}
+    closeDrawer={handleDrawerClose}
+    previousScript={previousSection}
+    nextScript={nextSection}
+        ></Navigation>
         {backgroundImageUrl && (
           <FadeInImage
             backgroundImageUrl={

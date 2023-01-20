@@ -68,13 +68,6 @@ export default function Page(props: TouchScreenPageProps): JSX.Element {
   const iFrame = useRef<HTMLIFrameElement>(null);
   const detectedScrenSize = DetectScreenSize();
 
-  const setTOCLoaded = (items: NavItem[]) => {
-    setNavigationItems(items);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   useEffect(() => {
     if (!isLoading) {
@@ -100,6 +93,14 @@ export default function Page(props: TouchScreenPageProps): JSX.Element {
       setDrawerWidth(ScreenSizePixels.Giant);
     }
   }, [detectedScrenSize]);
+  
+  const setTOCLoaded = (items: NavItem[]) => {
+    setNavigationItems(items);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   const locationChanged = (elementID: string) => {
     console.log(`New Location selected: ${elementID}`);

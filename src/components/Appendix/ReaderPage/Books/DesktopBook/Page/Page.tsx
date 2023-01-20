@@ -46,13 +46,6 @@ export default function Page(props: PageProps): JSX.Element {
   );
   const contentRef = useRef(null);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   let frame: HTMLIFrameElement | undefined;
   useEffect(() => {
@@ -67,6 +60,14 @@ export default function Page(props: PageProps): JSX.Element {
     );
   }, [isLandscapeMode, isPortraitMode]);
 
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   const locationChanged = (elementID: string) => {
     console.log(`New Location selected: ${elementID}`);
     if (frame?.contentDocument?.location) {
@@ -79,7 +80,6 @@ export default function Page(props: PageProps): JSX.Element {
 
   const initConfig = {} as BookOptions;
 
-  const loadingView = <ViewerLoading />;
   const viewer = (
     <EpubViewer
       url={props.EPubURL}

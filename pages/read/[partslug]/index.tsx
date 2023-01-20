@@ -5,7 +5,6 @@ import * as React from "react";
 import { TableOfContentsProps } from "../../../src/components/TableOfContents/Table/Table";
 import TableOfContents from "../../../src/components/TableOfContents/Table/Table";
 import Layout from "../../../src/components/Main/Layout";
-import { CleanedNavigation } from "../../../src/interfaces/read/cleaned-types.interface";
 import { GetRequestedResource } from "../../../src/lib/api/shared";
 import NotFoundPage from "../../../src/components/Error/NotFound";
 import { Part } from "../../../src/interfaces/read/view-data.interfaces";
@@ -16,6 +15,7 @@ import {
   RedirectToPatreon,
 } from "../../../src/common/common-redirects";
 import { PublicBackground } from "../../../public/backgroundImage";
+import { CleanedNavigation } from "../../../src/interfaces/read/cleaned-types.interface";
 
 interface Props {
   partImageUrl: Resource;
@@ -43,7 +43,6 @@ const Part = (props: Props): JSX.Element => {
 
   return (
     <Layout
-      navData={props.navData}
       backgroundImageUrl={props.partImageUrl}
     >
       {table}
@@ -63,7 +62,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (!data?.id) {
     return RedirectTo404();
   }
-  
+
   const cleanSiteData = await getCleanSiteData();
   if (!cleanSiteData) {
     throw Error("Could not get site data!");
@@ -83,7 +82,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       navData: cleanSiteData.getSimpleNav(),
       relatedPart,
     } as Props,
-    revalidate: (10*60*60),
+    revalidate: (10 * 60 * 60),
   };
 };
 

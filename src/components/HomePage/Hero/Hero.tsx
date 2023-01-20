@@ -5,7 +5,7 @@ import {
 import { HomeMetadata } from "../../../interfaces/static/home.interfaces";
 import { Orientiation } from "../../Appendix/ReaderPage/Books/Helpers/enums";
 import Image from "next/image";
-import Styles from "../HomePage.module.scss";
+import Styles from "./Hero.module.scss";
 import { CtaMobileArea } from "../CTAs/CTAMobile";
 import { CtaDesktopArea } from "../CTAs/CTADesktop";
 

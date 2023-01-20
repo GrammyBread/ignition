@@ -29,6 +29,7 @@ const ReadingArea = styled(Card)(({ theme }) => ({
 }));
 
 export default function TouchScreenBook(details: EpubDetails) {
+    const theme = useTheme();
     const isLandscapeMode = useMediaQuery("(orientation: landscape)");
     const isPortraitMode = useMediaQuery("(orientation: portrait)");
     const isSmallReader = useMediaQuery(`(min-width: calc(5.5in + 10px)`);
@@ -43,8 +44,15 @@ export default function TouchScreenBook(details: EpubDetails) {
         currentScript: details.smallEpub,
         setting: EpubReaderType.halfPageWidth,
     } as ReaderState);
-    const theme = useTheme();
     
+    useEffect(() => {
+        setOrientation(
+            isPortraitMode ? Orientiation.portrait : Orientiation.landscape
+        );
+        const newReaderType = DetermineReaderType(isLargeReader, isSmallReader);
+        dispatch({ type: newReaderType });
+    }, [isLandscapeMode, isPortraitMode, isSmallReader, isLargeReader]);
+
     const exitReaderView = () => {
         setOpenReader(false);
     }
@@ -60,14 +68,6 @@ export default function TouchScreenBook(details: EpubDetails) {
         orientation: orientation,
         exitReader: exitReaderView
     } as TouchScreenPageProps;
-
-    useEffect(() => {
-        setOrientation(
-            isPortraitMode ? Orientiation.portrait : Orientiation.landscape
-        );
-        const newReaderType = DetermineReaderType(isLargeReader, isSmallReader);
-        dispatch({ type: newReaderType });
-    }, [isLandscapeMode, isPortraitMode, isSmallReader, isLargeReader]);
 
 
     return (

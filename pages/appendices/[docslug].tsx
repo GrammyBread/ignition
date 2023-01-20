@@ -56,7 +56,6 @@ const AppendixDocumentPage = (props: Props): JSX.Element => {
 
   return (
     <Layout
-      navData={props.navData}
       backgroundImageUrl={props.document.metadata.background_image}
       socials={socialData}
       disableAllPadding={true}
@@ -100,11 +99,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const availablePaths = availableDocs.map(
     (docs) =>
-      ({
-        params: {
-          docslug: docs.slug,
-        },
-      } as AppendixDocPath)
+    ({
+      params: {
+        docslug: docs.slug,
+      },
+    } as AppendixDocPath)
   );
 
   return {

@@ -2,7 +2,6 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { getChapter } from '../../../../src/lib/api/client';
 import * as React from 'react';
 import Layout from '../../../../src/components/Main/Layout';
-import { CleanedNavigation } from '../../../../src/interfaces/read/cleaned-types.interface';
 import { CosmicChapter } from '../../../../src/interfaces/read/read-metadata.interfaces';
 import { GetRequestedResource } from '../../../../src/lib/api/shared';
 import NotFoundPage from '../../../../src/components/Error/NotFound';
@@ -10,6 +9,7 @@ import ScriptComponent, { ScriptProps } from '../../../../src/components/Script/
 import getCleanSiteData from '../../../../src/lib/api/sitedata/cache-site-data';
 import { RedirectTo404, RedirectToPatreon } from '../../../../src/common/common-redirects';
 import { ItemStatus } from '../../../../src/mappers/availability/state.mappers';
+import { CleanedNavigation } from '../../../../src/interfaces/read/cleaned-types.interface';
 
 interface ChapterPath {
   params: {
@@ -31,7 +31,7 @@ const ChapterIntro = (props: Props): JSX.Element => {
   }
 
   return (
-    <Layout navData={props.navData} backgroundImageUrl={props.scriptDetails.script.metadata.script_image}>
+    <Layout backgroundImageUrl={props.scriptDetails.script.metadata.script_image}>
       <ScriptComponent {...props.scriptDetails}></ScriptComponent>
     </Layout>
   );

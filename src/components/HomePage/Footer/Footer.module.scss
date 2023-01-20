@@ -1,0 +1,55 @@
+.homeFooter {
+    position: relative;
+    background: transparent;
+
+    img {
+        object-fit: cover;
+        object-position: top;
+        transform: scaleY(-1);
+        display: none;
+    }
+
+    .holderThing {
+        position: relative;
+        height: fit-content;
+
+        .textHolder {
+            position: relative;
+            overflow-wrap: break-word;
+            z-index: 1;
+            background: transparent;
+
+            div {
+                padding-top: 5vh;
+                padding-bottom: 10vh;
+            }
+        }
+
+        .textBackground {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 33%, rgba(0, 0, 0, 0) 100%);
+            filter: blur(5px);
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            top: -2vh;
+            max-width: 100%;
+            z-index: 1;
+        }
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .textBackground {
+        background: transparent !important
+    }
+
+    .homeFooter {
+        background: black;
+        margin-top: 2vh;
+    }
+
+    .textHolder > div {
+        padding-bottom: 0 !important;
+    }
+}

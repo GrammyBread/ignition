@@ -1,24 +1,26 @@
-import { Box, Container, Grid, Paper, Stack, Theme } from "@mui/material";
+import { Box, Stack, Theme } from "@mui/material";
 import {
     DetailsSection,
     PageViewDetails,
 } from "./DetailsSection/DetailsSection";
 import Styles from "./HomePage.module.scss";
 import { HomeMetadata } from "../../interfaces/static/home.interfaces";
-import { CtaDesktopArea } from "./CTAs/CTADesktop";
 import { HeroSection } from "./Hero/Hero";
-import { CosmicSection } from "../../interfaces/read/read-metadata.interfaces";
+import { FeaturedScript } from "../../mappers/availability/nav-script.mappers";
+import FeaturedSection from "./FeaturedSection/FeaturedSection";
+import { FooterSection } from "./Footer/Footer";
 
 export const DesktopHome = (
     data: HomeMetadata,
     pageSetup: PageViewDetails,
-    featuredSection: CosmicSection
+    featuredSection: FeaturedScript,
+    theme: Theme
 ): JSX.Element => {
     return (
         <>
             <HeroSection details={data} setup={pageSetup} />
             <Stack direction={"row"} spacing={2}>
-                <Box className={Styles.homeBody} maxWidth={"sm"}>
+                <Box className={Styles.homeBody}>
                     {data.body.sections.map((section) => (
                         <DetailsSection
                             key={section.alt_image}
@@ -33,20 +35,16 @@ export const DesktopHome = (
                         dangerouslySetInnerHTML={{__html: data.instagram_feed}}
                         sx={{
                             background: "black",
-                            width: "100px",
-                            height: "100px",
+                            width: "fit-content",
+                            height: "fit-content",
+                            marginRight: theme.spacing(3),
+                            marginTop: "5vh"
                         }}
                      ></Box>
-                    <Box
-                        sx={{
-                            background: "black",
-                            width: "100px",
-                            height: "100px",
-                        }}
-                    ></Box>
+                   {FeaturedSection(featuredSection, theme)}
                 </Stack>
             </Stack>
-            <CtaDesktopArea buttons={data.call_to_actions.buttons} />
+            <FooterSection details={data} setup={pageSetup} />
         </>
     );
 };

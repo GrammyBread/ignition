@@ -1,4 +1,4 @@
-import { Card, Grid, CardMedia, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Card, Grid, CardMedia, Typography} from '@mui/material';
 import Link from 'next/link';
 import * as React from 'react';
 import { AppendixItem } from '../../../interfaces/appendices/home.interface';
