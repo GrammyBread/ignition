@@ -48,6 +48,7 @@ export interface HomeMetadata {
 	faq: Faq;
 	call_to_actions: CallToAction;
 	instagram_feed: string;
+	copyright: string;
 }
 
 export interface HomePage {

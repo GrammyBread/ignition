@@ -14,12 +14,12 @@ import {
     TableHead
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Station } from '../../interfaces/appendices/stations.interface';
+import { Station } from '../../../interfaces/appendices/stations.interface';
 import { Typography, CardActions } from '@mui/material';
 import { purple, grey, cyan, yellow } from '@mui/material/colors';
 import { Box } from '@mui/system';
 import { Close } from '@mui/icons-material';
-import { Table } from '../TableOfContents/Table/Table';
+import { Table } from '../../TableOfContents/Table/Table';
 import StationStyles from './StationCard.module.scss';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';

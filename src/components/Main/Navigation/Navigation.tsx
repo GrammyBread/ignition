@@ -18,6 +18,8 @@ import { NavigationRight } from "./NavigationRight";
 import { useTheme } from "@mui/material";
 import { NavigationScript } from "../../../mappers/availability/nav-script.mappers";
 import { NavigationContext } from "../../../../pages/_app";
+import { NavigationBackgroundColor } from "../../../styles/additional-colors";
+
 
 export interface NavigationProps {
     drawerWidth: number;
@@ -50,8 +52,6 @@ export function Navigation({
         closeDrawer: closeDrawer,
     } as NavigationListProps;
 
-    const navigationBackground =
-        theme.palette.mode === "dark" ? "#424242" : "#EEEEEE";
 
     return <NavigationContext.Consumer>
         {(value) => (
@@ -62,13 +62,13 @@ export function Navigation({
                     open={open}
                     drawerWidth={drawerWidth}
                     sx={{
-                        backgroundColor: navigationBackground,
+                        backgroundColor: NavigationBackgroundColor(theme),
                     }}
                 >
                     <Toolbar
                         ref={containerRef}
                         sx={{
-                            backgroundColor: navigationBackground,
+                            backgroundColor: NavigationBackgroundColor(theme),
                             borderBottom: ".5rem solid",
                             borderColor:
                                 theme.palette.mode === "dark" ? "background.paper" : "#bdbdbd",
@@ -86,7 +86,7 @@ export function Navigation({
                                 <Box className={Styles.logoContainer}>
                                     <Circle
                                         className={Styles.logoCircle}
-                                        {...{ backingColor: navigationBackground }}
+                                        {...{ backingColor: NavigationBackgroundColor(theme) }}
                                     >
                                         <Button className={Styles.logoButton} onClick={openDrawer}>
                                             <Image

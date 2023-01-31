@@ -7,7 +7,7 @@ import NotFoundPage from "../src/components/Error/NotFound";
 import getCleanSiteData from "../src/lib/api/sitedata/cache-site-data";
 import { HomePage } from "../src/interfaces/static/home.interfaces";
 import { PublicBackground } from "../public/backgroundImage";
-import { Orientiation } from "../src/components/Appendix/ReaderPage/Books/Helpers/enums";
+import { Orientiation } from "../src/components/ReaderPage/Books/Helpers/enums";
 import { useState, useEffect } from "react";
 import { PageViewDetails } from "../src/components/HomePage/DetailsSection/DetailsSection";
 import { DesktopHome } from "../src/components/HomePage/DesktopHomePage";

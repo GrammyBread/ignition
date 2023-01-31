@@ -1,15 +1,18 @@
 .homeFooter {
     position: relative;
     background: transparent;
+    border-top: black 10px solid;
 
     img {
         object-fit: cover;
-        object-position: top;
-        transform: scaleY(-1);
-        display: none;
+        object-position: center;
     }
 
-    .holderThing {
+    .image {
+        opacity: .3;
+    }
+
+    .textRegion {
         position: relative;
         height: fit-content;
 
@@ -20,8 +23,8 @@
             background: transparent;
 
             div {
-                padding-top: 5vh;
-                padding-bottom: 10vh;
+                padding-top: calc(6vh + var(--theme-spacing-three));
+                padding-bottom: 6vh;
             }
         }
 
@@ -47,9 +50,5 @@
     .homeFooter {
         background: black;
         margin-top: 2vh;
-    }
-
-    .textHolder > div {
-        padding-bottom: 0 !important;
     }
 }

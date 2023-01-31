@@ -15,6 +15,7 @@ import {
 import { HomePage, PingPage } from '../../interfaces/static/home.interfaces'
 import { 
   makeGetHomeQuery, 
+  makeGetLicenseQuery, 
   makeGetPatreonQuery } from './static/page-queries'
 import { makeGetChapterHeaderQuery } from './readmeta/read-metadata-queries';
 import { PatreonPage } from '../../interfaces/static/patreon.interface';
@@ -25,6 +26,7 @@ import { makeGetAppendicesHome, makeGetArchQuery, makeGetCharacterPageQuery, mak
 import { AppendixDocument, AppendixPage, AvailableAppendixDocs } from '../../interfaces/appendices/documents.interface';
 import { Arch, Station } from '../../interfaces/appendices/stations.interface';
 import { AppendixHome } from '../../interfaces/appendices/home.interface';
+import { LicensePage } from '../../interfaces/static/licenses.interfaces';
 
 const BUCKET_SLUG = process.env.COSMIC_BUCKET_SLUG
 const READ_KEY = process.env.COSMIC_READ_KEY
@@ -89,6 +91,11 @@ export async function pingCosmic(): Promise<PingPage> {
 
 export async function getPatreon(): Promise<PatreonPage> {
   let response = await getObjects<PatreonPage[]>(makeGetPatreonQuery());
+  return response[0];
+}
+
+export async function getLicense(): Promise<LicensePage> {
+  let response = await getObjects<LicensePage[]>(makeGetLicenseQuery());
   return response[0];
 }
 

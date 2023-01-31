@@ -3,31 +3,40 @@ import * as React from "react";
 import Layout from "../../src/components/Main/Layout";
 import { CleanedNavigation } from "../../src/interfaces/read/cleaned-types.interface";
 import NotFoundPage from "../../src/components/Error/NotFound";
-import { Box, Divider, Paper, Typography } from "@mui/material";
+import {
+    Box,
+    Divider,
+    Paper,
+    Typography,
+    useMediaQuery,
+    useTheme,
+} from "@mui/material";
 import getCleanSiteData from "../../src/lib/api/sitedata/cache-site-data";
 import { getAppendicesHome } from "../../src/lib/api/client";
 import { AppendixHome } from "../../src/interfaces/appendices/home.interface";
 import { useState } from "react";
 import AppendixList, {
     AppendixListProps,
-} from "../../src/components/Appendix/AppendixList";
+} from "../../src/components/Appendix/AppendixList/AppendixList";
 import { Resource } from "../../src/interfaces/read/read-metadata.interfaces";
 import { PublicBackground } from "../../public/backgroundImage";
+import { AppendixHeader } from "../../src/components/Appendix/AppendixHeader/AppendixHeader";
+import AppendixListMobile from "../../src/components/Appendix/AppendixList/AppendixListMobile";
 
 interface Props {
     navData: CleanedNavigation;
     homeData: AppendixHome;
 }
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
 const AppendicesHome = (props: Props): JSX.Element => {
+    const theme = useTheme();
     const [background, setBackground] = useState(PublicBackground);
+    const isSmallScreen = useMediaQuery("(max-width: 1000px) and (orientation: portrait)");
 
     if (props == undefined || props.homeData == undefined) {
         return <NotFoundPage requestedItem={`Appendices`} />;
     }
-    
+
     const functionSetBackground = (newImage?: Resource) => {
         if (newImage) {
             setBackground(newImage);
@@ -50,41 +59,32 @@ const AppendicesHome = (props: Props): JSX.Element => {
     } as AppendixListProps;
 
     return (
-        <Layout backgroundImageUrl={background}>
-            <Paper
-                sx={{
-                    padding: "1rem",
-                    margin: "1rem 0",
-                }}
-            >
-                <Typography
-                    gutterBottom
-                    variant="h2"
-                    component="h1"
-                    textAlign={"center"}
-                    sx={{
-                        lineHeight: "1",
-                    }}
-                >
-                    {props.homeData.title}
-                </Typography>
-                <Divider variant="middle" />
-                <Typography
-                    gutterBottom
-                    variant="body1"
-                    component="h2"
-                    textAlign={"center"}
-                    sx={{ margin: "1rem" }}
-                >
-                    <div dangerouslySetInnerHTML={{ __html: props.homeData.content }} />
-                </Typography>
-            </Paper>
+        <Layout backgroundImageUrl={background} disableAllPadding>
             <Box
                 sx={{
-                    overflowX: "auto",
+                    width: "100%",
+                    height: "100%",
+                    padding: isSmallScreen ?
+                        `${theme.spacing(1)} ${theme.spacing(3)} 0 ${theme.spacing(3)}` :
+                        `${theme.spacing(1)} 0 ${theme.spacing(3)} ${theme.spacing(3)}`,
+                    position: "relative",
+                    display: "flex",
+                    flexFlow: "column",
                 }}
             >
-                <AppendixList {...appendixProps} />
+                <Box sx={{
+                    marginRight: !isSmallScreen ? theme.spacing(3) : 0
+                }}>
+                    <AppendixHeader
+                        title={props.homeData.title}
+                        content={props.homeData.content}
+                    />
+                </Box>
+                {isSmallScreen ? (
+                    <AppendixListMobile {...appendixProps} />
+                ) : (
+                    <AppendixList {...appendixProps} />
+                )}
             </Box>
         </Layout>
     );

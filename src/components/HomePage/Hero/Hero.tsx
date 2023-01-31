@@ -25,21 +25,14 @@ export const HeroSection = ({
 }: HeroProps): JSX.Element => {
     const hero = details.hero;
     const cta = details.call_to_actions;
-    let imageUrl: string;
-    if (setup.orientation == Orientiation.landscape) {
-        imageUrl = setup.isSmallScreen
-            ? hero.banner_landscape.imgix_url
-            : hero.banner_landscape.url;
-    } else {
-        imageUrl = setup.isSmallScreen
-            ? hero.banner_portrait.imgix_url
-            : hero.banner_portrait.url;
-    }
+    let imageUrl = setup.isSmallScreen
+        ? hero.banner_portrait.imgix_url
+        : hero.banner_portrait.url;
 
     return (
         <Box className={Styles.homeHero}>
-            <Box className={Styles.holderThing}>
-                 <Paper
+            <Box className={Styles.textRegion}>
+                <Paper
                     className={Styles.textBackground}
                     elevation={0}
                 >

@@ -25,6 +25,7 @@ import {
   ScreenSize,
 } from "../../../../../../lib/assistants/screenSizeHelper";
 import { FlexViewHolder } from "./FlexViewHolder";
+import { HideOnScroll } from "./OnScrollHide";
 
 enum ScreenSizePixels {
   Tiny = 240,
@@ -93,7 +94,7 @@ export default function Page(props: TouchScreenPageProps): JSX.Element {
       setDrawerWidth(ScreenSizePixels.Giant);
     }
   }, [detectedScrenSize]);
-  
+
   const setTOCLoaded = (items: NavItem[]) => {
     setNavigationItems(items);
   };
@@ -132,35 +133,37 @@ export default function Page(props: TouchScreenPageProps): JSX.Element {
 
   return (
     <>
-      <BookmarkHeader open={open} drawerWidth={drawerWidth}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={() => props.exitReader()}
-          >
-            <ExitToApp />
-          </IconButton>
-          <Typography
-            component={"h4"}
-            noWrap
-            sx={{ flexGrow: 1 }}
-            variant={"body1"}
-            fontWeight={700}
-          >
-            {props.title}
-          </Typography>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <ChevronRight /> : <MenuIcon />}
-          </IconButton>
-        </Toolbar>
-      </BookmarkHeader>
+      <HideOnScroll>
+        <BookmarkHeader open={open} drawerWidth={drawerWidth}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={() => props.exitReader()}
+            >
+              <ExitToApp />
+            </IconButton>
+            <Typography
+              component={"h4"}
+              noWrap
+              sx={{ flexGrow: 1 }}
+              variant={"body1"}
+              fontWeight={700}
+            >
+              {props.title}
+            </Typography>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <ChevronRight /> : <MenuIcon />}
+            </IconButton>
+          </Toolbar>
+        </BookmarkHeader>
+      </HideOnScroll>
       <FlexViewCard
         ref={contentRef}
         onClick={handleDrawerClose}
@@ -187,7 +190,7 @@ export default function Page(props: TouchScreenPageProps): JSX.Element {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             zIndex: 1000,
-            height: `calc(100% - ${theme.spacing(9)})` ,
+            height: `calc(100% - ${theme.spacing(9)})`,
             marginTop: theme.spacing(9)
           },
         }}

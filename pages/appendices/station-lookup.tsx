@@ -23,7 +23,7 @@ import {
     Arch,
     Station,
 } from "../../src/interfaces/appendices/stations.interface";
-import StationCard from "../../src/components/StationCard/StationCard";
+import StationCard from "../../src/components/StationSearch/StationCard/StationCard";
 import { AppendixPage } from "../../src/interfaces/appendices/documents.interface";
 import ArchCard from "../../src/components/ArchCard/ArchCard";
 import useMediaQuery from "@mui/material/useMediaQuery";

@@ -16,12 +16,12 @@ import {
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import CharacterCard from "../../src/components/CharacterCard/CharacterCard";
+import CharacterCard from "../../src/components/CharacterSearch/CharacterCard/CharacterCard";
 import getCleanSiteData from "../../src/lib/api/sitedata/cache-site-data";
 import { AppendixPage } from "../../src/interfaces/appendices/documents.interface";
 import { useRouter } from "next/router";
 import { PublicBackground } from "../../public/backgroundImage";
-import { CharacterSearchHeader } from "../../src/components/Appendix/CharacterSearchHeader/CharacterSearchHeader";
+import { CharacterSearchHeader } from "../../src/components/CharacterSearch/CharacterSearchHeader/CharacterSearchHeader";
 
 interface Props {
   navData: CleanedNavigation;

@@ -15,13 +15,13 @@ export function makeGetHomeQuery(): CosmicQuery {
     };
 }
 
-export function makeGetPingQuery(): CosmicQuery {
+export function makeGetLicenseQuery(): CosmicQuery {
     return {
         query: {
             type: "license-page",
             slug: "licenses-page"
         },
-        props: minifyProps(getPingProps)
+        props: minifyProps(getGenericProps)
     };
 }
 

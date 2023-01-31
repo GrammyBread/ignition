@@ -7,7 +7,7 @@
         object-position: top;
     }
 
-    .holderThing {
+    .textRegion {
         position: relative;
         height: fit-content;
 
@@ -25,11 +25,13 @@
                     font-family: var(--montSub-font);
                     color: var(--theme-primary-main);
                     margin: 0;
+                    font-size: 4rem;
                 }
 
                 h2 {
                     margin: 0;
                     font-weight: 300;
+                    font-size: 2rem;
                 }
             }
         }
@@ -48,17 +50,6 @@
             .text {
                 visibility: hidden;
                 padding: var(--theme-spacing-three);
-
-                h1 {
-                    font-family: var(--montSub-font);
-                    color: var(--theme-primary-main);
-                    margin: 0;
-                }
-
-                h2 {
-                    margin: 0;
-                    font-weight: 300;
-                }
             }
         }
     }
