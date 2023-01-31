@@ -12,7 +12,7 @@ export interface FeaturedScript extends NavigationScript {
     logline: string;
 }
 
-export function MakeNavigationScript(section: RelatedSection, siteData: CleanSiteData): NavigationScript | undefined {
+export function MakeNavigationScript(section: RelatedSection, siteData: CleanSiteData): NavigationScript | null {
     const mappedSection = siteData.getRelatedSection(section.id);
     const scriptMetadata = section.metadata?.script?.metadata;
 
@@ -23,10 +23,10 @@ export function MakeNavigationScript(section: RelatedSection, siteData: CleanSit
         } as NavigationScript;
     }
 
-    return undefined;
+    return null;
 }
 
-export function MakeFeaturedScript(section: CosmicSection, siteData: CleanSiteData): FeaturedScript | undefined {
+export function MakeFeaturedScript(section: CosmicSection, siteData: CleanSiteData): FeaturedScript | null {
     const mappedSection = siteData.getRelatedSection(section.id);
     const scriptMetadata = section.metadata?.script?.metadata;
 
@@ -39,5 +39,5 @@ export function MakeFeaturedScript(section: CosmicSection, siteData: CleanSiteDa
         } as FeaturedScript;
     }
 
-    return undefined;
+    return null;
 }

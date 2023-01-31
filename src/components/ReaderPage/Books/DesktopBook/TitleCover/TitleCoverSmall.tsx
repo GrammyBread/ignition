@@ -9,7 +9,7 @@ import {
   Collapse,
   Typography
 } from "@mui/material";
-import { EpubHeader } from "../../../../../../interfaces/epub/epub-reader.interface";
+import { EpubHeader } from "../../../../../interfaces/epub/epub-reader.interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import { Grid } from "@mui/material";

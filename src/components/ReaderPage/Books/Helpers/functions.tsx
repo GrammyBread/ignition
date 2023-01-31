@@ -1,4 +1,4 @@
-import { EpubHeader } from "../../../../../interfaces/epub/epub-reader.interface";
+import { EpubHeader } from "../../../../interfaces/epub/epub-reader.interface";
 import { EpubReaderType } from "./enums";
 import { ReaderDisplayAction, ReaderState, SocialLinkDetails } from "./interfaces";
 import {

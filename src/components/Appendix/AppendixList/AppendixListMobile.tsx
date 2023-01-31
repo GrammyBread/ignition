@@ -1,13 +1,12 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import * as React from "react";
 import Styles from "./AppendixList.module.scss";
 import { AppendixItem as AppendixPiece, SpecialAppendixItem } from '../../../interfaces/appendices/home.interface';
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { Resource } from "../../../interfaces/read/read-metadata.interfaces";
 import { AppendixItem } from "./AppendixListItem";
 import classNames from "classnames";
-import { useScroll, useSpring } from 'framer-motion';
-import { stringify } from "querystring";
+import { useScroll } from 'framer-motion';
 
 export interface SpecialItemProps {
     item: SpecialAppendixItem;
@@ -52,9 +51,7 @@ export default function AppendixListMobile({
         image: StationProps.item.image,
     });
 
-    const [childStates, setChildStates] = useState(imageStates);
-
-    const percentagePerChild = 100 / childStates.length;
+    const percentagePerChild = 100 / imageStates.length;
     
     // The scroll listener
     React.useEffect(() => {
@@ -63,10 +60,10 @@ export default function AppendixListMobile({
             if(scrollPercentage > 0 && scrollPercentage < 100){
                 const newImageIndex = Math.floor(scrollPercentage / percentagePerChild);
                 //console.log(`${scrollPercentage} / ${percentagePerChild} | ${newImageIndex}`);
-                changeBackground(childStates[newImageIndex].image)
+                changeBackground(imageStates[newImageIndex].image)
             }
         })
-    }, [childStates, changeBackground, scrollYProgress]);
+    }, [imageStates, percentagePerChild, changeBackground, scrollYProgress]);
 
     return (
         <Box

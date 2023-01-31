@@ -13,7 +13,7 @@ import {
   getLoreDocument,
 } from "../../src/lib/api/client";
 import { AppendixDocument } from "../../src/interfaces/appendices/documents.interface";
-import ReaderPage from "../../src/components/Appendix/ReaderPage/ReaderPage";
+import ReaderPage from "../../src/components/ReaderPage/ReaderPage";
 import { MakeSocialUrl } from "../../src/mappers/pathname.mapper";
 import CreateEPubReader from "../../src/mappers/epub.mapper";
 

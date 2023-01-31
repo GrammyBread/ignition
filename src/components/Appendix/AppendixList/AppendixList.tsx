@@ -29,7 +29,7 @@ export default function AppendixList({
     
     React.useEffect( () => {
         changeBackground(PublicBackground);
-    },[]);
+    });
 
     return (
         <Box

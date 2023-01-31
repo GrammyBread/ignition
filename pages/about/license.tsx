@@ -31,7 +31,7 @@ const Parts = (props: Props): JSX.Element => {
   const partCards = MakePartCards(props.parts);
 
   return (
-    <Layout navData={props.navData} backgroundImageUrl={PublicBackground}>
+    <Layout backgroundImageUrl={PublicBackground}>
       <Grid container
         spacing={8}
         direction="row"

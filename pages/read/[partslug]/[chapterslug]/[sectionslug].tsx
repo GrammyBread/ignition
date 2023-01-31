@@ -105,16 +105,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return RedirectToPatreon();
   }
 
-  let nextNavigationScript: NavigationScript | undefined;
-  if(data.metadata?.next_section) {
-    nextNavigationScript = MakeNavigationScript(data.metadata.next_section, cleanSiteData)
-  }
- 
-  let previousNavigationScript: NavigationScript | undefined;
-  if(data.metadata?.previous_section) {
-    previousNavigationScript = MakeNavigationScript(data.metadata.previous_section, cleanSiteData)
-  }
-
   return {
     props: {
       sectionImageURL:
@@ -123,8 +113,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
       relatedSection,
       script: data.metadata.script,
       navData: cleanSiteData.getSimpleNav(),
-      nextScript: nextNavigationScript,
-      previousScript: previousNavigationScript
+      nextScript: data.metadata?.next_section && MakeNavigationScript(data.metadata.next_section, cleanSiteData),
+      previousScript: data.metadata?.previous_section && MakeNavigationScript(data.metadata.previous_section, cleanSiteData)
     } as Props,
     revalidate: 10 * 60 * 60,
   };

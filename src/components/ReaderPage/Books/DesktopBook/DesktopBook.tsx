@@ -1,7 +1,7 @@
 import { Grid, styled, Card, useMediaQuery, useTheme } from "@mui/material";
 import Styles from "./DesktopBook.module.scss";
 import TitleCoverSmall from "./TitleCover/TitleCoverSmall";
-import { EpubDetails } from "../../../../../interfaces/epub/epub-reader.interface";
+import { EpubDetails } from "../../../../interfaces/epub/epub-reader.interface";
 import { useEffect, useReducer } from "react";
 import { BookHolder } from "../Helpers/Pieces/BookHolder";
 import { EpubReaderType } from "../Helpers/enums";

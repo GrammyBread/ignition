@@ -15,7 +15,7 @@ import { MobileHome } from "../src/components/HomePage/MobileHomePage";
 import { GetFeaturedSection } from "../src/lib/api/shared";
 import { CleanedNavigation } from "../src/interfaces/read/cleaned-types.interface";
 import { useTheme } from '@mui/material/styles';
-import { FeaturedScript, MakeFeaturedScript, MakeNavigationScript, NavigationScript } from "../src/mappers/availability/nav-script.mappers";
+import { FeaturedScript, MakeFeaturedScript} from "../src/mappers/availability/nav-script.mappers";
 
 interface Props {
     navData: CleanedNavigation;

@@ -12,9 +12,9 @@ import {
   Stack,
   Slide,
 } from "@mui/material";
-import { EpubHeader } from "../../../../../../interfaces/epub/epub-reader.interface";
+import { EpubHeader } from "../../../../../interfaces/epub/epub-reader.interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AutoStories, ExpandMore, Info } from "@mui/icons-material";
+import { AutoStories, Info } from "@mui/icons-material";
 import { coverSocialLinks } from "../../Helpers/functions";
 import { useTheme } from "@mui/material/styles";
 import { Container } from "@mui/system";

@@ -20,10 +20,7 @@ import { PageProps } from "../../Helpers/interfaces";
 import { BookmarkHeader } from "./BookmarkHeader";
 import { FlexViewCard } from "./FlexViewCard";
 import { ChevronRight, ExitToApp } from "@mui/icons-material";
-import {
-  DetectScreenSize,
-  ScreenSize,
-} from "../../../../../../lib/assistants/screenSizeHelper";
+import { DetectScreenSize, ScreenSize } from "../../../../../lib/assistants/screenSizeHelper";
 import { FlexViewHolder } from "./FlexViewHolder";
 import { HideOnScroll } from "./OnScrollHide";
 
