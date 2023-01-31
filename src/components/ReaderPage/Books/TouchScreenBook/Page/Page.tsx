@@ -8,7 +8,7 @@ import {
   Theme,
 } from "@mui/material";
 import { EpubReaderType } from "../../Helpers/enums";
-import { Orientiation } from "../../Helpers/enums";
+import { Orientation } from "../../Helpers/enums";
 import { ViewerLoading } from "../../../EpubViewer/ViewerLoading";
 import { EpubViewer } from "../../../EpubViewer/EPubViewer";
 import { BookOptions } from "epubjs/types/book";
@@ -36,7 +36,7 @@ enum ScreenSizePixels {
 }
 
 export interface TouchScreenPageProps extends PageProps {
-  orientation: Orientiation;
+  orientation: Orientation;
   exitReader: () => void;
 }
 

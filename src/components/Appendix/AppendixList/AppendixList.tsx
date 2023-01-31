@@ -1,15 +1,11 @@
-import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Stack, useTheme } from "@mui/material";
 import * as React from "react";
 import Styles from "./AppendixList.module.scss";
 import { AppendixItem as AppendixPiece, SpecialAppendixItem } from '../../../interfaces/appendices/home.interface';
-import { useState } from "react";
 import { Resource } from "../../../interfaces/read/read-metadata.interfaces";
 import { AppendixItem } from "./AppendixListItem";
-import { ParsedUrlQuery } from "querystring";
-import { Url } from "url";
-import Link from "next/link";
-import { getSlugOnly } from '../../../lib/api/appendices/props';
 import classNames from "classnames";
+import { PublicBackground } from "../../../../public/backgroundImage";
 
 export interface SpecialItemProps {
     item: SpecialAppendixItem;
@@ -30,43 +26,10 @@ export default function AppendixList({
     changeBackground,
 }: AppendixListProps): JSX.Element {
     const theme = useTheme();
-
-    let imageStates = Documents.map((doc) => ({
-        id: doc.document.slug,
-        image: doc.image,
-        state: false,
-    }));
-    imageStates.push({
-        id: "c",
-        image: CharacterProps.item.image,
-        state: false,
-    });
-    imageStates.push({
-        id: "s",
-        image: StationProps.item.image,
-        state: false,
-    });
-
-    const [childStates, setChildStates] = useState(imageStates);
-
-    const changeChildState = (state: boolean, id: string) => {
-        let hasChangeHappened = false;
-        let newStates = childStates.map((child) => {
-            if (child.id === id && child.state != state) {
-                hasChangeHappened = true;
-                return {
-                    id: child.id,
-                    image: child.image,
-                    state,
-                };
-            } else {
-                return child;
-            }
-        });
-        if (hasChangeHappened) {
-            setChildStates(newStates);
-        }
-    };
+    
+    React.useEffect( () => {
+        changeBackground(PublicBackground);
+    },[]);
 
     return (
         <Box

@@ -21,27 +21,8 @@ export const AppendixItem = ({
     slug,
     url,
     imageUrl,
-    id
+    id,
 }: AppendixItemProps) => {
-    const ref = useRef(null);
-    const [isInside, setIsInside] = useState(false);
-
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["end end", "start start"],
-    });
-
-    useEffect(() => {
-        if (setInside) {
-            scrollYProgress.onChange((progress) => {
-                const areWeInside = progress * 100 > 10 && progress * 100 < 20;
-                if (isInside !== areWeInside) {
-                    setInside(areWeInside, id);
-                    setIsInside(areWeInside);
-                }
-            });
-        }
-    }, [scrollYProgress, id, setInside, isInside]);
 
     return (
         <Link
@@ -67,7 +48,6 @@ export const AppendixItem = ({
                 className={Styles.appendixListItem}
             >
                 <CardMedia
-                    ref={ref}
                     component="img"
                     className={Styles.cardImage}
                     image={imageUrl}
@@ -80,6 +60,7 @@ export const AppendixItem = ({
                     textAlign="center"
                     sx={{
                         margin: "1rem 1rem",
+                        whiteSpace: "nowrap"
                     }}
                 >
                     {header}

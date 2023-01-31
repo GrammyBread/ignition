@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Styles from "./TouchScreenBook.module.scss";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { BookHolder } from "../Helpers/Pieces/BookHolder";
-import { EpubReaderType, Orientiation } from '../Helpers/enums';
+import { EpubReaderType, Orientation } from '../Helpers/enums';
 import { EpubDetails } from "../../../../../interfaces/epub/epub-reader.interface";
 import TitleCoverPortrait from "./TitleCover/TitleCoverPortrait";
 import { Card, styled, useTheme } from "@mui/material";
@@ -34,8 +34,8 @@ export default function TouchScreenBook(details: EpubDetails) {
     const isPortraitMode = useMediaQuery("(orientation: portrait)");
     const isSmallReader = useMediaQuery(`(min-width: calc(5.5in + 10px)`);
     const isLargeReader = useMediaQuery(`(min-width: calc(8.5in + 10px)`);
-    const [orientation, setOrientation] = useState<Orientiation>(
-        isPortraitMode ? Orientiation.portrait : Orientiation.landscape
+    const [orientation, setOrientation] = useState<Orientation>(
+        isPortraitMode ? Orientation.portrait : Orientation.landscape
     );
     const [openReader, setOpenReader] = useState(true);
     const [readerState, dispatch] = useReducer(readerReducer, {
@@ -47,7 +47,7 @@ export default function TouchScreenBook(details: EpubDetails) {
     
     useEffect(() => {
         setOrientation(
-            isPortraitMode ? Orientiation.portrait : Orientiation.landscape
+            isPortraitMode ? Orientation.portrait : Orientation.landscape
         );
         const newReaderType = DetermineReaderType(isLargeReader, isSmallReader);
         dispatch({ type: newReaderType });
@@ -77,7 +77,7 @@ export default function TouchScreenBook(details: EpubDetails) {
                     <Page {...pageProps}></Page>
                 </ReadingArea>
             )}
-            {!openReader && (orientation === Orientiation.portrait ? (
+            {!openReader && (orientation === Orientation.portrait ? (
                 <TitleCoverPortrait {...details} openReader={openReaderView} orientation={orientation} />
             ) : (
                 <TitleCoverLandscape {...details} openReader={openReaderView} />

@@ -5,7 +5,7 @@ import Rendition, { RenditionOptions } from "epubjs/types/rendition";
 import { NavItem } from "epubjs/types/navigation";
 import { ViewerFailed } from "./ViewerError";
 import Styles from "./EPubViewer.module.scss";
-import { Orientiation } from "../Books/Helpers/enums";
+import { Orientation } from "../Books/Helpers/enums";
 import { ViewerLoading } from "./ViewerLoading";
 import { ThreeSixty } from "@mui/icons-material";
 
@@ -13,7 +13,7 @@ export interface EpubViewerProps {
   url: string | ArrayBuffer;
   epubInitOptions: BookOptions;
   bookTitle: string;
-  orientation: Orientiation;
+  orientation: Orientation;
   setIsLoading: (value: boolean) => void;
   tocChanged: (newTableOfContents: NavItem[]) => void;
   location?: NavItem;

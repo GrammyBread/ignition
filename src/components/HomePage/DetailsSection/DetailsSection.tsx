@@ -4,13 +4,13 @@ import {
     Grow
 } from "@mui/material";
 import { HomeSection } from "../../../interfaces/static/home.interfaces";
-import { Orientiation } from "../../Appendix/ReaderPage/Books/Helpers/enums";
 import Image from "next/image";
 import Styles from "../HomePage.module.scss";
 import classNames from "classnames";
+import { Orientation } from '../../ReaderPage/Books/Helpers/enums';
 
 export interface PageViewDetails {
-    orientation: Orientiation;
+    orientation: Orientation;
     isSmallScreen: boolean;
 }
 
@@ -25,7 +25,7 @@ export const DetailsSection = ({
 }: DetailsSectionProps): JSX.Element => {
     const [showSubtext, setShowSubtext] = useState(false);
     let imageUrl: string;
-    if (setup.orientation === Orientiation.landscape) {
+    if (setup.orientation === Orientation.landscape) {
         imageUrl = setup.isSmallScreen
             ? section.landscape_image.imgix_url
             : section.landscape_image.url;

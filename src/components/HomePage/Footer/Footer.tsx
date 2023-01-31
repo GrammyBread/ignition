@@ -1,15 +1,15 @@
 import { Box, Paper, useTheme } from "@mui/material";
 import { HomeMetadata } from "../../../interfaces/static/home.interfaces";
-import { Orientiation } from "../../Appendix/ReaderPage/Books/Helpers/enums";
 import Image from "next/image";
 import Styles from "./Footer.module.scss";
 import { CtaMobileArea } from "../CTAs/CTAMobile";
 import { CtaDesktopArea } from "../CTAs/CTADesktop";
 import { NavigationBackgroundColor } from "../../../styles/additional-colors";
 import Link from "next/link";
+import { Orientation } from '../../ReaderPage/Books/Helpers/enums';
 
 export interface PageViewDetails {
-    orientation: Orientiation;
+    orientation: Orientation;
     isSmallScreen: boolean;
 }
 

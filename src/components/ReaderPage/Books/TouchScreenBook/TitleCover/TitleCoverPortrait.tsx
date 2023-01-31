@@ -15,14 +15,14 @@ import {
 import { EpubHeader } from "../../../../../../interfaces/epub/epub-reader.interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ExpandMore as ExpandMoreIcon, AutoStories } from '@mui/icons-material';
-import { Orientiation } from "../../Helpers/enums";
+import { Orientation } from "../../Helpers/enums";
 import { coverSocialLinks } from "../../Helpers/functions";
 import { ExpandToggle } from "../../Helpers/Pieces/ExpandToggle";
 import { useTheme } from "@mui/material/styles";
 import { Container } from '@mui/system';
 
 export interface TitleCoverProps extends EpubHeader {
-  orientation: Orientiation;
+  orientation: Orientation;
   openReader: () => void;
 }
 

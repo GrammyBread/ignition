@@ -3,14 +3,14 @@ import {
     Paper
 } from "@mui/material";
 import { HomeMetadata } from "../../../interfaces/static/home.interfaces";
-import { Orientiation } from "../../Appendix/ReaderPage/Books/Helpers/enums";
 import Image from "next/image";
 import Styles from "./Hero.module.scss";
 import { CtaMobileArea } from "../CTAs/CTAMobile";
 import { CtaDesktopArea } from "../CTAs/CTADesktop";
+import { Orientation } from '../../ReaderPage/Books/Helpers/enums';
 
 export interface PageViewDetails {
-    orientation: Orientiation;
+    orientation: Orientation;
     isSmallScreen: boolean;
 }
 

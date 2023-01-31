@@ -148,7 +148,7 @@ export default function NavigationList(props: NavigationListProps) {
                 <Divider />
                 <DrawerSection>
                     <List>
-                        <ListItem key={"Home"} disablePadding>
+                        <ListItem key={"Home"}>
                             <Link href="/">
                                 <ListItemButton>
                                     <ListItemIcon>
@@ -158,7 +158,7 @@ export default function NavigationList(props: NavigationListProps) {
                                 </ListItemButton>
                             </Link>
                         </ListItem>
-                        <ListItem key={"Lore"} disablePadding>
+                        <ListItem key={"Lore"}>
                             <Link href="/appendices">
                                 <ListItemButton>
                                     <ListItemIcon>

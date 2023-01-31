@@ -7,7 +7,7 @@ import NotFoundPage from "../src/components/Error/NotFound";
 import getCleanSiteData from "../src/lib/api/sitedata/cache-site-data";
 import { HomePage } from "../src/interfaces/static/home.interfaces";
 import { PublicBackground } from "../public/backgroundImage";
-import { Orientiation } from "../src/components/ReaderPage/Books/Helpers/enums";
+import { Orientation } from "../src/components/ReaderPage/Books/Helpers/enums";
 import { useState, useEffect } from "react";
 import { PageViewDetails } from "../src/components/HomePage/DetailsSection/DetailsSection";
 import { DesktopHome } from "../src/components/HomePage/DesktopHomePage";
@@ -25,7 +25,7 @@ interface Props {
 
 const Home = (props: Props): JSX.Element => {
     const [pageSetup, setPageSetup] = useState<PageViewDetails>({
-        orientation: Orientiation.portrait,
+        orientation: Orientation.portrait,
         isSmallScreen: true,
     } as PageViewDetails);
     const theme = useTheme();
@@ -37,10 +37,10 @@ const Home = (props: Props): JSX.Element => {
     useEffect(() => {
         setPageSetup({
             orientation: isPortraitMode
-                ? Orientiation.portrait
+                ? Orientation.portrait
                 : isLandscapeMode
-                    ? Orientiation.landscape
-                    : Orientiation.portrait,
+                    ? Orientation.landscape
+                    : Orientation.portrait,
             isSmallScreen,
         });
     }, [isLandscapeMode, isPortraitMode, isSmallScreen]);

@@ -7,7 +7,7 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 import { EpubReaderType } from "../../Helpers/enums";
-import { Orientiation } from "../../Helpers/enums";
+import { Orientation } from "../../Helpers/enums";
 import { ViewerLoading } from "../../../EpubViewer/ViewerLoading";
 import { EpubViewer } from "../../../EpubViewer/EPubViewer";
 import { BookOptions } from "epubjs/types/book";
@@ -37,8 +37,8 @@ export default function Page(props: PageProps): JSX.Element {
   const isLandscapeMode = useMediaQuery("(orientation: landscape)");
   const isPortraitMode = useMediaQuery("(orientation: portrait)");
   const [isLoading, setIsLoading] = useState(true);
-  const [orientation, setOrientation] = useState<Orientiation>(
-    isPortraitMode ? Orientiation.portrait : Orientiation.landscape
+  const [orientation, setOrientation] = useState<Orientation>(
+    isPortraitMode ? Orientation.portrait : Orientation.landscape
   );
   const [open, setOpen] = useState(false);
   const [navigationItems, setNavigationItems] = useState<NavItem[] | undefined>(
@@ -56,7 +56,7 @@ export default function Page(props: PageProps): JSX.Element {
       frame = availableFrames[0];
     }
     setOrientation(
-      isPortraitMode ? Orientiation.portrait : Orientiation.landscape
+      isPortraitMode ? Orientation.portrait : Orientation.landscape
     );
   }, [isLandscapeMode, isPortraitMode]);
 
