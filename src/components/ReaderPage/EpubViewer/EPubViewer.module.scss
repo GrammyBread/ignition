@@ -1,0 +1,29 @@
+.viewerHolder {
+    height: 100%;
+    flex: 1;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        height: 5px;
+        width: 5px;
+        background: #424242;
+        -webkit-border-radius: 1ex;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: var(--theme-secondary-light);
+        -webkit-border-radius: 1ex;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background: #424242;
+    }
+}
+
+.epubViewer {
+    overflow: hidden;
+
+    div {
+        overflow-y: hidden !important;
+    }
+}

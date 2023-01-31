@@ -7,6 +7,7 @@ export interface AvailableAppendixDocs {
 
 export interface AppendixDocument extends BasicObject{
 	metadata: AppendixDocumentMetadata;
+	modified_at: string;
 }
 
 export interface AppendixDocumentMetadata {

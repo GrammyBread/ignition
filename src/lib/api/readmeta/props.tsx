@@ -1,4 +1,4 @@
-export const getSiteProps:string =`
+export const getSiteProps: string = `
 title,
 content,
 metadata.logo,

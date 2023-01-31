@@ -1,8 +1,7 @@
 import { CosmicQuery } from "../query";
 import { minifyProps } from "../shared";
 import {
-    getHomeProps,
-    getPatreonProps,
+    getGenericProps,
     getPingProps
 } from './props';
 
@@ -10,19 +9,19 @@ export function makeGetHomeQuery(): CosmicQuery {
     return {
         query: {
             type: "home",
-            slug: "home-page"
+            slug: "casa"
         },
-        props: minifyProps(getHomeProps)
+        props: minifyProps(getGenericProps)
     };
 }
 
-export function makeGetPingQuery(): CosmicQuery {
+export function makeGetLicenseQuery(): CosmicQuery {
     return {
         query: {
             type: "license-page",
             slug: "licenses-page"
         },
-        props: minifyProps(getPingProps)
+        props: minifyProps(getGenericProps)
     };
 }
 
@@ -32,6 +31,6 @@ export function makeGetPatreonQuery(): CosmicQuery {
             type: "patreon",
             slug: "patreon"
         },
-        props: minifyProps(getPatreonProps)
+        props: minifyProps(getGenericProps)
     };
 }

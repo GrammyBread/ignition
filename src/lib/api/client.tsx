@@ -10,10 +10,12 @@ import {
   makeGetPartsQuery, 
   makeGetChapterQuery, 
   makeGetSectionQuery, 
-  makeGetSiteDataQuery } from './readmeta/read-metadata-queries';
+  makeGetSiteDataQuery, 
+  makeGetMostRecentSections} from './readmeta/read-metadata-queries';
 import { HomePage, PingPage } from '../../interfaces/static/home.interfaces'
 import { 
   makeGetHomeQuery, 
+  makeGetLicenseQuery, 
   makeGetPatreonQuery } from './static/page-queries'
 import { makeGetChapterHeaderQuery } from './readmeta/read-metadata-queries';
 import { PatreonPage } from '../../interfaces/static/patreon.interface';
@@ -24,6 +26,7 @@ import { makeGetAppendicesHome, makeGetArchQuery, makeGetCharacterPageQuery, mak
 import { AppendixDocument, AppendixPage, AvailableAppendixDocs } from '../../interfaces/appendices/documents.interface';
 import { Arch, Station } from '../../interfaces/appendices/stations.interface';
 import { AppendixHome } from '../../interfaces/appendices/home.interface';
+import { LicensePage } from '../../interfaces/static/licenses.interfaces';
 
 const BUCKET_SLUG = process.env.COSMIC_BUCKET_SLUG
 const READ_KEY = process.env.COSMIC_READ_KEY
@@ -33,7 +36,7 @@ export const bucket = Cosmic().bucket({
   read_key: READ_KEY,
 })
 
-async function getObjects<T>(query: CosmicQuery): Promise<T> {
+async function getObjects<T>(query: CosmicQuery | any): Promise<T> {
       const data = await bucket.getObjects(query);
       return data.objects;
 }
@@ -70,6 +73,11 @@ export async function getSectionData(slug:string): Promise<CosmicSection> {
   return response[0];
 }
 
+export async function getMostRecentSections(): Promise<CosmicSection[]> {
+  let response = await getObjects<CosmicSection[]>(makeGetMostRecentSections());
+  return response;
+}
+
 //Non-Read Pages
 export async function getHome(): Promise<HomePage> {
   let response = await getObjects<HomePage[]>(makeGetHomeQuery());
@@ -83,6 +91,11 @@ export async function pingCosmic(): Promise<PingPage> {
 
 export async function getPatreon(): Promise<PatreonPage> {
   let response = await getObjects<PatreonPage[]>(makeGetPatreonQuery());
+  return response[0];
+}
+
+export async function getLicense(): Promise<LicensePage> {
+  let response = await getObjects<LicensePage[]>(makeGetLicenseQuery());
   return response[0];
 }
 

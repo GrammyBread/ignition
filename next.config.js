@@ -1,7 +1,8 @@
 module.exports = {
   images: {
     domains: ['imgix.cosmicjs.com',
-      'cdn.cosmicjs.com'
+      'cdn.cosmicjs.com',
+      'i.creativecommons.org'
     ],
   },
   async rewrites() {

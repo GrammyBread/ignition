@@ -13,4 +13,5 @@ export interface EpubHeader {
     redditShare: string;
     tumblrShare: string;
     verticalButtons: boolean;
+    modifiedDate: Date;
 }

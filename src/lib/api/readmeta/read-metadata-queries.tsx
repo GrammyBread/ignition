@@ -1,12 +1,13 @@
 import { CosmicQuery } from "../query";
 import { minifyProps } from "../shared";
 import { getChapterHeaderScript } from './props';
-import { 
-    getSiteProps, 
-    getPartProps, 
+import {
+    getSiteProps,
+    getPartProps,
     getPartsProps,
-    getChapterProps,    
-    getSectionProps } from "./props";
+    getChapterProps,
+    getSectionProps
+} from "./props";
 
 
 //Get Site Data
@@ -16,8 +17,8 @@ export function makeGetSiteDataQuery(): CosmicQuery {
         query: {
             type: "navigation",
             slug: "navigation"
-          },
-          props: minifyProps(getSiteProps)
+        },
+        props: minifyProps(getSiteProps)
     }
 }
 
@@ -69,6 +70,22 @@ export function makeGetSectionQuery(sectionSlug: string): CosmicQuery {
         query: {
             type: "sections",
             slug: sectionSlug
+        },
+        props: minifyProps(getSectionProps)
+    };
+}
+
+//Get Most Recent Section
+export function makeGetMostRecentSections(): any {
+    let currentDate = new Date();
+
+    return {
+        limit: 5,
+        query: {
+            type: "sections",
+            'metadata.public_release_date': {
+                $lte: currentDate.toISOString()
+            }
         },
         props: minifyProps(getSectionProps)
     };

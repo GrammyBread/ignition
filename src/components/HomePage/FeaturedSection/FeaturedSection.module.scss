@@ -1,0 +1,39 @@
+.partLogline {
+    z-index: 899;
+    line-height: 1;
+    position: relative;
+}
+
+.partLoglineContainer {
+    height: 100%;
+    position: relative;
+}
+
+.loglineHolder {
+    position: relative;
+    height: 5rem;
+    margin-top: .5rem;
+}
+
+.loglineOverlay {
+    position: absolute;
+    height: 100%;
+    pointer-events: none;
+    top: 0;
+    width: calc(100% + 10px);
+    left: -10px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #333333 100%);
+    z-index: 900;
+}
+
+.partTitle {
+    text-decoration: underline;
+    font-variant: petite-caps;
+    z-index: 899;
+}
+
+.readButton {
+    span {
+        z-index: 1000;
+    }
+}
