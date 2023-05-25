@@ -23,6 +23,7 @@ import { Table } from '../../TableOfContents/Table/Table';
 import StationStyles from './StationCard.module.scss';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import classNames from 'classnames';
 
 const style = (color: string) => ({
     position: 'absolute' as 'absolute',
@@ -150,7 +151,7 @@ export default function StationCard(props: Station): JSX.Element {
                         }}>
                             {stationName}
                         </Typography>
-                        <Box className={StationStyles.stationDetails}>
+                        <Box className={classNames(StationStyles.stationDetails, StationStyles.prettyScroll)}>
                             <TableContainer component={Paper}>
                                 <Table aria-label="station details table" sx={{
                                     width: '100% !important'

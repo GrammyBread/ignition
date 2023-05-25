@@ -11,23 +11,25 @@ import {
   ListItemText
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { NavPart } from '../../../../interfaces/read/nav-data.interfaces';
+import { NavigationPart, PublishStatus } from '../../../../../interfaces/read/nav-data.interfaces';
+import { NORMAL_PART_PATH } from '../../../../../mappers/pathname.mapper';
 
 
-export default function NavigationPartItem(props: NavPart) {
+export default function NavigationPartItem(props: NavigationPart) {
   const [partOpen, setPartOpen] = React.useState(false);
   const router = useRouter()
   const [partClickTime, setPartClickTime] = React.useState(Date.now() - 1000);
+  const isAvailable = props.status != PublishStatus.Unpublished;
+  const isPatreon = props.status === PublishStatus.PatreonOnly;
 
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
     const dif = Date.now() - partClickTime;
     console.log(dif);
-    if (dif < 500 && (props.isPatreonOnly || props.slug)) {
-      router.push(props.isPatreonOnly ? "/patreon" :
-        {
-          pathname: props.slug.pathname,
-          query: props.slug.params
-        });
+    if (dif < 500 && (isAvailable && props.slug)) {
+      router.push(isPatreon ? "/patreon" : {
+        pathname: NORMAL_PART_PATH,
+        query: props.slug
+      });
     }
     else {
       setPartOpen(!partOpen);
@@ -38,11 +40,11 @@ export default function NavigationPartItem(props: NavPart) {
 
   return (
     <>
-      <ListItemButton onClick={handleClick} sx={{ pl: 5 }}>
-        <ListItemText primary={props.title} sx={{ color: props.isPatreonOnly ? 'warn.main' : 'inherit' }} />
-        {!props.isPatreonOnly && (partOpen ? <ExpandLess /> : <ExpandMore />)}
+      <ListItemButton disabled={!isAvailable} onClick={handleClick} sx={{ pl: 5 }}>
+        <ListItemText primary={props.shortTitle} sx={{ color: isPatreon ? 'warning.main' : 'inherit' }} />
+        {isAvailable && (partOpen ? <ExpandLess /> : <ExpandMore />)}
       </ListItemButton>
-      {!props.isPatreonOnly && <Collapse in={partOpen} timeout="auto" unmountOnExit>
+      {isAvailable && <Collapse in={partOpen} timeout="auto" unmountOnExit>
         <List>
           {props.chapters && props.chapters.map((chapter) => (
             <div key={chapter.key}>

@@ -4,14 +4,16 @@ import * as React from "react";
 import PartCard from "../../src/components/PartCard/PartCard";
 import Layout from "../../src/components/Main/Layout";
 import { PartCardProps } from "../../src/components/PartCard/PartCard";
-import NotFoundPage from "../../src/components/Error/NotFound";
+import NotFoundPage from "../../src/components/Error/specialty/NotFound";
 import { Grid } from "@mui/material";
 import getCleanSiteData from "../../src/lib/api/sitedata/cache-site-data";
 import { PublicBackground } from "../../public/backgroundImage";
-import { CleanedNavigation } from "../../src/interfaces/read/cleaned-types.interface";
+import { CompletePageProps } from "../_app";
+import { ErrorPage } from "../../src/components/Error/Error";
+import BadDataPage from "../../src/components/Error/specialty/BadData";
+import { InvalidReadPartsLength } from "../../src/components/Error/error-ids.config";
 
-interface Props {
-  navData: CleanedNavigation;
+interface ReadProps extends CompletePageProps {
   parts: PartCardProps[];
 }
 
@@ -23,13 +25,17 @@ function MakePartCards(parts: PartCardProps[]): JSX.Element[] {
   ));
 }
 
-const Parts = (props: Props): JSX.Element => {
+const Parts = (props: ReadProps): JSX.Element => {
   if (
-    props == undefined ||
-    props.navData == undefined ||
-    props.parts == undefined
+    !props ||
+    !props.navData ||
+    !props.parts
   ) {
     return <NotFoundPage requestedItem={`Read Home`} />;
+  }
+
+  if (!props.parts.length) {
+    return <BadDataPage id={InvalidReadPartsLength} />
   }
 
   const partCards = MakePartCards(props.parts);
@@ -60,9 +66,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      navData: cleanSiteData.getSimpleNav(),
+      navData: cleanSiteData.getCacheableVersion(),
       parts: cleanSiteData.getPartsForDisplay(partResults),
-    } as Props,
+    } as ReadProps,
     revalidate: 10 * 60 * 60,
   };
 };

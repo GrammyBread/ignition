@@ -18,7 +18,7 @@ export interface PartCardProps {
     slug?: ParsedUrlQuery;
     title: string;
     key: number;
-    partImageUrl: string;
+    imageUrl: string;
     logline: string;
     isPatreonOnly: boolean;
 }
@@ -44,7 +44,7 @@ export default function PartCard(props: PartCardProps): JSX.Element {
             <CardMedia
                 component="img"
                 sx={{ width: 151 }}
-                image={props.partImageUrl}
+                image={props.imageUrl}
                 alt={`${props.title} cover image`}
             />
             <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -67,7 +67,8 @@ export default function PartCard(props: PartCardProps): JSX.Element {
                                 overflow: shouldAllowScroll ? "auto" : "hidden",
                             }}
                         >
-                            <Box className={Styles.partLogline}>{props.logline}</Box>
+                            <div className={Styles.partLogline}
+                                dangerouslySetInnerHTML={{ __html: props.logline }}></div>
                         </Typography>
                         <Box
                             className={Styles.loglineOverlay}

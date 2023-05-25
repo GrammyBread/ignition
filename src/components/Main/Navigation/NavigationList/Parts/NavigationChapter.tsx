@@ -6,24 +6,25 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import NavigationSectionItem from './NavigationSection';
-import { ItemStatus } from '../../../../mappers/availability/state.mappers';
 import { useRouter } from 'next/router';
-import { NavChapter } from '../../../../interfaces/read/nav-data.interfaces';
+import { NavigationChapter, PublishStatus } from '../../../../../interfaces/read/nav-data.interfaces';
+import { NORMAL_CHAPTER_PATH } from '../../../../../mappers/pathname.mapper';
 
-export default function NavigationChapterItem(props: NavChapter) {
+export default function NavigationChapterItem(props: NavigationChapter) {
   const router = useRouter();
   const [openChapter, setChapterOpen] = React.useState(false);
   const [chapterClickTime, setChapterClickTime] = React.useState(Date.now() - 1000);
+  const isPatreon = props.status === PublishStatus.PatreonOnly;
+  const isAvailable = props.status != PublishStatus.Unpublished;
 
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
     const dif = Date.now() - chapterClickTime;
     console.log(dif);
-    if (dif < 500 && (props.isPatreonOnly || props.slug)) {
-      router.push(props.isPatreonOnly ? "/patreon" :
-        {
-          pathname: props.slug.pathname,
-          query: props.slug.params
-        });
+    if (dif < 500 && (isAvailable && props.slug)) {
+      router.push(isPatreon ? "/patreon" : {
+        pathname: NORMAL_CHAPTER_PATH,
+        query: props.slug
+      });
     }
     else {
       setChapterOpen(!openChapter);
@@ -34,11 +35,11 @@ export default function NavigationChapterItem(props: NavChapter) {
 
   return (
     <>
-      <ListItemButton onClick={handleClick} sx={{ pl: 10 }}>
-        <ListItemText primary={props.title} sx={{ color: props.isPatreonOnly ? 'warning.main' : 'inherit' }} />
-        {!props.isPatreonOnly && (openChapter ? <ExpandLess /> : <ExpandMore />)}
+      <ListItemButton disabled={!isAvailable} onClick={handleClick} sx={{ pl: 10 }}>
+        <ListItemText primary={props.shortTitle} sx={{ color: isPatreon ? 'warning.main' : 'inherit' }} />
+        {isAvailable && (openChapter ? <ExpandLess /> : <ExpandMore />)}
       </ListItemButton>
-      {!props.isPatreonOnly && <Collapse in={openChapter} timeout="auto" unmountOnExit>
+      {isAvailable && <Collapse in={openChapter} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {props.sections && props.sections.map((section) => (
             <div key={section.key}>

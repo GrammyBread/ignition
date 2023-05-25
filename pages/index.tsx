@@ -3,7 +3,7 @@ import { useMediaQuery } from "@mui/material";
 import { getHome } from "../src/lib/api/client";
 import { GetStaticProps } from "next";
 import Layout from "../src/components/Main/Layout";
-import NotFoundPage from "../src/components/Error/NotFound";
+import NotFoundPage from "../src/components/Error/specialty/NotFound";
 import getCleanSiteData from "../src/lib/api/sitedata/cache-site-data";
 import { HomePage } from "../src/interfaces/static/home.interfaces";
 import { PublicBackground } from "../public/backgroundImage";
@@ -13,17 +13,16 @@ import { PageViewDetails } from "../src/components/HomePage/DetailsSection/Detai
 import { DesktopHome } from "../src/components/HomePage/DesktopHomePage";
 import { MobileHome } from "../src/components/HomePage/MobileHomePage";
 import { GetFeaturedSection } from "../src/lib/api/shared";
-import { CleanedNavigation } from "../src/interfaces/read/cleaned-types.interface";
 import { useTheme } from '@mui/material/styles';
-import { FeaturedScript, MakeFeaturedScript} from "../src/mappers/availability/nav-script.mappers";
+import { FeaturedScript, MakeFeaturedScript} from "../src/lib/availability/mappers/nav-script.mappers";
+import { CompletePageProps } from "./_app";
 
-interface Props {
-    navData: CleanedNavigation;
+interface HomeProps extends CompletePageProps {
     pageData: HomePage;
     featuredSection: FeaturedScript;
 }
 
-const Home = (props: Props): JSX.Element => {
+const Home = (props: HomeProps): JSX.Element => {
     const [pageSetup, setPageSetup] = useState<PageViewDetails>({
         orientation: Orientation.portrait,
         isSmallScreen: true,
@@ -46,7 +45,6 @@ const Home = (props: Props): JSX.Element => {
     }, [isLandscapeMode, isPortraitMode, isSmallScreen]);
 
     if (
-        props.navData == undefined ||
         props.pageData == undefined ||
         props.pageData.metadata == undefined
     ) {
@@ -77,10 +75,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     return {
         props: {
-            navData: cleanSiteData.getSimpleNav(),
+            navData: cleanSiteData.getCacheableVersion(),
             pageData: homeData,
             featuredSection: featuredCosmicSection && MakeFeaturedScript(featuredCosmicSection, cleanSiteData)
-        } as Props,
+        } as HomeProps,
         revalidate: 120,
     };
 };

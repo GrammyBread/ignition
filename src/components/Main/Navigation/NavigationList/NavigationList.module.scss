@@ -1,0 +1,12 @@
+@import '../../../../styles/pretty-scroll.module.scss';
+
+.readSection {
+    overflow-y: auto;
+    flex: 5;
+}
+
+.lowerNavigation {
+    a {
+        flex: 1;
+    }
+}

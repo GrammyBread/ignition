@@ -1,21 +1,30 @@
 import { ParsedUrlQuery } from 'querystring';
+import { Url } from 'url';
 
-export interface NavLinkDetails {
+export enum PublishStatus {
+    Unpublished = 1,
+    New,
+    PatreonOnly,
+    Public
+}
+
+export interface NavigationLink {
     pathname: string;
     params: ParsedUrlQuery
 }
 
-export interface NavItem {
-    slug: NavLinkDetails;
+export interface NavigationItem {
+    slug: ParsedUrlQuery | string;
     title: string;
+    shortTitle: string;
     key: number;
-    isPatreonOnly: boolean
+    status: PublishStatus;
 }
 
-export interface NavPart extends NavItem {
-    chapters: NavChapter[];
+export interface NavigationPart extends NavigationItem {
+    chapters: NavigationChapter[];
 }
 
-export interface NavChapter extends NavItem {
-    sections: NavItem[];
+export interface NavigationChapter extends NavigationItem {
+    sections: NavigationItem[];
 }

@@ -1,18 +1,17 @@
-import { getStandardSection } from "./GetStandardSection";
-import { getPatreonSection } from "./PatreonOnlySection";
-import { getNewSection } from "./NewSection";
-import { ItemStatus } from "../../../mappers/availability/state.mappers";
-import { Section } from "../../../interfaces/read/view-data.interfaces";
+import { StandardSection } from "./Standard/StandardSection";
+import { PatreonSection } from "./Patreon/PatreonSection";
+import { NavigationItem, PublishStatus } from "../../../interfaces/read/nav-data.interfaces";
+import { NewSection } from "./New/NewSection";
 
-export default function getSection(availability: Section): JSX.Element {
-    switch (availability.publishStatus) {
-        case ItemStatus.New:
-            return getNewSection(availability);
-        case ItemStatus.PatreonOnly:
-            return getPatreonSection(availability);
-        case ItemStatus.Public:
-            return getStandardSection(true, availability);
+export default function getSection(availability: NavigationItem): JSX.Element {
+    switch (availability.status) {
+        case PublishStatus.New:
+            return NewSection(availability);
+        case PublishStatus.PatreonOnly:
+            return PatreonSection(availability);
+        case PublishStatus.Public:
+            return StandardSection(true, availability);
         default:
-            return getStandardSection(false, availability);
+            return StandardSection(false, availability);
     }
 };

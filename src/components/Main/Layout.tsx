@@ -7,9 +7,9 @@ import { Navigation } from "./Navigation/Navigation";
 import Image from "next/image";
 import Head from "next/head";
 import { motion, useAnimation } from "framer-motion";
-import { Resource } from "../../interfaces/read/read-metadata.interfaces";
 import { DetectScreenSize, ScreenSize } from "../../lib/assistants/screenSizeHelper";
-import { NavigationScript } from "../../mappers/availability/nav-script.mappers";
+import { NavigationScript } from "../../lib/availability/mappers/nav-script.mappers";
+import { Resource } from "../../interfaces/read/cosmic/cosmic-metadata.interfaces";
 
 export interface LayoutProps {
   children: React.ReactNode;

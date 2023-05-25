@@ -16,7 +16,7 @@ import { AppBar, ImageContainer } from "./NavigationHelper";
 import { NavigationLeft } from "./NavigationLeft";
 import { NavigationRight } from "./NavigationRight";
 import { useTheme } from "@mui/material";
-import { NavigationScript } from "../../../mappers/availability/nav-script.mappers";
+import { NavigationScript } from "../../../lib/availability/mappers/nav-script.mappers";
 import { NavigationContext } from "../../../../pages/_app";
 import { NavigationBackgroundColor } from "../../../styles/additional-colors";
 

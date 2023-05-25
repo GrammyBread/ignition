@@ -3,7 +3,7 @@ import * as React from "react";
 import { CleanedNavigation } from "../../src/interfaces/read/cleaned-types.interface";
 import Layout from "../../src/components/Main/Layout";
 import { GetRequestedResource } from "../../src/lib/api/shared";
-import NotFoundPage from "../../src/components/Error/NotFound";
+import NotFoundPage from "../../src/components/Error/specialty/NotFound";
 import { useRouter } from "next/router";
 import MapSocialData from "../../src/mappers/socials.mapper";
 import { RedirectTo404 } from "../../src/common/common-redirects";

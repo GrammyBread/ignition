@@ -15,7 +15,7 @@ import {
     PatreonPage,
     Reason,
 } from "../src/interfaces/static/patreon.interface";
-import NotFoundPage from "../src/components/Error/NotFound";
+import NotFoundPage from "../src/components/Error/specialty/NotFound";
 import {
     ColorLens,
     Description,
@@ -26,10 +26,9 @@ import {
 import { Circle } from "../src/components/TableOfContents/helper";
 import Styles from "../src/styles/patreon.module.scss";
 import getCleanSiteData from "../src/lib/api/sitedata/cache-site-data";
-import { CleanedNavigation } from "../src/interfaces/read/cleaned-types.interface";
+import { CompletePageProps } from "./_app";
 
-interface Props {
-    navData: CleanedNavigation;
+interface Props extends CompletePageProps{
     pageData: PatreonPage;
 }
 
@@ -125,7 +124,13 @@ const Patreon = (props: Props): JSX.Element => {
                             {GetFeatures(data.reasons)}
                         </Stack>
                         <Button variant="contained" color="warning" href={data.cta.url}>
-                            <Typography variant="h6" component="h3">
+                            <Typography variant="button" 
+                            sx={{
+                                fontWeight: 1000,
+                                fontSize: "1rem",
+                                margin: "2px"
+                            }} 
+                                component="h3">
                                 {data.cta.text}
                             </Typography>
                         </Button>
@@ -148,7 +153,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     return {
         props: {
-            navData: cleanSiteData.getSimpleNav(),
+            navData: cleanSiteData.getCacheableVersion(),
             pageData: patreonData,
         } as Props,
         revalidate: 120,

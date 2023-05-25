@@ -4,7 +4,7 @@ import {
   CosmicChapter, 
   CosmicPart, 
   CosmicSection, 
-  CosmicSiteData} from '../../interfaces/read/read-metadata.interfaces'
+  CosmicSiteData} from '../../interfaces/read/cosmic/cosmic-metadata.interfaces'
 import { 
   makeGetPartQuery, 
   makeGetPartsQuery, 
@@ -20,7 +20,7 @@ import {
 import { makeGetChapterHeaderQuery } from './readmeta/read-metadata-queries';
 import { PatreonPage } from '../../interfaces/static/patreon.interface';
 import { Character } from '../../interfaces/appendices/character.interface';
-import { CleanSiteData } from '../../interfaces/read/clean-site-data.class';
+import { CleanSiteData } from '../availability/class/clean-site-data.class';
 import CleanUpSiteData from './sitedata/nav.mapper';
 import { makeGetAppendicesHome, makeGetArchQuery, makeGetCharacterPageQuery, makeGetCharactersQuery, makeGetLoreDocument, makeGetLoreDocuments, makeGetStationPageQuery, makeGetStationsQuery } from './appendices/appendices-queries';
 import { AppendixDocument, AppendixPage, AvailableAppendixDocs } from '../../interfaces/appendices/documents.interface';
@@ -45,7 +45,6 @@ async function getObjects<T>(query: CosmicQuery | any): Promise<T> {
 export async function getSiteData(): Promise<CleanSiteData> {
   let response = await getObjects<CosmicSiteData[]>(makeGetSiteDataQuery())
   let nav = response[0];
-  nav.domain = process.env.DOMAIN!;
   return CleanUpSiteData(nav);
 }
 

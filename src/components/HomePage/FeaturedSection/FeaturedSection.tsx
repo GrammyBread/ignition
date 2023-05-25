@@ -13,7 +13,7 @@ import {
   INTRO_SECTION_PATH,
   NORMAL_SECTION_PATH,
 } from "../../../mappers/pathname.mapper";
-import { FeaturedScript } from "../../../mappers/availability/nav-script.mappers";
+import { FeaturedScript } from "../../../lib/availability/mappers/nav-script.mappers";
 import Styles from "./FeaturedSection.module.scss";
 import { Theme } from "@mui/material";
 

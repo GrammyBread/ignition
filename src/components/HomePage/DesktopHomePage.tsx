@@ -6,7 +6,7 @@ import {
 import Styles from "./HomePage.module.scss";
 import { HomeMetadata } from "../../interfaces/static/home.interfaces";
 import { HeroSection } from "./Hero/Hero";
-import { FeaturedScript } from "../../mappers/availability/nav-script.mappers";
+import { FeaturedScript } from "../../lib/availability/mappers/nav-script.mappers";
 import FeaturedSection from "./FeaturedSection/FeaturedSection";
 import { FooterSection } from "./Footer/Footer";
 

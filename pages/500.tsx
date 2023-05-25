@@ -1,4 +1,4 @@
-import ServerErrorPage from "../src/components/Error/ServerError";
+import ServerErrorPage from "../src/components/Error/specialty/ServerError";
 
 const ServerError = (): JSX.Element => {
 return <ServerErrorPage/>

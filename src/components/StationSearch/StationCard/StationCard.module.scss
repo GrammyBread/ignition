@@ -1,3 +1,5 @@
+@import '../../../styles/pretty-scroll.module.scss';
+
 .stationDetails {
     max-height: 40vh;
     border-radius: .25rem;
@@ -6,21 +8,5 @@
     .detailsTables {
         width: 100%;
         border: 3px solid rgb(81,81,81);
-    }
-
-    &::-webkit-scrollbar {
-        height: 5px;
-        width: 5px;
-        background: #fff3;
-        -webkit-border-radius: 1ex;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: white;
-        -webkit-border-radius: 1ex;
-    }
-
-    &::-webkit-scrollbar-corner {
-        background: #fff3;
     }
 }

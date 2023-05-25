@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Paper, styled } from '@mui/material';
-import { ChapterProps, TOCChapter } from '../Chapter/TOCChapter';
+import { ContentChapter } from '../Chapter/Chapter';
 import Styles from './Table.module.scss';
-import { TOCPart } from '../Part/TOCPart';
-import { Part } from '../../../interfaces/read/view-data.interfaces';
-import { CustomErrorPage } from '../../Error/Error';
+import { ContentPart } from '../Part/Part';
+import { ErrorPage } from '../../Error/Error';
+import { NavigationPart, NavigationChapter } from '../../../interfaces/read/nav-data.interfaces';
 
 export interface TableOfContentsProps {
-    partProps?: Part;
-    chapterProps?: ChapterProps;
+    partProps?: NavigationPart;
+    chapterProps?: NavigationChapter;
 }
 
 export const Table = styled(Paper)(({ theme }) => ({
@@ -32,12 +32,12 @@ export const Table = styled(Paper)(({ theme }) => ({
 }));
 
 function DetermineLayoutType({ partProps, chapterProps }: TableOfContentsProps): JSX.Element | undefined {
-    if (partProps != undefined) {
-        return <TOCPart {...partProps}></TOCPart>;
+    if (partProps) {
+        return <ContentPart {...partProps}></ContentPart>;
     }
 
-    if (chapterProps != undefined) {
-        return <TOCChapter {...chapterProps}></TOCChapter>;
+    if (chapterProps) {
+        return <ContentChapter {...chapterProps}></ContentChapter>;
     }
 
     return undefined;
@@ -51,5 +51,5 @@ export default function TableOfContents(props: TableOfContentsProps) {
             {tableChild}
         </Table >
         :
-        <CustomErrorPage message="We can't seem to find what you're looking for 🤔?" />;
+        <ErrorPage message="We can't seem to find what you're looking for 🤔?" />;
 };

@@ -5,7 +5,7 @@ import {
     INTRO_SECTION_PATH,
     NORMAL_SECTION_PATH,
 } from "../../../mappers/pathname.mapper";
-import { NavigationScript } from "../../../mappers/availability/nav-script.mappers";
+import { NavigationScript } from "../../../lib/availability/mappers/nav-script.mappers";
 
 interface NavigationWingProps {
     script: NavigationScript | undefined;
