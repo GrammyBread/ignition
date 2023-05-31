@@ -4,10 +4,10 @@ import Styles from './patreon-section.module.scss';
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { NavigationItem } from '../../../../interfaces/read/nav-data.interfaces';
 import { AnimatedLink } from '../../helper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPatreon } from '@fortawesome/free-brands-svg-icons';
+import { NavigationSection } from '../../../../interfaces/read/nav-data.interfaces';
 
 const PatreonTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} placement="right" />
@@ -20,7 +20,7 @@ const PatreonTooltip = styled(({ className, ...props }: TooltipProps) => (
     },
 }));
 
-export const PatreonSection = (section: NavigationItem): JSX.Element => {
+export const PatreonSection = (section: NavigationSection): JSX.Element => {
     let tooltip =
         <React.Fragment>
             <Typography variant="overline">This is Patreon Only</Typography>

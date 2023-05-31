@@ -3,12 +3,12 @@ import {
   ListItemButton,
   ListItemText
 } from '@mui/material';
-import { NavigationItem, PublishStatus } from '../../../../../interfaces/read/nav-data.interfaces';
+import { NavigationSection, PublishStatus } from '../../../../../interfaces/read/nav-data.interfaces';
 import Link from 'next/link';
 import { NORMAL_SECTION_PATH } from '../../../../../mappers/pathname.mapper';
 
 
-export default function NavigationSectionItem(props: NavigationItem) {
+export default function NavigationSectionItem(props: NavigationSection) {
   const isAvailable = props.status != PublishStatus.Unpublished;
   const isPatreon = props.status === PublishStatus.PatreonOnly;
   

@@ -1,9 +1,9 @@
 import { StandardSection } from "./Standard/StandardSection";
 import { PatreonSection } from "./Patreon/PatreonSection";
-import { NavigationItem, PublishStatus } from "../../../interfaces/read/nav-data.interfaces";
+import { NavigationSection, PublishStatus } from "../../../interfaces/read/nav-data.interfaces";
 import { NewSection } from "./New/NewSection";
 
-export default function getSection(availability: NavigationItem): JSX.Element {
+export default function getSection(availability: NavigationSection): JSX.Element {
     switch (availability.status) {
         case PublishStatus.New:
             return NewSection(availability);

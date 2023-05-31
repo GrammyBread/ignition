@@ -1,7 +1,7 @@
 import { ParsedUrlQuery } from "querystring";
 import { CleanedNavigation } from "../../../interfaces/read/cleaned-types.interface";
 import { CosmicChapter, CosmicPart, CosmicSection, CosmicSiteData } from "../../../interfaces/read/cosmic/cosmic-metadata.interfaces";
-import { NavigationChapter, NavigationItem, NavigationPart, PublishStatus } from '../../../interfaces/read/nav-data.interfaces';
+import { NavigationChapter, NavigationPart, NavigationSection, PublishStatus } from '../../../interfaces/read/nav-data.interfaces';
 import { CosmicChapterNavData, CosmicItemNavData } from "../../../interfaces/read/cosmic/cosmic-navigation-metadata.interfaces";
 
 interface LatestPublished {
@@ -93,7 +93,7 @@ export class NavigationCleaner {
             else {
                 return this.getNavigationSection(sectionData);
             }
-        })
+        });
 
         return {
             slug: chapterSlug ?? '',
@@ -105,7 +105,7 @@ export class NavigationCleaner {
         } as NavigationChapter;
     }
 
-    private getNavigationSection(sectionData: CosmicItemNavData, section?: CosmicSection, chapterSlug?: ParsedUrlQuery): NavigationItem {
+    private getNavigationSection(sectionData: CosmicItemNavData, section?: CosmicSection, chapterSlug?: ParsedUrlQuery): NavigationSection {
         let sectionSlug: ParsedUrlQuery | undefined = undefined;
         const status = !section ? PublishStatus.Unpublished : this.DetermineSectionStatus(
             section.status,
@@ -124,8 +124,9 @@ export class NavigationCleaner {
             title: sectionData.title,
             shortTitle: sectionData.short,
             key: sectionData.key,
-            status: status
-        } as NavigationItem;
+            status: status,
+            isHead: section?.metadata.metadata.is_header ?? false
+        } as NavigationSection;
 
 
         if (navigationSection.status === PublishStatus.Public && !this._lastPublished.unpublishedDetected) {
@@ -166,7 +167,7 @@ export class NavigationCleaner {
                         const chapter = part.chapters[chapterKey - 1];
                         chapter.status = PublishStatus.New;
                         if (chapter && sectionkey > -1) {
-                            chapter.sections[sectionkey - 1].status = PublishStatus.New
+                            chapter.sections[sectionkey - 1].status = PublishStatus.New;
                         }
                     }
                 }

@@ -1,5 +1,4 @@
 import { ParsedUrlQuery } from 'querystring';
-import { Url } from 'url';
 
 export enum PublishStatus {
     Unpublished = 1,
@@ -13,7 +12,7 @@ export interface NavigationLink {
     params: ParsedUrlQuery
 }
 
-export interface NavigationItem {
+interface NavigationItem {
     slug: ParsedUrlQuery | string;
     title: string;
     shortTitle: string;
@@ -26,5 +25,9 @@ export interface NavigationPart extends NavigationItem {
 }
 
 export interface NavigationChapter extends NavigationItem {
-    sections: NavigationItem[];
+    sections: NavigationSection[];
+}
+
+export interface NavigationSection extends NavigationItem {
+    isHead: boolean;
 }

@@ -2,7 +2,7 @@ import path from "path";
 import fs from 'fs'
 import { promisify } from 'util'
 import { getSiteData } from "../client";
-import { CleanSiteData, CacheableSiteData } from '../../availability/class/clean-site-data.class';
+import { CleanSiteData } from '../../availability/class/clean-site-data.class';
 import { CleanedNavigation } from "../../../interfaces/read/cleaned-types.interface";
 
 const readFile = promisify(fs.readFile)

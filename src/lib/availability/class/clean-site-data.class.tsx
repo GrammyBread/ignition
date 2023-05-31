@@ -1,19 +1,10 @@
 import { CleanedNavigation } from '../../../interfaces/read/cleaned-types.interface';
-import { NavigationChapter, NavigationItem } from '../../../interfaces/read/nav-data.interfaces';
+import { NavigationChapter, NavigationSection } from '../../../interfaces/read/nav-data.interfaces';
 import { PartCardProps } from '../../../components/PartCard/PartCard';
 import { CosmicPart, CosmicSection, Resource } from '../../../interfaces/read/cosmic/cosmic-metadata.interfaces';
 import { PublishStatus } from '../../../interfaces/read/nav-data.interfaces';
 import { ParsedUrlQuery } from 'querystring';
-
-export interface NavigationScript {
-    section: NavigationItem;
-    isHead: boolean;
-}
-
-export interface FeaturedScript extends NavigationScript {
-    image: Resource;
-    logline: string;
-}
+import { FeaturedSectionProps } from '../../../components/HomePage/FeaturedSection/FeaturedSection';
 
 export interface CacheableSiteData {
     navigation: CleanedNavigation;
@@ -23,6 +14,7 @@ export interface CacheableSiteData {
 
 export class CleanSiteData {
     private readonly _siteNavigation: CleanedNavigation;
+    private _newestSection?: string;
 
     constructor(navigation: CleanedNavigation) {
         this._siteNavigation = navigation;
@@ -32,11 +24,21 @@ export class CleanSiteData {
         return this._siteNavigation;
     }
 
+    getNewestSectionSlug() : string | undefined {
+        if(!this._newestSection) {
+            const newestPart = this._siteNavigation.data.find((part) => part.status === PublishStatus.New);
+            const newestChapter = newestPart?.chapters.find((chapter) => chapter.status === PublishStatus.New);
+            const newestSection = newestChapter?.sections.find((section) => section.status === PublishStatus.New);
+            this._newestSection = newestSection?.slug ? (newestSection?.slug as ParsedUrlQuery)?.sectionslug as string : undefined;
+        }
+        return this._newestSection;
+    }
+
     //Related Pieces Look Up
     getRelatedSection(sectionKey: number) {
-        let relatedSection: NavigationItem | undefined;
+        let relatedSection: NavigationSection | undefined;
 
-        const chapterNum = sectionKey % 10;
+        const chapterNum = Math.floor(sectionKey / 10);
 
         const relatedChapter = this.getRelatedChapter(chapterNum);
 
@@ -44,13 +46,13 @@ export class CleanSiteData {
             relatedSection = relatedChapter.sections.find((section) => section.key === sectionKey);
         }
 
-        return relatedSection
+        return relatedSection;
     }
 
     getRelatedChapter(chapterKey: number) {
         let relatedChapter: NavigationChapter | undefined;
 
-        const partNum = chapterKey % 10;
+        const partNum = Math.floor(chapterKey / 10);
 
         const relatedPart = this.getRelatedPart(partNum);
 
@@ -140,37 +142,23 @@ export class CleanSiteData {
                         key: part.key,
                         imageUrl: relatedCosmicPart.metadata.images?.thumbnail.imgix_url,
                         logline: relatedCosmicPart.metadata.metadata.logline,
-                        isPatreonOnly: part.status === PublishStatus.PatreonOnly
+                        isPatreonOnly: part.status === PublishStatus.PatreonOnly,
+                        navigationDetails: this.getRelatedPart(part.key)
                     } as PartCardProps;
                 }
             });
         return mappedParts.filter((partProp) => !!partProp) as PartCardProps[];
     }
 
-    MakeNavigationScript(section: CosmicSection): NavigationScript | null {
+    makeFeaturedSection(section: CosmicSection): FeaturedSectionProps | null {
         const mappedSection = this.getRelatedSection(section.metadata.publish_details.key);
 
-        if (mappedSection) {
+        if (mappedSection && section) {
             return {
-                section: mappedSection,
-                isHead: section.metadata.metadata.is_header || false
-            } as NavigationScript;
-        }
-
-        return null;
-    }
-
-    MakeFeaturedScript(section: CosmicSection): FeaturedScript | null {
-        const mappedSection = this.getRelatedSection(section.metadata.publish_details.key);
-        const scriptMetadata = section.metadata;
-
-        if (mappedSection && scriptMetadata) {
-            return {
-                section: mappedSection,
-                isHead: scriptMetadata.metadata.is_header || false,
-                image: scriptMetadata.images?.hero,
-                logline: scriptMetadata.metadata.catch || ''
-            } as FeaturedScript;
+                ...mappedSection,
+                releaseDate: section.metadata.publish_details.public_release,
+                images: section.metadata.images
+            } as FeaturedSectionProps;
         }
 
         return null;

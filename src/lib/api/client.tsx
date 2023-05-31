@@ -10,8 +10,8 @@ import {
   makeGetPartsQuery, 
   makeGetChapterQuery, 
   makeGetSectionQuery, 
-  makeGetSiteDataQuery, 
-  makeGetMostRecentSections} from './readmeta/read-metadata-queries';
+  makeGetSiteDataQuery,
+  makeGetFeaturedSectionQuery} from './readmeta/read-metadata-queries';
 import { HomePage, PingPage } from '../../interfaces/static/home.interfaces'
 import { 
   makeGetHomeQuery, 
@@ -72,9 +72,9 @@ export async function getSectionData(slug:string): Promise<CosmicSection> {
   return response[0];
 }
 
-export async function getMostRecentSections(): Promise<CosmicSection[]> {
-  let response = await getObjects<CosmicSection[]>(makeGetMostRecentSections());
-  return response;
+export async function getFeaturedSection(slug:string): Promise<CosmicSection> {
+  let response = await getObjects<CosmicSection[]>(makeGetFeaturedSectionQuery(slug));
+  return response[0];
 }
 
 //Non-Read Pages

@@ -1,19 +1,15 @@
 import { Box, Stack, Theme } from "@mui/material";
-import {
-    DetailsSection,
-    PageViewDetails,
-} from "./DetailsSection/DetailsSection";
+import { DetailsSection, PageViewDetails } from "./DetailsSection/DetailsSection";
 import Styles from "./HomePage.module.scss";
 import { HomeMetadata } from "../../interfaces/static/home.interfaces";
 import { HeroSection } from "./Hero/Hero";
-import { FeaturedScript } from "../../lib/availability/mappers/nav-script.mappers";
-import FeaturedSection from "./FeaturedSection/FeaturedSection";
+import FeaturedSection, { FeaturedSectionProps } from './FeaturedSection/FeaturedSection';
 import { FooterSection } from "./Footer/Footer";
 
 export const DesktopHome = (
     data: HomeMetadata,
     pageSetup: PageViewDetails,
-    featuredSection: FeaturedScript,
+    featuredSectionProps: FeaturedSectionProps,
     theme: Theme
 ): JSX.Element => {
     return (
@@ -41,7 +37,7 @@ export const DesktopHome = (
                             marginTop: "5vh"
                         }}
                      ></Box>
-                   {FeaturedSection(featuredSection, theme)}
+                   <FeaturedSection {...featuredSectionProps}/>
                 </Stack>
             </Stack>
             <FooterSection details={data} setup={pageSetup} />

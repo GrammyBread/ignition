@@ -1,0 +1,22 @@
+.mobileCardContent {
+    flex: 1 0 auto;
+
+    .loglineTextBox {
+        margin: 0px 8px;
+        font-size: 1rem;
+    }
+}
+
+.actionBox {
+    justify-content: center;
+    padding-bottom: 0;
+    padding-left: 0;
+
+    a {
+        width: 100%;
+
+        button {
+            width: 100%;
+        }
+    }
+}

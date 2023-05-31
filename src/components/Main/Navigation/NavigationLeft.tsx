@@ -5,18 +5,18 @@ import {
     INTRO_SECTION_PATH,
     NORMAL_SECTION_PATH,
 } from "../../../mappers/pathname.mapper";
-import { NavigationScript } from "../../../lib/availability/mappers/nav-script.mappers";
+import { NavigationSection } from "../../../interfaces/read/nav-data.interfaces";
 
 interface NavigationWingProps {
-    script: NavigationScript | undefined;
+    script: NavigationSection | undefined;
 }
 
-export function NavigationLeft({ script }: NavigationWingProps) {
-    return script ? (
+export function NavigationLeft({ script: section }: NavigationWingProps) {
+    return section ? (
         <Link
             href={{
-                pathname: script.isHead ? INTRO_SECTION_PATH : NORMAL_SECTION_PATH,
-                query: script.section.fullPath,
+                pathname: section.isHead ? INTRO_SECTION_PATH : NORMAL_SECTION_PATH,
+                query: section.slug,
             }}
         >
             <Fab color="primary" aria-label="add" size="medium">

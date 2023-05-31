@@ -5,9 +5,6 @@ import { CleanedNavigation } from "../../src/interfaces/read/cleaned-types.inter
 import NotFoundPage from "../../src/components/Error/specialty/NotFound";
 import {
     Box,
-    Divider,
-    Paper,
-    Typography,
     useMediaQuery,
     useTheme,
 } from "@mui/material";
@@ -18,10 +15,10 @@ import { useState } from "react";
 import AppendixList, {
     AppendixListProps,
 } from "../../src/components/Appendix/AppendixList/AppendixList";
-import { Resource } from "../../src/interfaces/read/read-metadata.interfaces";
 import { PublicBackground } from "../../public/backgroundImage";
 import { AppendixHeader } from "../../src/components/Appendix/AppendixHeader/AppendixHeader";
 import AppendixListMobile from "../../src/components/Appendix/AppendixList/AppendixListMobile";
+import { Resource } from "../../src/interfaces/read/cosmic/cosmic-metadata.interfaces";
 
 interface Props {
     navData: CleanedNavigation;
@@ -102,7 +99,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     return {
         props: {
-            navData: cleanSiteData.getSimpleNav(),
+            navData: cleanSiteData.getCacheableVersion(),
             homeData: appendixHome,
         } as Props,
         revalidate: 10 * 24 * 60 * 60,
