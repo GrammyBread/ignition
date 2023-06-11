@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useMediaQuery } from "@mui/material";
-import { getHome } from "../src/lib/api/client";
+import { getFeaturedSection, getHome } from "../src/lib/api/client";
 import { GetStaticProps } from "next";
 import Layout from "../src/components/Main/Layout";
 import NotFoundPage from "../src/components/Error/specialty/NotFound";
@@ -12,14 +12,13 @@ import { useState, useEffect } from "react";
 import { PageViewDetails } from "../src/components/HomePage/DetailsSection/DetailsSection";
 import { DesktopHome } from "../src/components/HomePage/DesktopHomePage";
 import { MobileHome } from "../src/components/HomePage/MobileHomePage";
-import { GetFeaturedSection } from "../src/lib/api/shared";
 import { useTheme } from '@mui/material/styles';
-import { FeaturedScript, MakeFeaturedScript} from "../src/lib/availability/mappers/nav-script.mappers";
 import { CompletePageProps } from "./_app";
+import { FeaturedSectionProps } from "../src/components/HomePage/FeaturedSection/FeaturedSection";
 
 interface HomeProps extends CompletePageProps {
     pageData: HomePage;
-    featuredSection: FeaturedScript;
+    featuredSection: FeaturedSectionProps;
 }
 
 const Home = (props: HomeProps): JSX.Element => {
@@ -67,17 +66,23 @@ export default Home;
 export const getStaticProps: GetStaticProps = async (context) => {
     const cleanSiteData = await getCleanSiteData();
     const homeData = await getHome();
-    const featuredCosmicSection = await GetFeaturedSection();
 
     if (!cleanSiteData) {
         throw Error("Could not get site data!");
     }
+    
+  let featuredSection: FeaturedSectionProps | null = null;
+  const featuredSectionSlug = cleanSiteData.getNewestSectionSlug();
+  if (featuredSectionSlug) {
+    const featuredSectionDetails = await getFeaturedSection(featuredSectionSlug);
+    featuredSection = cleanSiteData.makeFeaturedSection(featuredSectionDetails);
+  }
 
     return {
         props: {
             navData: cleanSiteData.getCacheableVersion(),
             pageData: homeData,
-            featuredSection: featuredCosmicSection && MakeFeaturedScript(featuredCosmicSection, cleanSiteData)
+            featuredSection: featuredSection
         } as HomeProps,
         revalidate: 120,
     };

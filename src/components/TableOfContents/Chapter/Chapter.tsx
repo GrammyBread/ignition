@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { List, ListItem, Button, Typography, Divider, Stack, ListItemText, styled } from '@mui/material';
+import { List, ListItem, Button, Typography, Divider, Stack, ListItemText, styled, useTheme } from '@mui/material';
 import getSection from '../Sections/shared';
 import { INTRO_SECTION_PATH, NORMAL_CHAPTER_PATH } from '../../../mappers/pathname.mapper';
 import Link from 'next/link';
@@ -8,13 +8,13 @@ import { NavigationChapter, PublishStatus } from '../../../interfaces/read/nav-d
 import Styles from './Chapter.module.scss';
 import { AnimatedLink } from '../helper';
 
-function ChapterHeader(status: PublishStatus, header: string, slug?: ParsedUrlQuery | string): JSX.Element {
+function ChapterHeader(status: PublishStatus, header: string, isChapterPage: boolean, slug?: ParsedUrlQuery | string): JSX.Element {
     const isPatreonOnly = status === PublishStatus.PatreonOnly;
 
     if (status != PublishStatus.Unpublished) {
         const textItem = <ListItemText
             primary={
-                <Typography variant="h5" component="h2">
+                <Typography variant="h5" component="h2" textAlign={isChapterPage ? "center" : "left"}>
                     {header}
                 </Typography>
             } />;
@@ -41,10 +41,16 @@ function ChapterHeader(status: PublishStatus, header: string, slug?: ParsedUrlQu
         } />;
 }
 
-export function ContentChapter(props: NavigationChapter): JSX.Element {
-    let availability = props.status;
-    const isAvailable = props.status != PublishStatus.Unpublished;
-    const isPatreonOnly = props.status === PublishStatus.PatreonOnly;
+interface ContentChapterProps {
+    content: NavigationChapter;
+    logline?: string;
+}
+
+export function ContentChapter({ content, logline }: ContentChapterProps): JSX.Element {
+    const theme = useTheme();
+    let availability = content.status;
+    const isAvailable = content.status != PublishStatus.Unpublished;
+    const isPatreonOnly = content.status === PublishStatus.PatreonOnly;
 
     if (availability == undefined) {
         throw new Error('Availability was wrong!');
@@ -58,16 +64,31 @@ export function ContentChapter(props: NavigationChapter): JSX.Element {
             alignItems={"left"}
             spacing={2}
         >
-            <ListItem>
-                {ChapterHeader(props.status, props.title, props.slug)}
-            </ListItem>
-            {isAvailable && !isPatreonOnly && props.slug &&
+            <div>
+                <ListItem>
+                    {ChapterHeader(content.status, content.title, !!logline, content.slug)}
+                </ListItem>
+                {logline &&
+                    <Typography 
+                    variant="body1" 
+                    component="div" 
+                    dangerouslySetInnerHTML={{ __html: logline }} 
+                    sx={{
+                        fontVariant: "normal",
+                        margin: `0px ${theme.spacing(2)}`,
+                        "p": {
+                            marginTop: "0px"
+                        }
+                    }}/>
+                }
+            </div>
+            {isAvailable && !isPatreonOnly && content.slug &&
                 <>
                     <Link
                         className={Styles.intro}
                         href={{
                             pathname: INTRO_SECTION_PATH,
-                            query: props.slug
+                            query: content.slug
                         }}>
                         <Button
                             variant="contained"
@@ -83,7 +104,7 @@ export function ContentChapter(props: NavigationChapter): JSX.Element {
                 </>
             }
             <List sx={{ pl: 6 }}>
-                {props.sections && props.sections.map((section) =>
+                {content.sections && content.sections.map((section) =>
                     <div key={section.key}>
                         {getSection(section)}
                     </div>)}

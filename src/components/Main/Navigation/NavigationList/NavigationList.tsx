@@ -111,6 +111,7 @@ export default function NavigationList(props: NavigationListProps) {
                     "& .MuiDrawer-paper": {
                         width: props.drawerWidth,
                         boxSizing: "border-box",
+                        fontVariant: "petite-caps"
                     },
                     "& a": {
                         textDecoration: "none",

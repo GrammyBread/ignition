@@ -31,11 +31,11 @@ const Chapter = (props: ChapterPageProps): JSX.Element => {
     return <NotFoundPage requestedItem={`Chapter: ${requestedRes}`} />;
   }
 
-  let tocProps = {
-    chapterProps: props.chapterNavigation
-  } as TableOfContentsProps;
 
-  let table = <TableOfContents {...tocProps}></TableOfContents>;
+  let table = <TableOfContents chapterProps={{
+    content: props.chapterNavigation,
+    logline: props.chapter.metadata.recap
+  }}></TableOfContents>;
 
   return <Layout backgroundImageUrl={props.chapter.metadata.metadata.background}>{table}</Layout>;
 };

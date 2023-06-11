@@ -7,8 +7,14 @@ import { ErrorPage } from '../../Error/Error';
 import { NavigationPart, NavigationChapter } from '../../../interfaces/read/nav-data.interfaces';
 
 export interface TableOfContentsProps {
-    partProps?: NavigationPart;
-    chapterProps?: NavigationChapter;
+    partProps?: {
+        content: NavigationPart;
+        logline: string;
+    };
+    chapterProps?: {
+        content:  NavigationChapter;
+        logline?: string;
+    };
 }
 
 export const Table = styled(Paper)(({ theme }) => ({
@@ -31,24 +37,17 @@ export const Table = styled(Paper)(({ theme }) => ({
     }
 }));
 
-function DetermineLayoutType({ partProps, chapterProps }: TableOfContentsProps): JSX.Element | undefined {
+export default function TableOfContents({ partProps, chapterProps }: TableOfContentsProps) {
+    let tableContents: JSX.Element | undefined = undefined;
     if (partProps) {
-        return <ContentPart {...partProps}></ContentPart>;
+        tableContents = <ContentPart content={partProps.content} logline={partProps.logline}></ContentPart>;
+    } else if (chapterProps) {
+        tableContents = <ContentChapter content={chapterProps.content} logline={chapterProps.logline}></ContentChapter>;
     }
 
-    if (chapterProps) {
-        return <ContentChapter {...chapterProps}></ContentChapter>;
-    }
-
-    return undefined;
-}
-
-export default function TableOfContents(props: TableOfContentsProps) {
-    const tableChild = DetermineLayoutType(props);
-
-    return tableChild != undefined ?
+    return tableContents != undefined ?
         <Table className={Styles.contents} elevation={0} >
-            {tableChild}
+            {tableContents}
         </Table >
         :
         <ErrorPage message="We can't seem to find what you're looking for 🤔?" />;

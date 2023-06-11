@@ -8,13 +8,13 @@ import Image from "next/image";
 import Head from "next/head";
 import { motion, useAnimation } from "framer-motion";
 import { DetectScreenSize, ScreenSize } from "../../lib/assistants/screenSizeHelper";
-import { NavigationScript } from "../../lib/availability/mappers/nav-script.mappers";
 import { Resource } from "../../interfaces/read/cosmic/cosmic-metadata.interfaces";
+import { NavigationSection } from "../../interfaces/read/nav-data.interfaces";
 
 export interface LayoutProps {
   children: React.ReactNode;
-  previousSection?: NavigationScript;
-  nextSection?: NavigationScript;
+  previousSection?: NavigationSection;
+  nextSection?: NavigationSection;
   fadeInTrigger?: boolean;
   backgroundImageUrl?: Resource;
   socials?: Socials;

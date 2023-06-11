@@ -45,12 +45,8 @@ metadata.images.thumbnail`;
 
 export const getChapterProps: string = `
 title,
-id,
-metadata.header,
-metadata.key,
-metadata.previous_chapter_recap,
-metadata.header_scripts,
-metadata.chapter_image`;
+metadata.metadata,
+metadata.recap`;
 
 export const getChapterHeaderScript: string = `
 title,

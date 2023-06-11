@@ -15,10 +15,10 @@ import { PublicBackground } from "../../../public/backgroundImage";
 import { CleanedNavigation } from "../../../src/interfaces/read/cleaned-types.interface";
 import { Resource, CosmicPart } from '../../../src/interfaces/read/cosmic/cosmic-metadata.interfaces';
 import { NavigationPart, PublishStatus } from '../../../src/interfaces/read/nav-data.interfaces';
-import { ParsedUrlQuery } from 'querystring';
 
 interface Props {
   partImageUrl: Resource;
+  logline: string;
   relatedPart: NavigationPart;
   navData: CleanedNavigation;
 }
@@ -34,11 +34,10 @@ const Part = (props: Props): JSX.Element => {
     return <NotFoundPage requestedItem={`Part: ${requestedRes}`} />;
   }
 
-  let tocProps = {
-    partProps: props.relatedPart,
-  } as TableOfContentsProps;
-
-  let table = <TableOfContents {...tocProps}></TableOfContents>;
+  let table = <TableOfContents partProps={{
+    content: props.relatedPart,
+    logline: props.logline
+  }}></TableOfContents>;
 
   return (
     <Layout
@@ -78,6 +77,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       partImageUrl: data.metadata.images?.table_of_contents ?? PublicBackground,
+      logline: data.metadata.metadata.logline,
       navData: cleanSiteData.getCacheableVersion(),
       relatedPart,
     } as Props,
