@@ -5,7 +5,7 @@ import PartCard from '../../src/components/PartCard/PartCard';
 import Layout from '../../src/components/Main/Layout';
 import { CleanedNavigation } from '../../src/interfaces/read/cleaned-types.interface';
 import { PartCardProps } from '../../src/components/PartCard/PartCard';
-import NotFoundPage from '../../src/components/Error/NotFound';
+import NotFoundPage from '../../src/components/Error/specialty/NotFound';
 import { Grid } from '@mui/material';
 import getCleanSiteData from '../../src/lib/api/sitedata/cache-site-data';
 import { PublicBackground } from '../../public/backgroundImage';

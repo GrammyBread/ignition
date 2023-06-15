@@ -7,7 +7,7 @@ interface ErrorPageProps {
     isHTML?: boolean;
 }
 
-export function CustomErrorPage({ message, isHTML }: ErrorPageProps): JSX.Element {
+export function ErrorPage({ message, isHTML = false }: ErrorPageProps): JSX.Element {
     let randomErrorImageNum = Math.floor(Math.random() * 4) + 1;
     let errorImage = `/assets/error/Error${randomErrorImageNum}.svg`;
     return (

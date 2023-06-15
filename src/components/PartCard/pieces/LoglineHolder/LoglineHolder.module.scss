@@ -1,0 +1,30 @@
+.loglineHolder {
+    position: relative;
+    margin-top: .5rem;
+}
+
+.loglineOverlay {
+    position: absolute;
+    height: 100%;
+    pointer-events: none;
+    top: 0;
+    width: calc(100% + 10px);
+    left: -10px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #333333 100%);
+    z-index: 900;
+}
+
+.partLogline {
+    z-index: 899;
+    line-height: 1;
+    position: relative;
+
+    p {
+        margin-block-start: 0;
+    }
+}
+
+.partLoglineContainer {
+    height: 100%;
+    position: relative;
+}

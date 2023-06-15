@@ -4,14 +4,14 @@ import {
   CosmicChapter, 
   CosmicPart, 
   CosmicSection, 
-  CosmicSiteData} from '../../interfaces/read/read-metadata.interfaces'
+  CosmicSiteData} from '../../interfaces/read/cosmic/cosmic-metadata.interfaces'
 import { 
   makeGetPartQuery, 
   makeGetPartsQuery, 
   makeGetChapterQuery, 
   makeGetSectionQuery, 
-  makeGetSiteDataQuery, 
-  makeGetMostRecentSections} from './readmeta/read-metadata-queries';
+  makeGetSiteDataQuery,
+  makeGetFeaturedSectionQuery} from './readmeta/read-metadata-queries';
 import { HomePage, PingPage } from '../../interfaces/static/home.interfaces'
 import { 
   makeGetHomeQuery, 
@@ -20,7 +20,7 @@ import {
 import { makeGetChapterHeaderQuery } from './readmeta/read-metadata-queries';
 import { PatreonPage } from '../../interfaces/static/patreon.interface';
 import { Character } from '../../interfaces/appendices/character.interface';
-import { CleanSiteData } from '../../interfaces/read/clean-site-data.class';
+import { CleanSiteData } from '../availability/class/clean-site-data.class';
 import CleanUpSiteData from './sitedata/nav.mapper';
 import { makeGetAppendicesHome, makeGetArchQuery, makeGetCharacterPageQuery, makeGetCharactersQuery, makeGetLoreDocument, makeGetLoreDocuments, makeGetStationPageQuery, makeGetStationsQuery } from './appendices/appendices-queries';
 import { AppendixDocument, AppendixPage, AvailableAppendixDocs } from '../../interfaces/appendices/documents.interface';
@@ -45,7 +45,6 @@ async function getObjects<T>(query: CosmicQuery | any): Promise<T> {
 export async function getSiteData(): Promise<CleanSiteData> {
   let response = await getObjects<CosmicSiteData[]>(makeGetSiteDataQuery())
   let nav = response[0];
-  nav.domain = process.env.DOMAIN!;
   return CleanUpSiteData(nav);
 }
 
@@ -73,9 +72,9 @@ export async function getSectionData(slug:string): Promise<CosmicSection> {
   return response[0];
 }
 
-export async function getMostRecentSections(): Promise<CosmicSection[]> {
-  let response = await getObjects<CosmicSection[]>(makeGetMostRecentSections());
-  return response;
+export async function getFeaturedSection(slug:string): Promise<CosmicSection> {
+  let response = await getObjects<CosmicSection[]>(makeGetFeaturedSectionQuery(slug));
+  return response[0];
 }
 
 //Non-Read Pages

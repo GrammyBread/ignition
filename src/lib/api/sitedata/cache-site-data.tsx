@@ -2,7 +2,8 @@ import path from "path";
 import fs from 'fs'
 import { promisify } from 'util'
 import { getSiteData } from "../client";
-import { CleanSiteData, CacheableSiteData } from '../../../interfaces/read/clean-site-data.class';
+import { CleanSiteData } from '../../availability/class/clean-site-data.class';
+import { CleanedNavigation } from "../../../interfaces/read/cleaned-types.interface";
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -10,7 +11,7 @@ const BLOG_INDEX_CACHE = path.resolve('.next/cache/.clean_site_data')
 
 interface SiteDataCacheObject {
   expiration: string;
-  data: CacheableSiteData
+  data: CleanedNavigation
 }
 
 export default async function getCleanSiteData() {

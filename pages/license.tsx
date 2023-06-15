@@ -8,7 +8,7 @@ import {
 import { getLicense } from "../src/lib/api/client";
 import { GetStaticProps } from "next";
 import Layout from "../src/components/Main/Layout";
-import NotFoundPage from "../src/components/Error/NotFound";
+import NotFoundPage from "../src/components/Error/specialty/NotFound";
 import Styles from "../src/styles/patreon.module.scss";
 import getCleanSiteData from "../src/lib/api/sitedata/cache-site-data";
 import { CleanedNavigation } from "../src/interfaces/read/cleaned-types.interface";

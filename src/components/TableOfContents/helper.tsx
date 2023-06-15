@@ -1,8 +1,8 @@
-import { ItemStatus } from '../../mappers/availability/state.mappers';
 import Link from 'next/link';
 import { ListItemText, styled, Typography } from '@mui/material';
 import { ParsedUrlQuery } from 'querystring';
 import { NORMAL_SECTION_PATH } from '../../mappers/pathname.mapper';
+import { PublishStatus } from '../../interfaces/read/nav-data.interfaces';
 
 export const Circle = styled('div', {
     shouldForwardProp: (prop) => prop !== 'backingColor',
@@ -20,7 +20,7 @@ export interface SlugDetails {
     pathname: string;
 }
 
-export function getPatreonSectionTitle(publishStatus: ItemStatus, title: string, shouldPad?: boolean): JSX.Element {
+export function getPatreonSectionTitle(publishStatus: PublishStatus, title: string, shouldPad?: boolean): JSX.Element {
     let listTitle = (
         <ListItemText
             sx={{
@@ -37,7 +37,7 @@ export function getPatreonSectionTitle(publishStatus: ItemStatus, title: string,
     </Link>)
 }
 
-export function getLinkedSectionTitle(publishStatus: ItemStatus, title: string, slugDetails: SlugDetails, shouldPad?: boolean): JSX.Element {
+export function getLinkedSectionTitle(publishStatus: PublishStatus, title: string, slugDetails: SlugDetails, shouldPad?: boolean): JSX.Element {
     let listTitle = (
         <ListItemText
             sx={{
@@ -56,23 +56,27 @@ export function getLinkedSectionTitle(publishStatus: ItemStatus, title: string, 
     </Link>);
 }
 
-export function getUnlikedTitle(header: string, normal: boolean, shouldPad?: boolean): JSX.Element {
-    return (
-        normal ?
-            (<ListItemText
-                sx={{
-                    color: 'text.disabled',
-                    ...(shouldPad && {
-                        paddingTop: ".25rem",
-                        paddingBottom: ".25rem"
-                    })
-                }}
-                primary={header} />)
-            :
-            (<ListItemText primary={
-                <Typography align="center" variant="h4" component="h2">
-                    {header}
-                </Typography>
-            } />)
-    );
-}
+export const AnimatedLink = styled(Link, { shouldForwardProp: (prop) => prop !== 'isPatreonOnly' })<{
+    isPatreonOnly?: boolean;
+}>(({ theme, isPatreonOnly = false }) => ({
+    color: isPatreonOnly ? theme.palette.warning.main : theme.palette.text.primary,
+    position: 'relative',
+    display: 'inline-block',
+
+    "::before": {
+        content: `""`,
+        position: 'absolute',
+        width: 0,
+        height: '2px',
+        bottom: 0,
+        left: 0,
+        backgroundColor: isPatreonOnly ? theme.palette.warning.main : theme.palette.text.primary,
+        visibility: 'hidden',
+        transition: 'all 0.3s ease-in-out'
+    },
+
+    ":hover::before": {
+        visibility: 'visible',
+        width: '100%'
+    }
+}));

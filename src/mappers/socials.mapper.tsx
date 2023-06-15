@@ -1,7 +1,7 @@
-import { SocialDetail } from '../interfaces/read/read-metadata.interfaces';
 import { Socials } from '../components/Main/Layout';
+import { CosmicSocialDetails } from '../interfaces/read/cosmic/cosmic-metadata.interfaces';
 
-export default function MapSocialData(socialData: SocialDetail, fullUrl: string): Socials {
+export default function MapSocialData(socialData: CosmicSocialDetails, fullUrl: string): Socials {
     return {
         title: socialData.title,
         url: fullUrl,

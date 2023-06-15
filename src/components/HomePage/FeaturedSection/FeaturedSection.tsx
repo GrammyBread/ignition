@@ -2,10 +2,13 @@ import * as React from "react";
 import {
   Button,
   Card,
-  CardMedia,
   CardHeader,
   CardActions,
   CardContent,
+  useTheme,
+  Box,
+  Stack,
+  styled,
 } from "@mui/material";
 import { Book } from "@mui/icons-material";
 import Link from "next/link";
@@ -13,50 +16,78 @@ import {
   INTRO_SECTION_PATH,
   NORMAL_SECTION_PATH,
 } from "../../../mappers/pathname.mapper";
-import { FeaturedScript } from "../../../mappers/availability/nav-script.mappers";
 import Styles from "./FeaturedSection.module.scss";
-import { Theme } from "@mui/material";
+import { NavigationSection } from "../../../interfaces/read/nav-data.interfaces";
+import { CosmicSectionImages } from "../../../interfaces/read/cosmic/cosmic-metadata.interfaces";
+import Typography from '@mui/material/Typography';
+import MainStyles from "../../../styles/shared.module.scss";
 
-export default function FeaturedSection(
-  script: FeaturedScript,
-  theme: Theme
-): JSX.Element {
+export interface FeaturedSectionProps extends NavigationSection {
+  releaseDate: string;
+  images: CosmicSectionImages;
+}
+
+const TitleComponent = (): JSX.Element => (
+  <Typography
+    component="h2"
+    variant="h5"
+    sx={{
+      color: "primary.main"
+    }} >
+    <Box className={MainStyles.titles}>
+      {"Featured Section"}
+    </Box>
+  </Typography>);
+
+interface SubtitleComponentProps {
+  title: string;
+  releaseDate: string;
+}
+
+const SubtitleComponent = ({ title, releaseDate }: SubtitleComponentProps): JSX.Element => (
+  <Stack direction="column" >
+    <Typography variant="button" component="h2" sx={{ fontSize: "1rem" }}>
+      {title}
+    </Typography>
+    <Typography variant="caption" component="p" sx={{ fontWeight: 100 }}>
+      Released on {releaseDate}
+    </Typography>
+  </Stack>);
+
+const FeaturedSectionHeader = styled(CardHeader, { shouldForwardProp: (prop) => prop !== 'backgroundImageUrl' })<{
+  backgroundImageUrl?: string;
+}>(({ theme, backgroundImageUrl }) => ({
+  margin: `${theme.spacing(1)} ${theme.spacing(1)} 0px ${theme.spacing(1)}`,
+  padding: `0px 0px 200px 0px`,
+  backgroundImage: `url(${backgroundImageUrl})`,
+  backgroundSize: "cover",
+  borderRadius: `${theme.spacing(1)}`,
+  ".MuiCardHeader-content": {
+    background: "rgba(0, 0, 0, .8)",
+    padding: `${theme.spacing(1)} ${theme.spacing(1)} ${theme.spacing(1)} ${theme.spacing(1)}`,
+    borderRadius: `${theme.spacing(1)} ${theme.spacing(1)} 0px 0px`
+  }
+}));
+
+export default function FeaturedSection(props: FeaturedSectionProps): JSX.Element {
+  const theme = useTheme();
+
   return (
-    <Card
-      sx={{
-        margin: `${theme.spacing(3)} ${theme.spacing(3)} 0 0 !important`,
-        backgroundColor: "background.paper",
-        color: "text.secondary",
-      }}
-    >
-      <CardHeader
-        title={script.section.header}
-        subheader={`Released on ${script.section.releaseDate}`}
-      />
-      <CardContent
+    <Card sx={{
+      backgroundColor: "background.paper",
+      color: "text.secondary",
+    }}>
+      <FeaturedSectionHeader
+        backgroundImageUrl={props.images.background.imgix_url}
+        title={<TitleComponent />}
+        subheader={<SubtitleComponent title={props.title} releaseDate={props.releaseDate} />}
         sx={{
-          height: "60vh",
-          overflow: "hidden",
-          width: "100%",
-          position: "relative",
-        }}
-      >
-        <CardMedia
-          component="img"
-          sx={{
-            position: "absolute",
-            width: "100% !important",
-            margin: "0",
-            top: "0",
-            bottom: "0",
-            right: "0",
-            left: "0",
-          }}
-          image={script.image.imgix_url}
-          alt={`${script.section.header} cover image`}
-        />
+        }} />
+      <CardContent sx={{
+        padding: `0px ${theme.spacing(1)}`
+      }}>
       </CardContent>
-      {script.section.fullPath && (
+      {props.slug && (
         <CardActions
           disableSpacing
           sx={{
@@ -65,24 +96,21 @@ export default function FeaturedSection(
               textDecoration: "none",
               width: "100%"
             }
-          }}
-        >
+          }}>
           <Link
             href={{
-              pathname: script.isHead
+              pathname: props.isHead
                 ? INTRO_SECTION_PATH
                 : NORMAL_SECTION_PATH,
-              query: script.section.fullPath,
-            }}
-          >
+              query: props.slug,
+            }}>
             <Button
               className={Styles.readButton}
               variant="contained"
               startIcon={<Book />}
               sx={{
                 width: "100%"
-              }}
-            >
+              }}>
               Read Now
             </Button>
           </Link>

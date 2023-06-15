@@ -7,7 +7,10 @@ import { ThemeProvider } from "@mui/material";
 import { ignitionThemeDark } from "../src/styles/darkTheme";
 import { ignitionThemeLight } from "../src/styles/lightTheme";
 import { CleanedNavigation } from "../src/interfaces/read/cleaned-types.interface";
-import { CleanSiteData } from "../src/interfaces/read/clean-site-data.class";
+
+export interface CompletePageProps {
+  navData: CleanedNavigation;
+}
 
 // If loading a variable font, you don't need to specify the font weight
 const oswald = Oswald({ subsets: ["latin"] });

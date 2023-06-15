@@ -7,7 +7,7 @@ import {
 import * as React from "react";
 import Layout from "../../src/components/Main/Layout";
 import { CleanedNavigation } from "../../src/interfaces/read/cleaned-types.interface";
-import NotFoundPage from "../../src/components/Error/NotFound";
+import NotFoundPage from "../../src/components/Error/specialty/NotFound";
 import {
     Autocomplete,
     TextField,

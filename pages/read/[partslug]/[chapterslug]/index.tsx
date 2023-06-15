@@ -4,58 +4,40 @@ import * as React from "react";
 import { TableOfContentsProps } from "../../../../src/components/TableOfContents/Table/Table";
 import TableOfContents from "../../../../src/components/TableOfContents/Table/Table";
 import Layout from "../../../../src/components/Main/Layout";
-import {
-  CosmicChapter,
-  Resource,
-} from "../../../../src/interfaces/read/read-metadata.interfaces";
-import { Chapter } from "../../../../src/interfaces/read/view-data.interfaces";
-import { ChapterProps } from "../../../../src/components/TableOfContents/Chapter/TOCChapter";
 import { GetRequestedResource } from "../../../../src/lib/api/shared";
-import NotFoundPage from "../../../../src/components/Error/NotFound";
-import { ItemStatus } from "../../../../src/mappers/availability/state.mappers";
+import NotFoundPage from "../../../../src/components/Error/specialty/NotFound";
 import getCleanSiteData from "../../../../src/lib/api/sitedata/cache-site-data";
 import {
   RedirectTo404,
   RedirectToPatreon,
 } from "../../../../src/common/common-redirects";
-import { PublicBackground } from "../../../../public/backgroundImage";
-import { CleanedNavigation } from "../../../../src/interfaces/read/cleaned-types.interface";
+import { CosmicChapter } from "../../../../src/interfaces/read/cosmic/cosmic-metadata.interfaces";
+import { NavigationChapter, PublishStatus } from "../../../../src/interfaces/read/nav-data.interfaces";
+import { CompletePageProps } from "../../../_app";
 
-interface ChapterPath {
-  params: {
-    partslug: string;
-    chapterslug: string;
-  };
+interface ChapterPageProps extends CompletePageProps {
+  chapter: CosmicChapter;
+  chapterNavigation: NavigationChapter;
 }
 
-interface Props {
-  relatedChapter: Chapter;
-  navData: CleanedNavigation;
-  chapterImage: Resource;
-}
-
-const Chapter = (props: Props): JSX.Element => {
+const Chapter = (props: ChapterPageProps): JSX.Element => {
   let requestedRes = GetRequestedResource();
 
   if (
-    props.navData == undefined ||
-    props.relatedChapter == undefined ||
-    (props.relatedChapter != undefined &&
-      props.relatedChapter.publishStatus == ItemStatus.Unpublished)
+    !props.navData ||
+    !props.chapterNavigation ||
+    !props.chapter.metadata.metadata.background
   ) {
     return <NotFoundPage requestedItem={`Chapter: ${requestedRes}`} />;
   }
 
-  let tocProps = {
-    chapterProps: {
-      showLinkedHeader: false,
-      availability: props.relatedChapter,
-    } as ChapterProps,
-  } as TableOfContentsProps;
 
-  let table = <TableOfContents {...tocProps}></TableOfContents>;
+  let table = <TableOfContents chapterProps={{
+    content: props.chapterNavigation,
+    logline: props.chapter.metadata.recap
+  }}></TableOfContents>;
 
-  return <Layout backgroundImageUrl={props.chapterImage}>{table}</Layout>;
+  return <Layout backgroundImageUrl={props.chapter.metadata.metadata.background}>{table}</Layout>;
 };
 
 export default Chapter;
@@ -67,7 +49,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     data = await getChapter(slug.toString());
   }
 
-  if (!data?.id) {
+  if (!data?.metadata?.metadata?.key) {
     return RedirectTo404();
   }
 
@@ -76,19 +58,19 @@ export const getStaticProps: GetStaticProps = async (context) => {
     throw Error("Could not get site data!");
   }
 
-  const relatedChapter = cleanSiteData.getRelatedChapter(data.id);
+  const relatedChapter = cleanSiteData.getRelatedChapter(data.metadata.metadata.key);
   if (!relatedChapter) {
     return RedirectTo404();
-  } else if (relatedChapter.publishStatus == ItemStatus.PatreonOnly) {
+  } else if (relatedChapter.status == PublishStatus.PatreonOnly) {
     return RedirectToPatreon();
   }
 
   return {
     props: {
-      chapterImage: data.metadata?.chapter_image ?? PublicBackground,
-      relatedChapter,
-      navData: cleanSiteData.getSimpleNav(),
-    } as Props,
+      chapter: data,
+      chapterNavigation: relatedChapter,
+      navData: cleanSiteData.getCacheableVersion(),
+    } as ChapterPageProps,
     revalidate: 10 * 60 * 60,
   };
 };
@@ -99,14 +81,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     throw Error("Could not get site data!");
   }
 
-  let availablePaths = new Array<ChapterPath>();
-  cleanSiteData.getSimpleNav(true).data.forEach((part) => {
-    part.chapters.forEach((chapter) => {
-      availablePaths.push({
-        params: chapter.slug.params,
-      } as ChapterPath);
-    });
-  });
+  let availablePaths = cleanSiteData.getAvailableChapters();
 
   return {
     paths: availablePaths,

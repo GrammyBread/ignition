@@ -1,18 +1,9 @@
 import { GetStaticProps, GetStaticPaths } from "next";
 import { getSectionData } from "../../../../src/lib/api/client";
 import * as React from "react";
-import {
-  CosmicSection,
-  Script,
-} from "../../../../src/interfaces/read/read-metadata.interfaces";
-import { Section } from "../../../../src/interfaces/read/view-data.interfaces";
 import Layout from "../../../../src/components/Main/Layout";
 import { GetRequestedResource } from "../../../../src/lib/api/shared";
-import NotFoundPage from "../../../../src/components/Error/NotFound";
-import { ItemStatus } from "../../../../src/mappers/availability/state.mappers";
-import ScriptComponent, {
-  ScriptProps,
-} from "../../../../src/components/Script/Script";
+import NotFoundPage from "../../../../src/components/Error/specialty/NotFound";
 import { useRouter } from "next/router";
 import MapSocialData from "../../../../src/mappers/socials.mapper";
 import {
@@ -20,37 +11,25 @@ import {
   RedirectToPatreon,
 } from "../../../../src/common/common-redirects";
 import getCleanSiteData from "../../../../src/lib/api/sitedata/cache-site-data";
-import { CleanedNavigation } from "../../../../src/interfaces/read/cleaned-types.interface";
-import { MakeNavigationScript, NavigationScript } from "../../../../src/mappers/availability/nav-script.mappers";
+import { CosmicSection } from "../../../../src/interfaces/read/cosmic/cosmic-metadata.interfaces";
+import { NavigationItem, PublishStatus } from "../../../../src/interfaces/read/nav-data.interfaces";
+import { CompletePageProps } from "../../../_app";
 
-interface SectionPath {
-  params: {
-    partslug: string;
-    chapterslug: string;
-    sectionslug: string;
-  };
+interface SectionPageProps extends CompletePageProps {
+  section: CosmicSection;
+  sectionNavigation: NavigationItem;
 }
 
-interface Props {
-  sectionImageURL: string;
-  script: Script;
-  navData: CleanedNavigation;
-  relatedSection: Section;
-  previousScript?: NavigationScript;
-  nextScript?: NavigationScript;
-}
-
-const Section = (props: Props): JSX.Element => {
+const Section = (props: SectionPageProps): JSX.Element => {
   const router = useRouter();
   let requestedRes = GetRequestedResource();
 
   if (
-    props.navData == undefined ||
-    props.relatedSection == undefined ||
-    (props.relatedSection != undefined &&
-      props.relatedSection.publishStatus == ItemStatus.Unpublished) ||
-    props.script == undefined
-  ) {
+    !props.navData ||
+    !props.sectionNavigation ||
+    !props.section ||
+    !props.section.metadata.blocks
+   ) {
     return <NotFoundPage requestedItem={`Section: ${requestedRes}`} />;
   }
 
@@ -58,22 +37,15 @@ const Section = (props: Props): JSX.Element => {
     ? `${props.navData.domain}${router.asPath}`
     : props.navData.domain;
 
-
-  const socialData = props.script.metadata.social_details
-    ? MapSocialData(props.script.metadata.social_details, scriptURL)
+  const socialData = props.section.metadata.seo
+    ? MapSocialData(props.section.metadata.seo, scriptURL)
     : undefined;
-  const scriptProps = {
-    script: props.script,
-    header: props.relatedSection.header,
-    fullURL: scriptURL,
-  } as ScriptProps;
 
   return (
     <Layout
-      backgroundImageUrl={scriptProps.script.metadata.script_image}
+      backgroundImageUrl={props.section.metadata.images?.background}
       socials={socialData}
     >
-      <ScriptComponent {...scriptProps} />
     </Layout>
   );
 };
@@ -87,7 +59,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     data = await getSectionData(slug.toString());
   }
 
-  if (!data?.id) {
+  if (!data?.metadata.publish_details.key) {
     return RedirectTo404();
   }
 
@@ -96,26 +68,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
     throw Error("Could not get site data!");
   }
 
-  const relatedSection = cleanSiteData.getRelatedSection(data.id);
-  if (!relatedSection) {
+  const relatedSection = cleanSiteData.getRelatedSection(data.metadata.publish_details.key);
+  if (!relatedSection || !data.metadata.blocks) {
     return RedirectTo404();
-  } else if (!data.metadata?.script) {
-    return RedirectTo404();
-  } else if (relatedSection.publishStatus == ItemStatus.PatreonOnly) {
+  } else if (relatedSection.status === PublishStatus.PatreonOnly) {
     return RedirectToPatreon();
   }
 
   return {
     props: {
-      sectionImageURL:
-        data.metadata?.script?.metadata.script_image.url ??
-        "/assets/SiteBack.svg",
-      relatedSection,
-      script: data.metadata.script,
-      navData: cleanSiteData.getSimpleNav(),
-      nextScript: data.metadata?.next_section && MakeNavigationScript(data.metadata.next_section, cleanSiteData),
-      previousScript: data.metadata?.previous_section && MakeNavigationScript(data.metadata.previous_section, cleanSiteData)
-    } as Props,
+      navData: cleanSiteData.getCacheableVersion(),
+      section: data,
+      sectionNavigation: relatedSection
+
+    } as SectionPageProps,
     revalidate: 10 * 60 * 60,
   };
 };
@@ -126,16 +92,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     throw Error("Could not get site data!");
   }
 
-  let availablePaths = new Array<SectionPath>();
-  cleanSiteData.getSimpleNav(true).data.forEach((part) => {
-    part.chapters.forEach((chapter) => {
-      chapter.sections.forEach((section) => {
-        availablePaths.push({
-          params: section.slug.params,
-        } as SectionPath);
-      });
-    });
-  });
+  const availablePaths = cleanSiteData.getAvailableSections();
 
   return {
     paths: availablePaths,

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
-import NavigationPartItem from "./NavigationPart";
+import NavigationPartItem from "./Parts/NavigationPart";
 import {
     ChevronLeft,
     DarkMode,
@@ -25,6 +25,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ExpandMore } from "@mui/icons-material";
 import { NavigationContext, ThemeModeContext } from "../../../../../pages/_app";
+import Styles from "./NavigationList.module.scss";
+import { ClassNames } from "@emotion/react";
+import classNames from "classnames";
 
 export interface NavigationListProps {
     drawerWidth: number;
@@ -108,6 +111,7 @@ export default function NavigationList(props: NavigationListProps) {
                     "& .MuiDrawer-paper": {
                         width: props.drawerWidth,
                         boxSizing: "border-box",
+                        fontVariant: "petite-caps"
                     },
                     "& a": {
                         textDecoration: "none",
@@ -118,7 +122,7 @@ export default function NavigationList(props: NavigationListProps) {
                 anchor="left"
                 open={props.open}
             >
-                <DrawerHeader>
+                <DrawerHeader sx={{ justifyContent: "space-between" }}>
                     <Typography variant="h5" component={"h3"} sx={{ textAlign: "left" }}>
                         Only One Way To Burn It Down
                     </Typography>
@@ -126,6 +130,7 @@ export default function NavigationList(props: NavigationListProps) {
                 </DrawerHeader>
                 <Divider />
                 <DrawerSection
+                    className={classNames(Styles.readSection, Styles.prettyScroll)}
                     sx={{
                         color: "text.secondary",
                     }}
@@ -139,7 +144,7 @@ export default function NavigationList(props: NavigationListProps) {
                             {value?.data &&
                                 value.data.map((part) => (
                                     <div key={part.key}>
-                                        <NavigationPartItem {...part}></NavigationPartItem>
+                                        <NavigationPartItem {...part} />
                                     </div>
                                 ))}
                         </List>
@@ -147,7 +152,7 @@ export default function NavigationList(props: NavigationListProps) {
                 </DrawerSection>
                 <Divider />
                 <DrawerSection>
-                    <List>
+                    <List className={Styles.lowerNavigation}>
                         <ListItem key={"Home"}>
                             <Link href="/">
                                 <ListItemButton>

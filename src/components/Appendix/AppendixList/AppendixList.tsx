@@ -2,10 +2,10 @@ import { Box, Stack, useTheme } from "@mui/material";
 import * as React from "react";
 import Styles from "./AppendixList.module.scss";
 import { AppendixItem as AppendixPiece, SpecialAppendixItem } from '../../../interfaces/appendices/home.interface';
-import { Resource } from "../../../interfaces/read/read-metadata.interfaces";
 import { AppendixItem } from "./AppendixListItem";
 import classNames from "classnames";
 import { PublicBackground } from "../../../../public/backgroundImage";
+import { Resource } from "../../../interfaces/read/cosmic/cosmic-metadata.interfaces";
 
 export interface SpecialItemProps {
     item: SpecialAppendixItem;

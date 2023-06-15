@@ -16,9 +16,9 @@ import { AppBar, ImageContainer } from "./NavigationHelper";
 import { NavigationLeft } from "./NavigationLeft";
 import { NavigationRight } from "./NavigationRight";
 import { useTheme } from "@mui/material";
-import { NavigationScript } from "../../../mappers/availability/nav-script.mappers";
 import { NavigationContext } from "../../../../pages/_app";
 import { NavigationBackgroundColor } from "../../../styles/additional-colors";
+import { NavigationSection } from "../../../interfaces/read/nav-data.interfaces";
 
 
 export interface NavigationProps {
@@ -26,8 +26,8 @@ export interface NavigationProps {
     openDrawer: () => void;
     closeDrawer: () => void;
     open: boolean;
-    nextScript?: NavigationScript;
-    previousScript?: NavigationScript;
+    nextScript?: NavigationSection;
+    previousScript?: NavigationSection;
 }
 
 export function Navigation({

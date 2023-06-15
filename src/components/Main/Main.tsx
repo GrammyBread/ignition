@@ -17,6 +17,7 @@ export const Main = styled('main', {
     theme.spacing(3),
     maxHeight: '100%',
     maxWidth: '100%',
+    overflowY: 'auto',
     transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,

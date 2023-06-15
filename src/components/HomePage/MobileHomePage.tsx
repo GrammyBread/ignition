@@ -1,10 +1,8 @@
-import { Box, Container, useMediaQuery } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { DetailsSection, PageViewDetails } from "./DetailsSection/DetailsSection";
 import Styles from "./HomePage.module.scss";
 import { HomeMetadata } from '../../interfaces/static/home.interfaces';
-import { CtaMobileArea } from "./CTAs/CTAMobile";
 import { HeroSection } from "./Hero/Hero";
-import { CtaDesktopArea } from "./CTAs/CTADesktop";
 import { FooterSection } from "./Footer/Footer";
 import classNames from "classnames";
 
